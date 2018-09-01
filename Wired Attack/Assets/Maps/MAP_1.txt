@@ -1,0 +1,7 @@
+machines
+{"id":3,"team_id":1,"floor_id":34,"machine_model":"regular_machine"}
+{"id":1,"team_id":1,"floor_id":36,"machine_model":"regular_machine"}
+{"id":2,"team_id":1,"floor_id":44,"machine_model":"regular_machine"}
+wires
+{"id":1,"wire_type":"optical","connection_ids":[2,1]}
+{"id":2,"wire_type":"optical","connection_ids":[2,3]}

@@ -1,0 +1,4 @@
+machines
+{"id":1,"team_id":1,"floor_id":34,"machine_model":"regular_machine"}
+{"id":2,"team_id":1,"floor_id":37,"machine_model":"regular_machine"}
+wires

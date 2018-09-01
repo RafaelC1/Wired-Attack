@@ -1,0 +1,15 @@
+machines
+{"id":1,"team_id":1,"floor_id":1,"machine_model":"regular_machine"}
+{"id":3,"team_id":1,"floor_id":13,"machine_model":"regular_machine"}
+{"id":4,"team_id":1,"floor_id":15,"machine_model":"storage_server"}
+{"id":2,"team_id":1,"floor_id":17,"machine_model":"regular_machine"}
+{"id":5,"team_id":1,"floor_id":26,"machine_model":"regular_server"}
+{"id":7,"team_id":1,"floor_id":28,"machine_model":"regular_machine"}
+{"id":6,"team_id":1,"floor_id":35,"machine_model":"firewall"}
+wires
+{"id":0,"wire_type":"optical","connection_ids":[2,1]}
+{"id":0,"wire_type":"optical","connection_ids":[1,3]}
+{"id":0,"wire_type":"optical","connection_ids":[3,2]}
+{"id":0,"wire_type":"optical","connection_ids":[1,3]}
+{"id":0,"wire_type":"optical","connection_ids":[3,2]}
+{"id":0,"wire_type":"optical","connection_ids":[2,1]}
