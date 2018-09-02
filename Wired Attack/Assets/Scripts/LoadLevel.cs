@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class LoadLevel : MonoBehaviour {
 
-    public GameController.GameStatus list_from = GameController.GameStatus.GAME_MODE;
+    public GameController.GameStatus current_game_mode_flow = GameController.GameStatus.GAME_MODE;
 
     public GameObject list = null;
     public GameObject level_btn_pre_fab = null;
@@ -26,12 +26,10 @@ public class LoadLevel : MonoBehaviour {
 
     private void LoadAllLevelNames()
     {
-        List<string> level_names = data_controller.AllLevelNames(list_from);
+        List<string> level_names = data_controller.AllLevelNames(current_game_mode_flow);
 
         foreach(string level_name in level_names)
         {
-            if (level_name.Contains(".meta")) { continue; }
-
             string[] all_parts = level_name.Split('\\');
             string full_name = all_parts[all_parts.Length-1];
             this.level_names.Add(full_name.Split('.')[0]);

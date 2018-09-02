@@ -2,64 +2,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Text.RegularExpressions;
 
 public class DataController : MonoBehaviour {
 
+    public GameController game_controller = null;
+
+    private const string CUSTOM_LEVEL_FOLDER = "/CustomLevels";
+
     private const string DEFAULT_START_FILE_NAME = "MAP_";
     private const string DEFAULT_END_FILE_EXTENSION = ".txt";
-
-    private const string LEVEL_FOLDER = "/Maps";
-    private const string CUSTOM_LEVEL_FOLDER = "/CustomLevels";
-    private const string STREAMING_ASSETS_FOLDER_NAME = "/StreamingAssets";
 
     public const string START_OF_MACHINE_SERIALIZED = "machines";
     public const string START_OF_CONNECTION_SERIALIZED = "wires";
 
     public List<TextAsset> campaign_level_files = new List<TextAsset>();
-    private IDictionary<string, StreamReader> campaign_level = new Dictionary<string, StreamReader>();
-    private IDictionary<string, StreamWriter> custom_level_files = new Dictionary<string, StreamWriter>();
+    private IDictionary<string, TextAsset> campaign_levels = new Dictionary<string, TextAsset>();
 
     public List<MachineSerialized> map_file_machines = new List<MachineSerialized>();
     public List<WireSerialized> map_file_connections = new List<WireSerialized>();
 
-    private string persistent_path = "";
-    private string streaming_assets_path = "";
     private string custom_level_path = "";
 
     void Start()
     {
-        persistent_path = Application.persistentDataPath + CUSTOM_LEVEL_FOLDER;
-        streaming_assets_path = Application.dataPath + STREAMING_ASSETS_FOLDER_NAME + LEVEL_FOLDER;
+        custom_level_path = Application.persistentDataPath + CUSTOM_LEVEL_FOLDER;
 
-        LoadAllCustomLevels();
+        LoadAllCampaignLevels();
         CreateCustomLevelDirectory();
     }
-    void Update() { }
+    void Update()
+    {
+    }
 
     private void CreateCustomLevelDirectory()
     {
-        if (!Directory.Exists(persistent_path))
+        if (!Directory.Exists(CustomMapPath()))
         {
             Directory.CreateDirectory(custom_level_path);
         }
     }
 
-    private void LoadAllCustomLevels()
-    {
-        custom_level_files.Clear();
-        foreach (string file_name in Directory.GetFiles(CustomMapPath()))
-        {
-            custom_level_files[file_name] = new StreamWriter(file_name);
-        }
-        
-    }
-
     private void LoadAllCampaignLevels()
     {
-        foreach (TextAsset text in campaign_level_files)
+        foreach (TextAsset text_file in campaign_level_files)
         {
-            campaign_level.Add(new StreamReader(text.pa));
+            campaign_levels[text_file.name] = text_file;
         }
+        
     }
 
     public void SaveMap(List<string> lines_to_save, string map_name)
@@ -88,15 +78,30 @@ public class DataController : MonoBehaviour {
 
     public void LoadMap(string map_name)
     {
-        string full_map_path = FilePathFormat(map_name);
-
-        if (!File.Exists(full_map_path)) { return; }
-
-        string line;
+        List<string> map_script_lines = new List<string>();
         string current_model_loaded = START_OF_MACHINE_SERIALIZED;
 
-        StreamReader file = new StreamReader(full_map_path);
-        while ((line = file.ReadLine()) != null)
+        map_file_machines.Clear();
+        map_file_connections.Clear();
+
+        //ESSA MERDA NÃO DEVERIA FUNCIONAR ASSIM, CONCERTAR
+        game_controller = GameObject.Find("GameController").GetComponent<GameController>();
+
+        switch (game_controller.current_status)
+        {
+            case GameController.GameStatus.GAME_MODE:
+                {
+                    map_script_lines = LoadCampaignMap(map_name);
+                    break;
+                }
+            case GameController.GameStatus.EDIT_MODE:
+                {
+                    map_script_lines = LoadCustomMap(map_name);
+                    break;
+                }
+        }        
+
+        foreach(string line in map_script_lines)
         {
             if (line == START_OF_MACHINE_SERIALIZED ||
                 line == START_OF_CONNECTION_SERIALIZED)
@@ -118,45 +123,85 @@ public class DataController : MonoBehaviour {
                         break;
                     }
             }
+        }        
+    }
+
+    private List<string> LoadCustomMap(string map_name)
+    {
+        List<string> file_lines = new List<string>();
+        switch (Application.platform)
+        {
+            case RuntimePlatform.Android:
+                {
+                    break;
+                }
+            case RuntimePlatform.WindowsPlayer:
+                {
+
+                    string line = "";
+                    string full_map_path = FilePathFormat(map_name);
+
+                    if (!File.Exists(full_map_path)) { return new List<string>(); }
+
+                    StreamReader file = new StreamReader(full_map_path);
+
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        file_lines.Add(line);
+                    }
+
+                    file.Close();
+                    break;
+                    break;
+                }
         }
 
-        file.Close();
+        return file_lines;
     }
 
-    private MachineSerialized LoadSerializedMachine(string json)
+    private List<string> LoadCampaignMap(string map_name)
     {
-        return JsonUtility.FromJson<MachineSerialized>(json);
-    }
-
-    private WireSerialized LoadSerializedConnection(string json)
-    {
-        return JsonUtility.FromJson<WireSerialized>(json);
+        TextAsset selected_level = campaign_levels[map_name];
+        return new List<string>(Regex.Split(selected_level.text, "\n|\r|\r\n"));
     }
 
     public List<string> AllLevelNames(GameController.GameStatus game_status)
     {
-        switch (game_status)
+        List<string> level_names = new List<string>();
+
+        switch(game_status)
         {
             case GameController.GameStatus.GAME_MODE:
                 {
-                    List<string> file_names = new List<string>();
-                    foreach(TextAsset text  in campaign_level_files)
-                    {
-                        file_names.Add(text.name);
-                    }
-                    return file_names;
+                    level_names = AllCampaignLevelsNames();
                     break;
                 }
             case GameController.GameStatus.EDIT_MODE:
                 {
-                    return new List<string>(custom_level_files.Keys);
+                    level_names = AllCustomLevelsNames();
                     break;
                 }
-            default:
-                {
-                    return new List<string>();
-                }
         }
+
+        return level_names;
+    }
+
+    private List<string> AllCampaignLevelsNames()
+    {
+        return new List<string>(campaign_levels.Keys);
+    }
+
+    private List<string> AllCustomLevelsNames()
+    {
+        List<string> level_names = new List<string>();
+        DirectoryInfo dir_info = new DirectoryInfo(CustomMapPath());
+    
+        foreach(FileInfo file in dir_info.GetFiles())
+        {
+            string file_name = file.Name.Split('.')[0];
+            level_names.Add(file_name);
+        }
+        return level_names;
     }
 
     private string AvailableFileName()
@@ -190,6 +235,16 @@ public class DataController : MonoBehaviour {
 
     private string CustomMapPath()
     {
-        return persistent_path;
+        return custom_level_path;
+    }
+
+    private MachineSerialized LoadSerializedMachine(string json)
+    {
+        return JsonUtility.FromJson<MachineSerialized>(json);
+    }
+
+    private WireSerialized LoadSerializedConnection(string json)
+    {
+        return JsonUtility.FromJson<WireSerialized>(json);
     }
 }

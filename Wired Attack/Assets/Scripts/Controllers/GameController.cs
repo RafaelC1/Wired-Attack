@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameController : MonoBehaviour {
-
-    //public string map_save_path = string.Format("{0}/Maps/", Application.streamingAssetsPath);
-
-
+    
     public enum GameStatus
     {
         EDIT_MODE = 0,

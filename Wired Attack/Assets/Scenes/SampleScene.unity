@@ -544,7 +544,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 49.99353, y: 39.987793}
+  m_AnchoredPosition: {x: 49.993652, y: 39.987305}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &238562846
@@ -899,7 +899,7 @@ Prefab:
         type: 2}
       propertyPath: machine_controller
       value: 
-      objectReference: {fileID: 786093906}
+      objectReference: {fileID: 786093908}
     - target: {fileID: 114603120158868270, guid: 4f829d1985ab780479253b32d1c61cef,
         type: 2}
       propertyPath: game_controller
@@ -981,6 +981,21 @@ Prefab:
       value: 
       objectReference: {fileID: 1550253375362604, guid: 962a3978fae56ca43a276814376d0571,
         type: 2}
+    - target: {fileID: 114603120158868270, guid: 4f829d1985ab780479253b32d1c61cef,
+        type: 2}
+      propertyPath: data_controller
+      value: 
+      objectReference: {fileID: 1137117757}
+    - target: {fileID: 114603120158868270, guid: 4f829d1985ab780479253b32d1c61cef,
+        type: 2}
+      propertyPath: game_controller_go
+      value: 
+      objectReference: {fileID: 1089961089}
+    - target: {fileID: 114603120158868270, guid: 4f829d1985ab780479253b32d1c61cef,
+        type: 2}
+      propertyPath: data_controller_go
+      value: 
+      objectReference: {fileID: 1137117756}
     m_RemovedComponents:
     - {fileID: 114779808437386490, guid: 4f829d1985ab780479253b32d1c61cef, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 4f829d1985ab780479253b32d1c61cef, type: 2}
@@ -1073,7 +1088,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1089961091}
-        m_MethodName: DefineGameMode
+        m_MethodName: DefineEditMode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2574,7 +2589,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -49.99353, y: 39.987793}
+  m_AnchoredPosition: {x: -49.993652, y: 39.987305}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &852370868
@@ -3182,7 +3197,7 @@ GameObject:
   - component: {fileID: 1065616033}
   - component: {fileID: 1065616032}
   m_Layer: 5
-  m_Name: StartCampaign
+  m_Name: StartEditor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3345,7 +3360,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 365287e526fe2ab4ca656bf5c3ce5e1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  current_status: 0
+  current_status: 1
 --- !u!114 &1089961092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3387,6 +3402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe13981f1455ec94aa07ef9789c72a5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  game_controller: {fileID: 1089961091}
   campaign_level_files:
   - {fileID: 4900000, guid: 694941e70ed9c3f4087cdc2b14292b86, type: 3}
   - {fileID: 4900000, guid: 203171cbfa394ba4fab3697f43fbbc8d, type: 3}
@@ -4039,7 +4055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ab21410947779438efb58220583522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  list_from: 1
+  current_game_mode_flow: 1
   list: {fileID: 346309451}
   level_btn_pre_fab: {fileID: 1482444207331522, guid: 8d2ba1fdcbc1c6f4d88c6edeac164786,
     type: 2}
@@ -4289,7 +4305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ab21410947779438efb58220583522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  list_from: 0
+  current_game_mode_flow: 0
   list: {fileID: 1309965813}
   level_btn_pre_fab: {fileID: 1482444207331522, guid: 8d2ba1fdcbc1c6f4d88c6edeac164786,
     type: 2}
@@ -5160,7 +5176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ab21410947779438efb58220583522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  list_from: 0
+  current_game_mode_flow: 1
   list: {fileID: 1325866307}
   level_btn_pre_fab: {fileID: 1482444207331522, guid: 8d2ba1fdcbc1c6f4d88c6edeac164786,
     type: 2}

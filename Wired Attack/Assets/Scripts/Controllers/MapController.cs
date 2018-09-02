@@ -9,8 +9,9 @@ public class MapController : MonoBehaviour {
 
     #region variables
 
-    public GameObject machine_controller = null;
+    public MachineController machine_controller = null;
     public GameController game_controller = null;
+    public DataController data_controller = null;
 
     public GameObject floor_pre_fab = null;
 
@@ -64,7 +65,7 @@ public class MapController : MonoBehaviour {
 
         if (game_controller.current_status == GameController.GameStatus.GAME_MODE)
         {
-            machine_controller.GetComponent<MachineController>().StartGame();
+            machine_controller.StartGame();
         }
     }
 
@@ -141,8 +142,7 @@ public class MapController : MonoBehaviour {
 
                         if (current_floor.IsHoldingSomething() &&
                             another_floor.IsHoldingSomething() &&
-                            !machine_controller.GetComponent<MachineController>()
-                                               .IsThereConnectionBetween(current_floor.object_holded.GetComponent<Machine>(),
+                            !machine_controller.IsThereConnectionBetween(current_floor.object_holded.GetComponent<Machine>(),
                                                                          another_floor.object_holded.GetComponent<Machine>()))
                         {
                             CreateConnectionBetweenMachinesOn(selected_floor, hit.transform.gameObject, WirePreFabByType("optical"));
@@ -245,7 +245,6 @@ public class MapController : MonoBehaviour {
     
     public void SaveCurrentMap()
     {
-        DataController data_controller = new DataController();
         List<string> data_prepared_to_save = PrepareCurrentMapBeforeSave();
 
         data_controller.SaveMap(data_prepared_to_save, map_to_load_name);
@@ -280,7 +279,6 @@ public class MapController : MonoBehaviour {
 
     public void LoadMapByName(string map_name)
     {
-        DataController data_controller = new DataController();
         data_controller.LoadMap(map_name);
 
         List<MachineSerialized> serialized_machines = data_controller.map_file_machines;
@@ -288,6 +286,7 @@ public class MapController : MonoBehaviour {
 
         foreach (MachineSerialized machine_s in serialized_machines)
         {
+            Debug.Log(machine_s.machine_model);
             GameObject machine_go = Instantiate(MachinePreFabByModel(machine_s.machine_model));
 
             Machine machine = machine_go.GetComponent<Machine>();
