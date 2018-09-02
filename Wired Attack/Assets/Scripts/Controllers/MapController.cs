@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System.IO;
-using System.Dynamic;
 using UnityEngine.EventSystems;
 
 public class MapController : MonoBehaviour {
@@ -33,7 +30,7 @@ public class MapController : MonoBehaviour {
 
     private Vector3 tile_size;
 
-    public string map_to_load_name = "";
+    public string current_map_name = "";
 
     public float gap_size = 0;
     public int height = 7;
@@ -41,9 +38,7 @@ public class MapController : MonoBehaviour {
 
     #endregion
 
-    void Start ()
-    {
-    }
+    void Start () { }
 
     void Update()
     {
@@ -52,29 +47,23 @@ public class MapController : MonoBehaviour {
             DetectClickOnTiles();
         }
     }
+
+    public void ClearMap()
+    {
+        foreach(GameObject tile in tiles)
+        {
+            Destroy(tile);
+        }
+        tiles.Clear();
+    }
     
-    public void CreateMap()
+    public void CreateMap(GameController.GameStatus game_mode)
     {
-        CreateTiles();
+        CreateTiles(game_mode);
         DesactiveAllMenus();
-
-        if (map_to_load_name != "")
-        {
-            LoadMapByName(map_to_load_name);
-        }
-
-        if (game_controller.current_status == GameController.GameStatus.GAME_MODE)
-        {
-            machine_controller.StartGame();
-        }
     }
 
-    public void DefineNextMap(string next_map)
-    {
-        map_to_load_name = next_map;
-    }
-
-    private void CreateTiles()
+    private void CreateTiles(GameController.GameStatus game_mode)
     {
         tile_size = floor_pre_fab.GetComponent<Renderer>().bounds.size;
 
@@ -92,23 +81,28 @@ public class MapController : MonoBehaviour {
         {
             for (int j = 0; j < width; j++)
             {
-                GameObject temp = Instantiate(floor_pre_fab);
-                Floor temp_floor = temp.GetComponent<Floor>();
+                GameObject floor_go = Instantiate(floor_pre_fab);
+                Floor floor = floor_go.GetComponent<Floor>();
 
-                temp.transform.SetParent(this.transform);
-                temp.transform.position = current_pos;
-                current_pos.x += tile_size.x;
-
-                temp.transform.name = string.Format("Tile{0}x{1}", j+1, i+1);
-                temp_floor.controller = this.gameObject;
-                temp_floor.id = tiles.Count;
-
-                if (game_controller.current_status == GameController.GameStatus.GAME_MODE)
+                if (game_mode == GameController.GameStatus.EDIT_MODE)
                 {
-                    temp.GetComponent<BoxCollider2D>().enabled = false;
+                    floor.TurnToEdit();
                 }
 
-                tiles.Add(temp);
+                floor_go.transform.SetParent(this.transform);
+                floor_go.transform.position = current_pos;
+                current_pos.x += tile_size.x;
+
+                floor_go.transform.name = string.Format("Tile{0}x{1}", j+1, i+1);
+                floor.controller = this.gameObject;
+                floor.id = tiles.Count;
+
+                if (game_mode == GameController.GameStatus.GAME_MODE)
+                {
+                    floor_go.GetComponent<BoxCollider2D>().enabled = false;
+                }
+
+                tiles.Add(floor_go);
             }
             current_pos.x = start_pos.x;
             current_pos.y -= tile_size.y;
@@ -247,7 +241,7 @@ public class MapController : MonoBehaviour {
     {
         List<string> data_prepared_to_save = PrepareCurrentMapBeforeSave();
 
-        data_controller.SaveMap(data_prepared_to_save, map_to_load_name);
+        data_controller.SaveMap(data_prepared_to_save, current_map_name);
     }
 
     public List<string> PrepareCurrentMapBeforeSave()
@@ -277,22 +271,27 @@ public class MapController : MonoBehaviour {
         return lines_of_serialized_model;
     }
 
-    public void LoadMapByName(string map_name)
+    public void LoadMapByName(string map_name, GameController.GameStatus list_to_look_for)
     {
-        data_controller.LoadMap(map_name);
+        current_map_name = map_name;
+        data_controller.LoadMap(current_map_name, list_to_look_for);
 
         List<MachineSerialized> serialized_machines = data_controller.map_file_machines;
         List<WireSerialized> serialized_connections = data_controller.map_file_connections;
 
         foreach (MachineSerialized machine_s in serialized_machines)
         {
-            Debug.Log(machine_s.machine_model);
             GameObject machine_go = Instantiate(MachinePreFabByModel(machine_s.machine_model));
 
             Machine machine = machine_go.GetComponent<Machine>();
             machine.id = machine_s.id;
             machine.team_id = machine_s.team_id;
             machine.model = machine_s.machine_model;
+
+            if (game_controller.current_status == GameController.GameStatus.GAME_MODE)
+            {
+                machine.TurnMachineOn();
+            }
 
             selected_floor = tiles[machine_s.floor_id];
 
@@ -308,6 +307,11 @@ public class MapController : MonoBehaviour {
             GameObject secound_floor = secound_machine_point.GetComponent<Machine>().current_floor.transform.gameObject;
 
             CreateConnectionBetweenMachinesOn(first_floor, secound_floor, WirePreFabByType(con_s.wire_type));
+        }
+
+        if (list_to_look_for == GameController.GameStatus.GAME_MODE)
+        {
+            machine_controller.StartGame();
         }
     }
 
@@ -379,7 +383,10 @@ public class MapController : MonoBehaviour {
             Machine machine = machine_go.GetComponent<Machine>();
             foreach(GameObject con in machine.connections)
             {
-                wire_gos.Add(con);
+                if (!wire_gos.Contains(con))
+                {
+                    wire_gos.Add(con);
+                }
             }
         }
 

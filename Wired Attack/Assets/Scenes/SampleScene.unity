@@ -709,8 +709,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 927153307}
-        m_MethodName: CreateMap
+      - m_Target: {fileID: 600156902}
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1088,7 +1088,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1089961091}
-        m_MethodName: DefineEditMode
+        m_MethodName: DefineGameMode
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1879,6 +1879,7 @@ GameObject:
   m_Component:
   - component: {fileID: 600156901}
   - component: {fileID: 600156903}
+  - component: {fileID: 600156902}
   m_Layer: 5
   m_Name: PreEditorMenu
   m_TagString: Untagged
@@ -1907,6 +1908,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &600156902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 600156900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ab21410947779438efb58220583522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  game_controller: {fileID: 1089961091}
+  map_controller: {fileID: 927153307}
+  data_controller: {fileID: 1137117757}
+  game_mode: 0
+  list_of_level_mode: 0
+  list: {fileID: 1325866307}
+  level_btn_pre_fab: {fileID: 1482444207331522, guid: 8d2ba1fdcbc1c6f4d88c6edeac164786,
+    type: 2}
+  play_btn: {fileID: 279233810}
 --- !u!222 &600156903
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2274,6 +2295,7 @@ GameObject:
   m_Component:
   - component: {fileID: 701594089}
   - component: {fileID: 701594088}
+  - component: {fileID: 701594090}
   m_Layer: 5
   m_Name: PreCustomGamesMenu
   m_TagString: Untagged
@@ -2309,6 +2331,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &701594090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 701594087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ab21410947779438efb58220583522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  game_controller: {fileID: 1089961091}
+  map_controller: {fileID: 927153307}
+  data_controller: {fileID: 1137117757}
+  game_mode: 1
+  list_of_level_mode: 0
+  list: {fileID: 1309965813}
+  level_btn_pre_fab: {fileID: 1482444207331522, guid: 8d2ba1fdcbc1c6f4d88c6edeac164786,
+    type: 2}
+  play_btn: {fileID: 1065616030}
 --- !u!1 &704997903
 GameObject:
   m_ObjectHideFlags: 0
@@ -2318,6 +2360,7 @@ GameObject:
   m_Component:
   - component: {fileID: 704997904}
   - component: {fileID: 704997906}
+  - component: {fileID: 704997905}
   m_Layer: 5
   m_Name: PreCampaignMenu
   m_TagString: Untagged
@@ -2346,6 +2389,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &704997905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 704997903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ab21410947779438efb58220583522, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  game_controller: {fileID: 1089961091}
+  map_controller: {fileID: 927153307}
+  data_controller: {fileID: 1137117757}
+  game_mode: 1
+  list_of_level_mode: 1
+  list: {fileID: 346309451}
+  level_btn_pre_fab: {fileID: 1482444207331522, guid: 8d2ba1fdcbc1c6f4d88c6edeac164786,
+    type: 2}
+  play_btn: {fileID: 1906661801}
 --- !u!222 &704997906
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2413,7 +2476,6 @@ MonoBehaviour:
   menus:
   - {fileID: 1546200109}
   - {fileID: 1337777497}
-  - {fileID: 1216723613}
 --- !u!1 &786093906
 GameObject:
   m_ObjectHideFlags: 0
@@ -2454,13 +2516,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d09a13f16bcb99a4fa9cac89b793bba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  game_controller: {fileID: 1089961091}
+  pop_text_controller: {fileID: 1089961092}
   wire_pre_fab: {fileID: 1041969069610568, guid: fe09706ff971b854e93502ad8e0ae530,
     type: 2}
   machines: []
   connections: []
   sender_machine: {fileID: 0}
   receiver_machine: {fileID: 0}
-  game_controller: {fileID: 1089961091}
 --- !u!1 &840704204
 GameObject:
   m_ObjectHideFlags: 0
@@ -3197,7 +3260,7 @@ GameObject:
   - component: {fileID: 1065616033}
   - component: {fileID: 1065616032}
   m_Layer: 5
-  m_Name: StartEditor
+  m_Name: StartCustomGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3261,8 +3324,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 927153307}
-        m_MethodName: CreateMap
+      - m_Target: {fileID: 701594090}
+        m_MethodName: StartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3596,7 +3659,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!222 &1216723615
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4017,7 +4080,6 @@ GameObject:
   - component: {fileID: 1326921836}
   - component: {fileID: 1326921835}
   - component: {fileID: 1326921834}
-  - component: {fileID: 1326921833}
   m_Layer: 5
   m_Name: LevelScroll
   m_TagString: Untagged
@@ -4044,23 +4106,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 448, y: 480}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1326921833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1326921831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9ab21410947779438efb58220583522, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  current_game_mode_flow: 1
-  list: {fileID: 346309451}
-  level_btn_pre_fab: {fileID: 1482444207331522, guid: 8d2ba1fdcbc1c6f4d88c6edeac164786,
-    type: 2}
-  map_controller: {fileID: 927153307}
-  data_controller: {fileID: 1137117757}
 --- !u!114 &1326921834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4267,7 +4312,6 @@ GameObject:
   - component: {fileID: 1369114208}
   - component: {fileID: 1369114207}
   - component: {fileID: 1369114206}
-  - component: {fileID: 1369114205}
   m_Layer: 5
   m_Name: LevelScroll
   m_TagString: Untagged
@@ -4294,23 +4338,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 448, y: 480}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1369114205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1369114203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9ab21410947779438efb58220583522, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  current_game_mode_flow: 0
-  list: {fileID: 1309965813}
-  level_btn_pre_fab: {fileID: 1482444207331522, guid: 8d2ba1fdcbc1c6f4d88c6edeac164786,
-    type: 2}
-  map_controller: {fileID: 927153307}
-  data_controller: {fileID: 1137117757}
 --- !u!114 &1369114206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5061,7 +5088,6 @@ GameObject:
   - component: {fileID: 1596688518}
   - component: {fileID: 1596688521}
   - component: {fileID: 1596688520}
-  - component: {fileID: 1596688522}
   m_Layer: 5
   m_Name: LevelScroll
   m_TagString: Untagged
@@ -5165,23 +5191,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
---- !u!114 &1596688522
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1596688516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9ab21410947779438efb58220583522, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  current_game_mode_flow: 1
-  list: {fileID: 1325866307}
-  level_btn_pre_fab: {fileID: 1482444207331522, guid: 8d2ba1fdcbc1c6f4d88c6edeac164786,
-    type: 2}
-  map_controller: {fileID: 927153307}
-  data_controller: {fileID: 1137117757}
 --- !u!1 &1651772147
 GameObject:
   m_ObjectHideFlags: 0
@@ -5776,12 +5785,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 2138737478}
-        m_MethodName: OpenMenuByObjectCloseAll
-        m_Mode: 2
+      - m_Target: {fileID: 704997905}
+        m_MethodName: StartGame
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 765335162}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2138737478}
+        m_MethodName: CloseAllMenus
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -6508,11 +6528,11 @@ MonoBehaviour:
   first_menu: {fileID: 0}
   menus:
   - {fileID: 1405044376}
-  - {fileID: 600156900}
-  - {fileID: 438740433}
   - {fileID: 704997903}
-  - {fileID: 765335162}
   - {fileID: 701594087}
+  - {fileID: 600156900}
+  - {fileID: 765335162}
+  - {fileID: 438740433}
 --- !u!222 &2138737479
 CanvasRenderer:
   m_ObjectHideFlags: 0

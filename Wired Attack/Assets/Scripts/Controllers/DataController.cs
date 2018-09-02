@@ -22,6 +22,8 @@ public class DataController : MonoBehaviour {
     public List<MachineSerialized> map_file_machines = new List<MachineSerialized>();
     public List<WireSerialized> map_file_connections = new List<WireSerialized>();
 
+    public static string NEW_GAME_KEY = "create_a_new_level";
+
     private string custom_level_path = "";
 
     void Start()
@@ -56,7 +58,7 @@ public class DataController : MonoBehaviour {
     {
         string file_full_path = "";
 
-        if (map_name == "")
+        if (map_name == NEW_GAME_KEY)
         {
             file_full_path = AvailableFileName();
             File.Open(file_full_path, FileMode.OpenOrCreate, FileAccess.Write).Close();
@@ -76,7 +78,7 @@ public class DataController : MonoBehaviour {
         }
     }
 
-    public void LoadMap(string map_name)
+    public void LoadMap(string map_name, GameController.GameStatus list_to_load_level)
     {
         List<string> map_script_lines = new List<string>();
         string current_model_loaded = START_OF_MACHINE_SERIALIZED;
@@ -85,9 +87,9 @@ public class DataController : MonoBehaviour {
         map_file_connections.Clear();
 
         //ESSA MERDA NÃO DEVERIA FUNCIONAR ASSIM, CONCERTAR
-        game_controller = GameObject.Find("GameController").GetComponent<GameController>();
+        //game_controller = GameObject.Find("GameController").GetComponent<GameController>();
 
-        switch (game_controller.current_status)
+        switch (list_to_load_level)
         {
             case GameController.GameStatus.GAME_MODE:
                 {
@@ -99,18 +101,18 @@ public class DataController : MonoBehaviour {
                     map_script_lines = LoadCustomMap(map_name);
                     break;
                 }
-        }        
+        }
 
-        foreach(string line in map_script_lines)
+        foreach (string line in map_script_lines)
         {
-            if (line == START_OF_MACHINE_SERIALIZED ||
-                line == START_OF_CONNECTION_SERIALIZED)
+            if (line.Contains(START_OF_MACHINE_SERIALIZED) ||
+                line.Contains(START_OF_CONNECTION_SERIALIZED))
             {
                 current_model_loaded = line;
                 continue;
             }
 
-            switch(current_model_loaded)
+            switch (current_model_loaded)
             {
                 case START_OF_MACHINE_SERIALIZED:
                     {
@@ -129,32 +131,31 @@ public class DataController : MonoBehaviour {
     private List<string> LoadCustomMap(string map_name)
     {
         List<string> file_lines = new List<string>();
-        switch (Application.platform)
+        //switch (Application.platform)
+        //{
+        //    case RuntimePlatform.Android:
+        //        {
+        //            break;
+        //        }
+        //    case RuntimePlatform.WindowsPlayer:
+        //        {
+
+        string line = "";
+        string full_map_path = FilePathFormat(map_name);
+
+        if (!File.Exists(full_map_path)) { return new List<string>(); }
+
+        StreamReader file = new StreamReader(full_map_path);
+
+        while ((line = file.ReadLine()) != null)
         {
-            case RuntimePlatform.Android:
-                {
-                    break;
-                }
-            case RuntimePlatform.WindowsPlayer:
-                {
-
-                    string line = "";
-                    string full_map_path = FilePathFormat(map_name);
-
-                    if (!File.Exists(full_map_path)) { return new List<string>(); }
-
-                    StreamReader file = new StreamReader(full_map_path);
-
-                    while ((line = file.ReadLine()) != null)
-                    {
-                        file_lines.Add(line);
-                    }
-
-                    file.Close();
-                    break;
-                    break;
-                }
+            file_lines.Add(line);
         }
+
+        file.Close();
+        //break;
+        //        }
+        //}
 
         return file_lines;
     }
@@ -162,7 +163,24 @@ public class DataController : MonoBehaviour {
     private List<string> LoadCampaignMap(string map_name)
     {
         TextAsset selected_level = campaign_levels[map_name];
-        return new List<string>(Regex.Split(selected_level.text, "\n|\r|\r\n"));
+
+        List<string> lines_temp = new List<string>(selected_level.text.Split("\n"[0]));
+        List<string> lines = new List<string>();
+
+        foreach (string line_temp in lines_temp)
+        {
+            if (line_temp.Length > 0)
+            {
+                string temp = line_temp.Replace("\n", string.Empty);
+                temp = temp.Replace("\r", string.Empty);
+                temp = temp.Replace("\t", string.Empty);
+
+                lines.Add(temp);
+            }
+                
+        }
+
+        return lines;
     }
 
     public List<string> AllLevelNames(GameController.GameStatus game_status)

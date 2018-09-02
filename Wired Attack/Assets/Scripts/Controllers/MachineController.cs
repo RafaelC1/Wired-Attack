@@ -4,7 +4,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class MachineController : MonoBehaviour {
-    
+
+    public GameController game_controller = null;
+    public PopUpTextController pop_text_controller = null;
+
     public GameObject wire_pre_fab = null;
 
     public List<Machine> machines = new List<Machine>();
@@ -12,8 +15,6 @@ public class MachineController : MonoBehaviour {
     
     public Machine sender_machine = null;
     public Machine receiver_machine = null;
-    
-    public GameController game_controller = null;
 
     void Start()
     {
@@ -114,7 +115,7 @@ public class MachineController : MonoBehaviour {
                 TransferBitsBetweenMachines(connection_between_machines, selected_machine, sender_machine);
             }
             else {
-                Debug.Log("não conectadas");
+                pop_text_controller.CreatePopText("sem conexão", sender_machine.transform);
             }
 
             DeselectAllMachines();

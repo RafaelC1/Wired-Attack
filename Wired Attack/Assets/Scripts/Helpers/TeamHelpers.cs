@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TeamHelpers  {
+public static class TeamHelpers  {
 
     public const int HUMAN_TEAM = 1;
 
