@@ -65,10 +65,12 @@
     <Compile Include="Assets\Scripts\Controllers\MachineController.cs" />
     <Compile Include="Assets\Scripts\Controllers\MapController.cs" />
     <Compile Include="Assets\Scripts\Controllers\MenuController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\MusicController.cs" />
     <Compile Include="Assets\Scripts\Controllers\PopUpTextController.cs" />
     <Compile Include="Assets\Scripts\Controllers\SelectLevelController.cs" />
     <Compile Include="Assets\Scripts\Helpers\PlayerHelpers.cs" />
     <Compile Include="Assets\Scripts\Helpers\TeamHelpers.cs" />
+    <Compile Include="Assets\Scripts\Helpers\TouchHelpers.cs" />
     <Compile Include="Assets\Scripts\Models\Delivery.cs" />
     <Compile Include="Assets\Scripts\Models\Floor.cs" />
     <Compile Include="Assets\Scripts\Models\Machine.cs" />

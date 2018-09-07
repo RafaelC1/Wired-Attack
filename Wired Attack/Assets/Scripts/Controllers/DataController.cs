@@ -50,8 +50,7 @@ public class DataController : MonoBehaviour {
         foreach (TextAsset text_file in campaign_level_files)
         {
             campaign_levels[text_file.name] = text_file;
-        }
-        
+        }        
     }
 
     public void SaveMap(List<string> lines_to_save, string map_name)
@@ -85,9 +84,6 @@ public class DataController : MonoBehaviour {
 
         map_file_machines.Clear();
         map_file_connections.Clear();
-
-        //ESSA MERDA NÃO DEVERIA FUNCIONAR ASSIM, CONCERTAR
-        //game_controller = GameObject.Find("GameController").GetComponent<GameController>();
 
         switch (list_to_load_level)
         {
@@ -131,14 +127,6 @@ public class DataController : MonoBehaviour {
     private List<string> LoadCustomMap(string map_name)
     {
         List<string> file_lines = new List<string>();
-        //switch (Application.platform)
-        //{
-        //    case RuntimePlatform.Android:
-        //        {
-        //            break;
-        //        }
-        //    case RuntimePlatform.WindowsPlayer:
-        //        {
 
         string line = "";
         string full_map_path = FilePathFormat(map_name);
@@ -153,9 +141,6 @@ public class DataController : MonoBehaviour {
         }
 
         file.Close();
-        //break;
-        //        }
-        //}
 
         return file_lines;
     }
@@ -176,8 +161,7 @@ public class DataController : MonoBehaviour {
                 temp = temp.Replace("\t", string.Empty);
 
                 lines.Add(temp);
-            }
-                
+            }                
         }
 
         return lines;

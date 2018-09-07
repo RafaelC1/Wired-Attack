@@ -75,8 +75,7 @@ public class MachineController : MonoBehaviour {
 
     private void DetectClickOnMachines()
     {
-        if (Input.GetMouseButtonDown(0) &&
-            !EventSystem.current.IsPointerOverGameObject())
+        if (!TouchHelpers.IsTouchingOrClickingOverUI())
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
