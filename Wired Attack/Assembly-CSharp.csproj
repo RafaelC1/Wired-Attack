@@ -77,6 +77,7 @@
     <Compile Include="Assets\Scripts\Models\Player.cs" />
     <Compile Include="Assets\Scripts\Models\PopUpText.cs" />
     <Compile Include="Assets\Scripts\Models\SelectLevel.cs" />
+    <Compile Include="Assets\Scripts\Models\Setting.cs" />
     <Compile Include="Assets\Scripts\Models\Wire.cs" />
     <Compile Include="Assets\Scripts\ModelSerializeds\MachineSerialized.cs" />
     <Compile Include="Assets\Scripts\ModelSerializeds\WireSerialized.cs" />
