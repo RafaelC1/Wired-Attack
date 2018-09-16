@@ -84,6 +84,13 @@ public class Machine : MonoBehaviour {
         connections.Add(connection);
     }
 
+    public bool IsConnectedTo(Machine machine_to_check)
+    {
+        bool is_connected_to = false;
+
+        return is_connected_to;
+    }
+
     public bool CanHaveMoreConnections()
     {
         return connections.Count < max_connections;
@@ -94,9 +101,9 @@ public class Machine : MonoBehaviour {
         bits_label.text = AmountOfBitsFormatted();
     }
 
-    private void ChangeOwner(int new_team)
+    public void ChangeOwner(int new_team_owner_id)
     {
-        team_id = new_team;
+        team_id = new_team_owner_id;
         ChangeColor();
     }
 

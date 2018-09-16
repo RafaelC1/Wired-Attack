@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\Helpers\TeamHelpers.cs" />
     <Compile Include="Assets\Scripts\Helpers\TouchHelpers.cs" />
     <Compile Include="Assets\Scripts\Models\Delivery.cs" />
+    <Compile Include="Assets\Scripts\Models\Enemy.cs" />
     <Compile Include="Assets\Scripts\Models\Floor.cs" />
     <Compile Include="Assets\Scripts\Models\Machine.cs" />
     <Compile Include="Assets\Scripts\Models\Player.cs" />

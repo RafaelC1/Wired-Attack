@@ -4,11 +4,13 @@ using UnityEngine;
 
 public static class TeamHelpers  {
 
+    public const int NEUTRAL_TEAM = 0;
     public const int HUMAN_TEAM = 1;
+    public const int IA_TEAM = 2;
 
     public static Color TeamColorOf(int team_id)
     {
-        Color team_color = Color.gray;
+        Color team_color = Color.white;
         switch(team_id)
         {
             case HUMAN_TEAM:
@@ -16,14 +18,14 @@ public static class TeamHelpers  {
                 team_color = Color.blue;
                 break;
             }
-            case 2:
+            case IA_TEAM:
             {
                 team_color = Color.red;
                 break;
             }
-            case 3:
+            case NEUTRAL_TEAM:
             {
-                team_color = Color.yellow;
+                team_color = Color.gray;
                 break;
             }
         }

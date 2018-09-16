@@ -9,6 +9,7 @@ public class MapController : MonoBehaviour {
     public MachineController machine_controller = null;
     public GameController game_controller = null;
     public DataController data_controller = null;
+    public PopUpTextController pop_text_controller = null;
 
     public GameObject floor_pre_fab = null;
 
@@ -36,13 +37,15 @@ public class MapController : MonoBehaviour {
     public int height = 7;
     public int width = 5;
 
+    private GameController.GameStatus current_status;
+
     #endregion
 
     void Start () { }
 
     void Update()
     {
-        if (game_controller.current_status == GameController.GameStatus.EDIT_MODE)
+        if (current_status == GameController.GameStatus.EDIT_MODE)
         {
             DetectClickOnTiles();
         }
@@ -70,7 +73,7 @@ public class MapController : MonoBehaviour {
         float total_width = tile_size.x * width;
         float total_height = tile_size.y * height;
 
-        Vector3 start_pos = new Vector3();
+        Vector3 start_pos = Vector3.zero;
 
         start_pos.x = -((total_width / 2) - tile_size.x / 2);
         start_pos.y = +((total_height / 2) - tile_size.x / 2);
@@ -86,27 +89,29 @@ public class MapController : MonoBehaviour {
 
                 if (game_mode == GameController.GameStatus.EDIT_MODE)
                 {
-                    floor.TurnToEdit();
+                    floor.TurnToEdit(true);
+                } else {
+                    floor.TurnToEdit(false);
                 }
 
-                floor_go.transform.SetParent(this.transform);
-                floor_go.transform.position = current_pos;
+                floor_go.transform.SetParent(transform);
+                floor_go.transform.localPosition = current_pos;
                 current_pos.x += tile_size.x;
 
-                floor_go.transform.name = string.Format("Tile{0}x{1}", j+1, i+1);
-                floor.controller = this.gameObject;
+                floor_go.transform.name = FormattedFloorName(j, i);
+                floor.controller = gameObject;
                 floor.id = tiles.Count;
-
-                if (game_mode == GameController.GameStatus.GAME_MODE)
-                {
-                    floor_go.GetComponent<BoxCollider2D>().enabled = false;
-                }
 
                 tiles.Add(floor_go);
             }
             current_pos.x = start_pos.x;
             current_pos.y -= tile_size.y;
         }        
+    }
+
+    private string FormattedFloorName(int pos_x, int pos_y)
+    {
+        return string.Format("Tile {0} X {1}", pos_x + 1, pos_y + 1);
     }
 
     private void DetectClickOnTiles()
@@ -185,6 +190,7 @@ public class MapController : MonoBehaviour {
         machine_go.transform.name = machine.model + machine.id.ToString();
 
         GiveToSelectedFloor(machine_go);
+        DeselectCurrentFloor();
     }
 
     private void GiveToSelectedFloor(GameObject object_to_hold)
@@ -196,14 +202,23 @@ public class MapController : MonoBehaviour {
         Machine machine = object_to_hold.GetComponent<Machine>();
         machine.canvas = canvas;
         machine.SetTextParentAndPosition();
-
-        DeselectCurrentFloor();
     }
 
     public void RemoveFromSelectedFloor()
     {
         Floor floor = selected_floor.GetComponent<Floor>();
         floor.RemoveHoldedObject();
+        DeselectCurrentFloor();
+    }
+
+    public void SetMachineTeam(int new_team_id)
+    {
+        Floor current_floor = selected_floor.GetComponent<Floor>();
+        if (current_floor.IsHoldingSomething())
+        {
+            Machine holded_machine = current_floor.object_holded.GetComponent<Machine>();
+            holded_machine.ChangeOwner(new_team_id);
+        }
         DeselectCurrentFloor();
     }
 
@@ -227,7 +242,7 @@ public class MapController : MonoBehaviour {
 
             wire_go.transform.SetParent(connection_parent.transform);
         } else {
-            game_controller.GetComponent<PopUpTextController>().CreatePopText("connections limit", first_machine.transform);
+            pop_text_controller.CreatePopText("connections limit", first_machine.transform);
         }
     }
 
@@ -270,8 +285,10 @@ public class MapController : MonoBehaviour {
         return lines_of_serialized_model;
     }
 
-    public void LoadMapByName(string map_name, GameController.GameStatus list_to_look_for)
+    public void LoadMapByName(string map_name, GameController.GameStatus list_to_look_for, GameController.GameStatus game_mode)
     {
+        current_status = game_mode;
+
         current_map_name = map_name;
         data_controller.LoadMap(current_map_name, list_to_look_for);
 
@@ -287,7 +304,7 @@ public class MapController : MonoBehaviour {
             machine.team_id = machine_s.team_id;
             machine.model = machine_s.machine_model;
 
-            if (game_controller.current_status == GameController.GameStatus.GAME_MODE)
+            if (game_mode == GameController.GameStatus.GAME_MODE)
             {
                 machine.TurnMachineOn();
             }
@@ -308,9 +325,10 @@ public class MapController : MonoBehaviour {
             CreateConnectionBetweenMachinesOn(first_floor, secound_floor, WirePreFabByType(con_s.wire_type));
         }
 
-        if (list_to_look_for == GameController.GameStatus.GAME_MODE)
+        if (game_mode == GameController.GameStatus.GAME_MODE)
         {
             machine_controller.StartGame();
+            game_controller.CreatePlayers();
         }
     }
 

@@ -1,9 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 
 public class GameController : MonoBehaviour {
+
+    public MachineController machine_controller = null;
+
+    public GameObject player_pre_fab = null;
+    public GameObject enemy_pre_fab = null;
+
+    public GameObject players_holder = null;
+
+    public bool pause = false;
     
     public enum GameStatus
     {
@@ -11,24 +17,31 @@ public class GameController : MonoBehaviour {
         GAME_MODE = 1
     }
 
-    public GameStatus current_status = GameStatus.GAME_MODE;
+	void Start () { }
 
+	void Update () { }
 
-	void Start () {
-		
-	}
-
-	void Update () {
-		
-	}
-
-    public void DefineEditMode()
+    public void Pause()
     {
-        current_status = GameStatus.EDIT_MODE;
+        pause = !pause;
     }
 
-    public void DefineGameMode()
+    public void CreatePlayers()
     {
-        current_status = GameStatus.GAME_MODE;
+        GameObject temp = Instantiate(player_pre_fab);
+        temp.GetComponent<Player>().machine_controller = machine_controller;
+        temp.transform.SetParent(players_holder.transform);
+
+        temp = Instantiate(enemy_pre_fab);
+        temp.GetComponent<Enemy>().machine_controller = machine_controller;
+        temp.transform.SetParent(players_holder.transform);
+    }
+
+    public void DestroyPlayers()
+    {
+        for(int i = 0; i<players_holder.transform.childCount; i++)
+        {
+            Destroy(players_holder.transform.GetChild(i));
+        }
     }
 }

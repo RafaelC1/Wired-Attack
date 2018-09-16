@@ -13,8 +13,6 @@ public class MachineController : MonoBehaviour {
     public List<Machine> machines = new List<Machine>();
     public List<Wire> connections = new List<Wire>();
     
-    public Machine sender_machine = null;
-    public Machine receiver_machine = null;
 
     void Start()
     {
@@ -22,16 +20,27 @@ public class MachineController : MonoBehaviour {
 
     void Update()
     {
-        if (game_controller.current_status == GameController.GameStatus.GAME_MODE)
-        {
-            DetectClickOnMachines();
-        }
     }
 
     public void StartGame()
     {
         FindAllMachinesOnGame();
         FindAllConnectionsOnGame();
+    }
+
+    public int NeutralMachineCount()
+    {
+        return machines.FindAll(machine => machine.team_id == TeamHelpers.NEUTRAL_TEAM).Count;
+    }
+
+    public int PlayerMachineCount()
+    {
+        return machines.FindAll(machine => machine.team_id == TeamHelpers.HUMAN_TEAM).Count;
+    }
+
+    public int IAMachineCount()
+    {
+        return machines.FindAll(machine => machine.team_id == TeamHelpers.IA_TEAM).Count;
     }
 
     private void FindAllMachinesOnGame()
@@ -73,19 +82,14 @@ public class MachineController : MonoBehaviour {
         connections.Add(connection.GetComponent<Wire>());
     }
 
-    private void DetectClickOnMachines()
+    public void TryTransferBitsBetweenMachines(Machine to, Machine from)
     {
-        if (!TouchHelpers.IsTouchingOrClickingOverUI())
+        Wire connection_between_machines = ConnectionBetween(to, from);
+        if (connection_between_machines != null)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
-
-            if (hit && hit.transform.tag == "machine")
-            {
-                SelectMachine(hit.transform.GetComponent<Machine>());
-            } else {
-                DeselectAllMachines();
-            }
+            TransferBitsBetweenMachines(connection_between_machines, to, from);
+        } else {
+            pop_text_controller.CreatePopText("sem conexão", from.transform);
         }
     }
 
@@ -94,46 +98,6 @@ public class MachineController : MonoBehaviour {
         int bits_to_send = from.SendBits();
 
         connection_between.SendBitsBetween(to, from, bits_to_send);
-    }
-
-    public void SelectMachine(Machine selected_machine)
-    {
-        if (sender_machine == null)
-        {
-            if (selected_machine.team_id == TeamHelpers.HUMAN_TEAM)
-            {
-                sender_machine = selected_machine;
-                sender_machine.ActiveBackGround(true);
-            }
-        } else if (receiver_machine == null)
-        {
-            Wire connection_between_machines = ConnectionBetween(sender_machine, selected_machine);
-            receiver_machine = selected_machine;
-            if (connection_between_machines != null)
-            {
-                TransferBitsBetweenMachines(connection_between_machines, selected_machine, sender_machine);
-            }
-            else {
-                pop_text_controller.CreatePopText("sem conexão", sender_machine.transform);
-            }
-
-            DeselectAllMachines();
-        }
-    }
-
-    public void DeselectAllMachines()
-    {
-        if (sender_machine != null)
-        {
-            sender_machine.ActiveBackGround(false);
-            sender_machine = null;
-        }
-
-        if (receiver_machine != null)
-        {
-            receiver_machine.ActiveBackGround(false);
-            receiver_machine = null;
-        }
     }
 
     public Wire ConnectionBetween(Machine first_machine, Machine last_machine)
@@ -152,10 +116,4 @@ public class MachineController : MonoBehaviour {
     {
         return ConnectionBetween(first_machine, last_machine) != null;
     }
-
-    public bool IsAlreadySelectedAMachine()
-    {
-        return sender_machine != null;
-    }
-
 }

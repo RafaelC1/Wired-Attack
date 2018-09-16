@@ -32,7 +32,7 @@ public class SelectLevelController : MonoBehaviour {
     {
         map_controller.ClearMap();
         map_controller.CreateMap(game_mode);
-        map_controller.LoadMapByName(selected_level, list_of_level_mode);
+        map_controller.LoadMapByName(selected_level, list_of_level_mode, game_mode);
     }
 
     public void SelectLevel(string level_name)

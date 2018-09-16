@@ -54,8 +54,8 @@ public class Floor : MonoBehaviour
         background.GetComponent<SpriteRenderer>().enabled = activate;
     }
 
-    public void TurnToEdit()
+    public void TurnToEdit(bool turn)
     {
-        GetComponent<BoxCollider2D>().enabled = true;
+        GetComponent<BoxCollider2D>().enabled = turn;
     }
 }

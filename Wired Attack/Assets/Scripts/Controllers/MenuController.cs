@@ -12,6 +12,7 @@ public class MenuController : MonoBehaviour {
     void Start ()
     {
         AddAllMenusToDictionary();
+        OpenMenuByObjectCloseAll(first_menu);
     }
 	
 	void Update () { }
