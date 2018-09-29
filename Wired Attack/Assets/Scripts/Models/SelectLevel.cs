@@ -5,7 +5,7 @@ using UnityEngine;
 public class SelectLevel : MonoBehaviour {
 
     public SelectLevelController select_level_controller = null;
-    public string level_target = null;
+    public string level_target = DataController.NEW_GAME_KEY;
 	
 	void Start () {	}	
 	

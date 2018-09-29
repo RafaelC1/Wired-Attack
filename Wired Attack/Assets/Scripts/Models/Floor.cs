@@ -12,6 +12,9 @@ public class Floor : MonoBehaviour
 
     public GameObject background = null;
 
+    public MapController.TypeOfFloor type = MapController.TypeOfFloor.grass;
+    public MapController.SideOfFloor side = MapController.SideOfFloor.top_left;
+
     void Start()
     {
         ActiveBackGround(false);
@@ -22,7 +25,7 @@ public class Floor : MonoBehaviour
     {
 
     }
-
+    
     public void ReceiveObjectToHold(GameObject object_to_hold)
     {
         object_holded = object_to_hold;
@@ -57,5 +60,10 @@ public class Floor : MonoBehaviour
     public void TurnToEdit(bool turn)
     {
         GetComponent<BoxCollider2D>().enabled = turn;
+    }
+
+    public void OnDestroy()
+    {
+        Destroy(object_holded);
     }
 }

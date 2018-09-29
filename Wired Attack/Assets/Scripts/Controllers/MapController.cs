@@ -12,6 +12,32 @@ public class MapController : MonoBehaviour {
     public PopUpTextController pop_text_controller = null;
 
     public GameObject floor_pre_fab = null;
+    public List<GameObject> floor_pre_fabs = new List<GameObject>();
+
+    public enum TypeOfFloor
+    {
+        grass = 0,
+        side_walk = 1
+    }
+
+    public enum SideOfFloor
+    {
+        top_left = 0,
+        top_center = 1,
+        top_right = 2,
+        left = 3,
+        center = 4,
+        right = 5,
+        bottom_left = 6,
+        bottom_center = 7,
+        bottom_right = 8
+    }
+
+    private IDictionary<TypeOfFloor,
+                        IDictionary<SideOfFloor, GameObject>> floor_groups = new Dictionary<TypeOfFloor,
+                                                                                            IDictionary<SideOfFloor, GameObject>>();
+    private IDictionary<SideOfFloor, GameObject> grass_floors = new Dictionary<SideOfFloor, GameObject>();
+    private IDictionary<SideOfFloor, GameObject> side_walk_floors = new Dictionary<SideOfFloor, GameObject>();
 
     public MenuController editor_mode_menus = null;
     public GameObject floor_editor_menu = null;
@@ -41,13 +67,37 @@ public class MapController : MonoBehaviour {
 
     #endregion
 
-    void Start () { }
+    void Start ()
+    {
+        PrepareTilesInDictionaries();
+    }
 
     void Update()
     {
         if (current_status == GameController.GameStatus.EDIT_MODE)
         {
             DetectClickOnTiles();
+        }
+    }
+
+    private void PrepareTilesInDictionaries()
+    {
+        List<GameObject> grass_floors = floor_pre_fabs.FindAll(floor_go => floor_go.GetComponent<Floor>().type == TypeOfFloor.grass);
+        List<GameObject> side_walk_floors = floor_pre_fabs.FindAll(floor_go => floor_go.GetComponent<Floor>().type == TypeOfFloor.side_walk);
+
+        PrepareTilesInDictionary(this.grass_floors, grass_floors);
+        PrepareTilesInDictionary(this.side_walk_floors, side_walk_floors);
+
+        floor_groups.Add(TypeOfFloor.grass, this.grass_floors);
+        floor_groups.Add(TypeOfFloor.side_walk, this.side_walk_floors);
+    }
+
+    private void PrepareTilesInDictionary(IDictionary<SideOfFloor, GameObject> dictionary, List<GameObject> floors)
+    {
+        foreach(GameObject floor_go in floors)
+        {
+            Floor floor = floor_go.GetComponent<Floor>();
+            dictionary.Add(floor.side, floor_go);
         }
     }
 
@@ -84,7 +134,7 @@ public class MapController : MonoBehaviour {
         {
             for (int j = 0; j < width; j++)
             {
-                GameObject floor_go = Instantiate(floor_pre_fab);
+                GameObject floor_go = Instantiate(FloorAccordingPositionAndType(j, i, TypeOfFloor.side_walk));
                 Floor floor = floor_go.GetComponent<Floor>();
 
                 if (game_mode == GameController.GameStatus.EDIT_MODE)
@@ -107,6 +157,29 @@ public class MapController : MonoBehaviour {
             current_pos.x = start_pos.x;
             current_pos.y -= tile_size.y;
         }        
+    }
+
+    private GameObject FloorAccordingPositionAndType(int pos_x, int pos_y, TypeOfFloor floor_type)
+    {
+        GameObject floor = null;
+
+        if(pos_y == 0)
+        {
+            if(pos_x == 0) { floor = floor_groups[floor_type][SideOfFloor.top_left]; }
+            else if (pos_x == width-1) { floor = floor_groups[floor_type][SideOfFloor.top_right]; }
+            else { floor = floor_groups[floor_type][SideOfFloor.top_center]; }
+        } else if (pos_y == height-1)
+        {
+            if (pos_x == 0) { floor = floor_groups[floor_type][SideOfFloor.bottom_left]; }
+            else if (pos_x == width - 1) { floor = floor_groups[floor_type][SideOfFloor.bottom_right]; }
+            else { floor = floor_groups[floor_type][SideOfFloor.bottom_center]; }
+        } else {
+            if (pos_x == 0) { floor = floor_groups[floor_type][SideOfFloor.left]; }
+            else if (pos_x == width - 1) { floor = floor_groups[floor_type][SideOfFloor.right]; }
+            else { floor = floor_groups[floor_type][SideOfFloor.center]; }
+        }
+
+        return floor;
     }
 
     private string FormattedFloorName(int pos_x, int pos_y)

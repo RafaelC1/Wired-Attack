@@ -28,6 +28,14 @@ public class MachineController : MonoBehaviour {
         FindAllConnectionsOnGame();
     }
 
+    public void DestroyAllMachines()
+    {
+        foreach(Machine machine in machines)
+        {
+            Destroy(machine.gameObject);
+        }
+    }
+
     public int NeutralMachineCount()
     {
         return machines.FindAll(machine => machine.team_id == TeamHelpers.NEUTRAL_TEAM).Count;

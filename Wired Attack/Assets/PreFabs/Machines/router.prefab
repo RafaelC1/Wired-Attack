@@ -70,6 +70,7 @@ GameObject:
   - component: {fileID: 224630512237059338}
   - component: {fileID: 222192359679905508}
   - component: {fileID: 114173960247484366}
+  - component: {fileID: 114483065123715342}
   m_Layer: 5
   m_Name: bits_text
   m_TagString: Untagged
@@ -97,7 +98,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1656517557335526}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.4929244, y: -0.7492979, z: 0}
+  m_LocalPosition: {x: 2.1189702, y: 1.2279149, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4625531816623128}
@@ -135,8 +136,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.57, y: 1.6}
-    newSize: {x: 1.27, y: 1.4}
+    oldSize: {x: 1.59, y: 1.43}
+    newSize: {x: 1.59, y: 1.43}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -207,6 +208,20 @@ MonoBehaviour:
   bit_defense: 1
   produce_bit: 0
   actived: 0
+--- !u!114 &114483065123715342
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1886684729616754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!212 &212500653851915442
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -242,12 +257,12 @@ SpriteRenderer:
   m_SortingLayerID: 2033076589
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300002, guid: 3497451487ab98042b4ba4f5203db3fe, type: 3}
+  m_Sprite: {fileID: 21300004, guid: a153990b7e7d5ca4a9b984a3fe783a30, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.27, y: 1.4}
+  m_Size: {x: 1.59, y: 1.43}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -288,12 +303,12 @@ SpriteRenderer:
   m_SortingLayerID: 972073117
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7898e2b29b35dd24ba58f1a0e33b2ea0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 018587b52ee6a7642aa96abe634da0c8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.32941177}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.44, y: 1.44}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

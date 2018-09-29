@@ -55,9 +55,11 @@ MonoBehaviour:
   connection_points:
   - {fileID: 0}
   - {fileID: 0}
+  id: 0
+  type: optical
   wire_name: fibra
   time_to_travel: 1
-  wire_color: {r: 1, g: 1, b: 1, a: 1}
+  wire_color: {r: 1, g: 0.99437773, b: 0, a: 1}
 --- !u!120 &120186667409535612
 LineRenderer:
   m_ObjectHideFlags: 1
