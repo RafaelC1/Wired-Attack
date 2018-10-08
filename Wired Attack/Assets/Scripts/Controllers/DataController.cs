@@ -14,13 +14,15 @@ public class DataController : MonoBehaviour {
     private const string DEFAULT_END_FILE_EXTENSION = ".txt";
 
     public const string START_OF_MACHINE_SERIALIZED = "machines";
-    public const string START_OF_CONNECTION_SERIALIZED = "wires";
+    public const string START_OF_CONNECTION_SERIALIZED = "connections";
+    public const string START_OF_DECORATION_SERIALIZED = "decorations";
 
     public List<TextAsset> campaign_level_files = new List<TextAsset>();
     private IDictionary<string, TextAsset> campaign_levels = new Dictionary<string, TextAsset>();
 
     public List<MachineSerialized> map_file_machines = new List<MachineSerialized>();
-    public List<WireSerialized> map_file_connections = new List<WireSerialized>();
+    public List<ConnectionSerialized> map_file_connections = new List<ConnectionSerialized>();
+    public List<DecorationSerialized> map_file_decorations = new List<DecorationSerialized>();
 
     public static string NEW_GAME_KEY = "create_a_new_level";
 
@@ -84,6 +86,7 @@ public class DataController : MonoBehaviour {
 
         map_file_machines.Clear();
         map_file_connections.Clear();
+        map_file_decorations.Clear();
 
         switch (list_to_load_level)
         {
@@ -102,7 +105,8 @@ public class DataController : MonoBehaviour {
         foreach (string line in map_script_lines)
         {
             if (line.Contains(START_OF_MACHINE_SERIALIZED) ||
-                line.Contains(START_OF_CONNECTION_SERIALIZED))
+                line.Contains(START_OF_CONNECTION_SERIALIZED) ||
+                line.Contains(START_OF_DECORATION_SERIALIZED))
             {
                 current_model_loaded = line;
                 continue;
@@ -118,6 +122,11 @@ public class DataController : MonoBehaviour {
                 case START_OF_CONNECTION_SERIALIZED:
                     {
                         map_file_connections.Add(LoadSerializedConnection(line));
+                        break;
+                    }
+                case START_OF_DECORATION_SERIALIZED:
+                    {
+                        map_file_decorations.Add(LoadSerializedDecoration(line));
                         break;
                     }
             }
@@ -245,8 +254,13 @@ public class DataController : MonoBehaviour {
         return JsonUtility.FromJson<MachineSerialized>(json);
     }
 
-    private WireSerialized LoadSerializedConnection(string json)
+    private ConnectionSerialized LoadSerializedConnection(string json)
     {
-        return JsonUtility.FromJson<WireSerialized>(json);
+        return JsonUtility.FromJson<ConnectionSerialized>(json);
+    }
+
+    private DecorationSerialized LoadSerializedDecoration(string json)
+    {
+        return JsonUtility.FromJson<DecorationSerialized>(json);
     }
 }

@@ -29,7 +29,7 @@ public class Floor : MonoBehaviour
     public void ReceiveObjectToHold(GameObject object_to_hold)
     {
         object_holded = object_to_hold;
-        object_holded.GetComponent<Machine>().current_floor = this;
+        object_holded.GetComponent<Holdable>().current_floor = this;
         PositionateObjectOnCenter();
     }
 

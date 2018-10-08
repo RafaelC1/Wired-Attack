@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MachineSerialized {
-
-    public int id;
+public class MachineSerialized : Serializable
+{
     public int team_id;
-    public int floor_id;
     public string machine_model = "";
 
 	public MachineSerialized(Machine machine_to_serialize)

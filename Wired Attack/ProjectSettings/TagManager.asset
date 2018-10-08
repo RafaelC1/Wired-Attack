@@ -8,6 +8,7 @@ TagManager:
   - wire
   - floor
   - menu
+  - decoration
   layers:
   - Default
   - TransparentFX
@@ -53,6 +54,9 @@ TagManager:
     locked: 0
   - name: machines
     uniqueID: 2033076589
+    locked: 0
+  - name: Message
+    uniqueID: 3045800489
     locked: 0
   - name: UI
     uniqueID: 2678203187

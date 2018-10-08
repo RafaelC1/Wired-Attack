@@ -190,6 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  current_floor: {fileID: 0}
   team_id: 1
   model: storage_server
   description: 
@@ -199,10 +200,9 @@ MonoBehaviour:
   background: {fileID: 1385896270125950}
   text_holder: {fileID: 1891302357820100}
   bits_label: {fileID: 114080848811451844}
-  current_floor: {fileID: 0}
   max_connections: 2
   max_bit_storage: 100
-  current_bit_stored: 0
+  current_stored_bits: 0
   process_time: 1
   current_process_time: 0
   bit_defense: 1

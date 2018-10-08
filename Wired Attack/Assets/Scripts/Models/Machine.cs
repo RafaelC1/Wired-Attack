@@ -4,11 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Dynamic;
 
-public class Machine : MonoBehaviour {
+public class Machine : Holdable {
 
     #region variables
-
-    public int id;
+    
     public int team_id = 0;
     public string model =  "regular_machine";
     public string description = "machine";
@@ -22,12 +21,11 @@ public class Machine : MonoBehaviour {
 
     public GameObject text_holder;
     public Text bits_label;
-    public Floor current_floor = null;
 
     public int max_connections = 1;
 
     public int max_bit_storage = 10;
-    public int current_bit_stored = 0;
+    public int current_stored_bits = 0;
 
     private int bit_per_process = 1;
 
@@ -52,6 +50,7 @@ public class Machine : MonoBehaviour {
 
     public void SetTextParentAndPosition()
     {
+        bits_label.gameObject.SetActive(true);
         bits_label.transform.SetParent(canvas.transform);
         bits_label.transform.position = text_holder.transform.position;
         bits_label.transform.localScale = new Vector3(1, 1, 1);
@@ -96,6 +95,16 @@ public class Machine : MonoBehaviour {
         return connections.Count < max_connections;
     }
 
+    public bool CanSendBits()
+    {
+        return current_stored_bits > 0;
+    }
+
+    public bool CanReceiveAliedBits()
+    {
+        return !(current_stored_bits == max_bit_storage);
+    }
+
     private void UpdateExternalInformations()
     {
         bits_label.text = AmountOfBitsFormatted();
@@ -115,11 +124,11 @@ public class Machine : MonoBehaviour {
 
     private void StoreBits(int amount_to_store)
     {
-        current_bit_stored += amount_to_store;
+        current_stored_bits += amount_to_store;
 
-        if (current_bit_stored > max_bit_storage)
+        if (current_stored_bits > max_bit_storage)
         {
-            current_bit_stored = max_bit_storage;
+            current_stored_bits = max_bit_storage;
         }
 
         UpdateExternalInformations();
@@ -137,10 +146,10 @@ public class Machine : MonoBehaviour {
 
             StoreBits(-received_bit);
 
-            if (current_bit_stored < 0)
+            if (current_stored_bits < 0)
             {
-                int leftover_bits = -current_bit_stored;
-                current_bit_stored = 0;
+                int leftover_bits = -current_stored_bits;
+                current_stored_bits = 0;
                 StoreBits(leftover_bits);
                 ChangeOwner(sender.team_id);
             }
@@ -151,14 +160,19 @@ public class Machine : MonoBehaviour {
     {
         int bits_to_send = 0;
 
-        if (current_bit_stored % 2 > 0)
+        if (current_stored_bits % 2 > 0)
         {
-            bits_to_send = (current_bit_stored - 1) / 2;
+            if (current_stored_bits > 1)
+            {
+                bits_to_send = (current_stored_bits - 1) / 2;
+            } else {
+                bits_to_send = current_stored_bits;
+            }
         } else {
-            bits_to_send = current_bit_stored / 2;
+            bits_to_send = current_stored_bits / 2;
         }
 
-        current_bit_stored -= bits_to_send;
+        current_stored_bits -= bits_to_send;
 
         UpdateExternalInformations();
 
@@ -167,7 +181,7 @@ public class Machine : MonoBehaviour {
 
     public string AmountOfBitsFormatted()
     {
-        return string.Format("{0}/{1}", current_bit_stored, max_bit_storage);
+        return string.Format("{0}/{1}", current_stored_bits, max_bit_storage);
     }
     
     public void ActiveBackGround(bool activate)
@@ -177,7 +191,7 @@ public class Machine : MonoBehaviour {
 
     private bool IsStorageFull()
     {
-        return current_bit_stored >= max_bit_storage;
+        return current_stored_bits >= max_bit_storage;
     }
 
     public void TurnMachineOn()
@@ -198,7 +212,7 @@ public class Machine : MonoBehaviour {
 
         foreach (GameObject con in connections)
         {
-            con.GetComponent<Wire>().connection_points.Remove(this.gameObject);
+            con.GetComponent<Connection>().connection_points.Remove(this.gameObject);
             Destroy(con);
         }
         if (bits_label != null)

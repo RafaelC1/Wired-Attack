@@ -234,6 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  current_floor: {fileID: 0}
   team_id: 1
   model: firewall
   description: 
@@ -243,10 +244,9 @@ MonoBehaviour:
   background: {fileID: 1974275334242264}
   text_holder: {fileID: 1837638532967640}
   bits_label: {fileID: 114403679124841334}
-  current_floor: {fileID: 0}
   max_connections: 2
   max_bit_storage: 30
-  current_bit_stored: 0
+  current_stored_bits: 0
   process_time: 1
   current_process_time: 0
   bit_defense: 2

@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wire : MonoBehaviour {
+public class Connection : MonoBehaviour {
    
     public List<GameObject> connection_points = new List<GameObject>(2);
-    private List<Delivery> traffics = new List<Delivery>();
+    public List<Message> messages = new List<Message>();
 
     public int id = 0;
-    public string type = "optical";
-    public string wire_name = "fibra";
-    public float time_to_travel = 5;
+    public string wire_type = "optical";
+    public string connection_name = "fibra";
+    public float travel_time = 5;
     public Color wire_color;
 
     void Start()
@@ -26,39 +26,26 @@ public class Wire : MonoBehaviour {
 
     void Update()
     {
-        UpdateAllTraffic();
     }
 
     public void PassReferenceToMachines()
     {
         foreach(GameObject point in connection_points)
         {
-            point.GetComponent<Machine>().AddConnection(this.transform.gameObject);
+            //point.GetComponent<Machine>().AddConnection(this.transform.gameObject);
         }
     }
 
-    private void UpdateAllTraffic()
+    public void RemoveMessage(Message message_to_delete)
     {
-        foreach(Delivery traffic in this.traffics)
-        {
-            traffic.Update(Time.deltaTime);
-        }
-
-        traffics.RemoveAll(traffic => traffic.message_delivered);
+        messages.Remove(message_to_delete);
+        Destroy(message_to_delete.gameObject);
     }
 
-    public bool IsConnectedBetween(Machine first_machine, Machine last_machine)
+    public bool IsConnectedBetween(GameObject first_machine, GameObject last_machine)
     {
-        return (connection_points[0].GetComponent<Machine>().Equals(first_machine) &&
-               connection_points[1].GetComponent<Machine>().Equals(last_machine)) ||
-               (connection_points[0].GetComponent<Machine>().Equals(last_machine) &&
-               connection_points[1].GetComponent<Machine>().Equals(first_machine));
-    }
-
-    public void SendBitsBetween(Machine to, Machine from, int bits)
-    {
-        Delivery new_traffic = new Delivery(to, from, bits, this.time_to_travel, this);
-        traffics.Add(new_traffic);
+        return (connection_points.Contains(first_machine) &&
+                connection_points.Contains(last_machine));
     }
 
     public Machine OpositeMachinePointFrom(Machine machine)

@@ -1,6 +1,6 @@
 ﻿public class Delivery {
 
-    private Wire wire = null;
+    private Connection connection = null;
     public Machine to = null;
     public Machine from = null;
     public float delay_time = 0;
@@ -8,13 +8,13 @@
 
     public bool message_delivered = false;
 
-    public Delivery(Machine to, Machine from, int bits, float delay, Wire wire)
+    public Delivery(Machine to, Machine from, int bits, float delay, Connection connection)
     {
         this.to = to;
         this.from = from;
         this.bits = bits;
         delay_time = delay;
-        this.wire = wire;
+        this.connection = connection;
     }
 
     public void Update(float dt)

@@ -8,12 +8,12 @@ public class MachineController : MonoBehaviour {
     public GameController game_controller = null;
     public PopUpTextController pop_text_controller = null;
 
-    public GameObject wire_pre_fab = null;
+    public GameObject connection_pre_fab = null;
+    public GameObject message_pre_fab = null;
 
     public List<Machine> machines = new List<Machine>();
-    public List<Wire> connections = new List<Wire>();
+    public List<Connection> connections = new List<Connection>();
     
-
     void Start()
     {
     }
@@ -22,10 +22,10 @@ public class MachineController : MonoBehaviour {
     {
     }
 
-    public void StartGame()
+    public void StartGame(List<GameObject> machine_gos, List<GameObject> connection_gos)
     {
-        FindAllMachinesOnGame();
-        FindAllConnectionsOnGame();
+        PrepareAllMachines(machine_gos);
+        PrepareAllConnections(connection_gos);
     }
 
     public void DestroyAllMachines()
@@ -51,31 +51,30 @@ public class MachineController : MonoBehaviour {
         return machines.FindAll(machine => machine.team_id == TeamHelpers.IA_TEAM).Count;
     }
 
-    private void FindAllMachinesOnGame()
+    private void PrepareAllMachines(List<GameObject> machine_gos)
     {
-        GameObject[] machines_game_objects = GameObject.FindGameObjectsWithTag("machine");
-
-        foreach (GameObject machine_game_object in machines_game_objects)
+        foreach (GameObject machine_go in machine_gos)
         {
-            AddMachine(machine_game_object);
-            machine_game_object.GetComponent<Machine>().TurnMachineOn();
+            AddMachine(machine_go);
         }
     }
 
-    private void FindAllConnectionsOnGame()
+    private void PrepareAllConnections(List<GameObject> connection_gos)
     {
-        GameObject[] connection_game_objects = GameObject.FindGameObjectsWithTag("wire");
-
-        foreach (GameObject connection_game_object in connection_game_objects)
+        foreach (GameObject connection_go in connection_gos)
         {
-            connections.Add(connection_game_object.GetComponent<Wire>());
+            AddConnection(connection_go);
         }
     }
 
-    public void AddMachine(GameObject machine)
+    public void AddMachine(GameObject machine_go)
     {
-        machines.Add(machine.GetComponent<Machine>());
-        machines[machines.Count - 1].controller = this;
+        Machine machine = machine_go.GetComponent<Machine>();
+
+        machine.SetTextParentAndPosition();
+        machine.TurnMachineOn();
+        machine.controller = this;
+        machines.Add(machine);
     }
 
     public void RemoveMachine(GameObject machine_to_remove)
@@ -87,40 +86,67 @@ public class MachineController : MonoBehaviour {
 
     public void AddConnection(GameObject connection)
     {
-        connections.Add(connection.GetComponent<Wire>());
+        connections.Add(connection.GetComponent<Connection>());
     }
 
     public void TryTransferBitsBetweenMachines(Machine to, Machine from)
     {
-        Wire connection_between_machines = ConnectionBetween(to, from);
+        string transfer_error = null;
+        Transform current_machine_saying = null;
+        Connection connection_between_machines = ConnectionBetween(to.gameObject, from.gameObject);
+
         if (connection_between_machines != null)
         {
-            TransferBitsBetweenMachines(connection_between_machines, to, from);
+            if (from.CanSendBits())
+            {
+                if (to.CanReceiveAliedBits())
+                {
+                    TransferBitsBetweenMachines(connection_between_machines, to, from);
+                } else {
+                    transfer_error = "cheio.";
+                    current_machine_saying = to.transform;
+                }
+            } else {
+                transfer_error = "bits insuficientes.";
+                current_machine_saying = from.transform;
+            }
         } else {
-            pop_text_controller.CreatePopText("sem conexão", from.transform);
+            transfer_error = "não conectadas.";
+            current_machine_saying = from.transform;
+        }
+
+        if (transfer_error != null)
+        {
+            pop_text_controller.CreatePopText(transfer_error, current_machine_saying);
         }
     }
 
-    private void TransferBitsBetweenMachines(Wire connection_between, Machine to, Machine from)
+    private void TransferBitsBetweenMachines(Connection connection_between, Machine to, Machine from)
     {
-        int bits_to_send = from.SendBits();
+        GameObject message_new = Instantiate(message_pre_fab);
+        Message message = message_new.GetComponent<Message>();
 
-        connection_between.SendBitsBetween(to, from, bits_to_send);
+        connection_between.messages.Add(message);
+        message.DefineTransferSettings(from.SendBits(),
+                                       connection_between.travel_time,
+                                       from.gameObject,
+                                       to.gameObject,
+                                       connection_between);
     }
 
-    public Wire ConnectionBetween(Machine first_machine, Machine last_machine)
+    public Connection ConnectionBetween(GameObject first_machine, GameObject last_machine)
     {
-        foreach (Wire wire in connections)
+        foreach (Connection connection in connections)
         {
-            if (wire.IsConnectedBetween(first_machine, last_machine))
+            if (connection.IsConnectedBetween(first_machine, last_machine))
             {
-                return wire;
+                return connection;
             }
         }
         return null;
     }
 
-    public bool IsThereConnectionBetween(Machine first_machine, Machine last_machine)
+    public bool IsThereConnectionBetween(GameObject first_machine, GameObject last_machine)
     {
         return ConnectionBetween(first_machine, last_machine) != null;
     }
