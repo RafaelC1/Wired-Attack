@@ -13,8 +13,9 @@ public class GameController : MonoBehaviour {
     
     public enum GameStatus
     {
-        EDIT_MODE = 0,
-        GAME_MODE = 1
+        EDIT_MODE,
+        GAME_MODE,
+        MENU_MODE
     }
 
 	void Start () { }

@@ -17,8 +17,7 @@ public class DataController : MonoBehaviour {
     public const string START_OF_CONNECTION_SERIALIZED = "connections";
     public const string START_OF_DECORATION_SERIALIZED = "decorations";
 
-    public List<TextAsset> campaign_level_files = new List<TextAsset>();
-    private IDictionary<string, TextAsset> campaign_levels = new Dictionary<string, TextAsset>();
+    public List<TextAsset> campaign_map_files = new List<TextAsset>();
 
     public List<MachineSerialized> map_file_machines = new List<MachineSerialized>();
     public List<ConnectionSerialized> map_file_connections = new List<ConnectionSerialized>();
@@ -32,7 +31,6 @@ public class DataController : MonoBehaviour {
     {
         custom_level_path = Application.persistentDataPath + CUSTOM_LEVEL_FOLDER;
 
-        LoadAllCampaignLevels();
         CreateCustomLevelDirectory();
     }
     void Update()
@@ -47,93 +45,30 @@ public class DataController : MonoBehaviour {
         }
     }
 
-    private void LoadAllCampaignLevels()
+    public void SaveMap(Map map)
     {
-        foreach (TextAsset text_file in campaign_level_files)
-        {
-            campaign_levels[text_file.name] = text_file;
-        }        
-    }
-
-    public void SaveMap(List<string> lines_to_save, string map_name)
-    {
+        string map_name = map.name;
         string file_full_path = "";
 
         if (map_name == NEW_GAME_KEY)
         {
             file_full_path = AvailableFileName();
             File.Open(file_full_path, FileMode.OpenOrCreate, FileAccess.Write).Close();
-        }
-        else
-        {
+        } else {
             file_full_path = FilePathFormat(map_name);
             File.Open(file_full_path, FileMode.Truncate, FileAccess.Write).Close();
         }
 
         using (TextWriter tw = new StreamWriter(file_full_path))
         {
-            foreach (string line in lines_to_save)
+            foreach (string line in map.Serialized())
             {
                 tw.WriteLine(line);
             }
         }
     }
 
-    public void LoadMap(string map_name, GameController.GameStatus list_to_load_level)
-    {
-        List<string> map_script_lines = new List<string>();
-        string current_model_loaded = START_OF_MACHINE_SERIALIZED;
-
-        map_file_machines.Clear();
-        map_file_connections.Clear();
-        map_file_decorations.Clear();
-
-        switch (list_to_load_level)
-        {
-            case GameController.GameStatus.GAME_MODE:
-                {
-                    map_script_lines = LoadCampaignMap(map_name);
-                    break;
-                }
-            case GameController.GameStatus.EDIT_MODE:
-                {
-                    map_script_lines = LoadCustomMap(map_name);
-                    break;
-                }
-        }
-
-        foreach (string line in map_script_lines)
-        {
-            if (line.Contains(START_OF_MACHINE_SERIALIZED) ||
-                line.Contains(START_OF_CONNECTION_SERIALIZED) ||
-                line.Contains(START_OF_DECORATION_SERIALIZED))
-            {
-                current_model_loaded = line;
-                continue;
-            }
-
-            switch (current_model_loaded)
-            {
-                case START_OF_MACHINE_SERIALIZED:
-                    {
-                        map_file_machines.Add(LoadSerializedMachine(line));
-                        break;
-                    }
-                case START_OF_CONNECTION_SERIALIZED:
-                    {
-                        map_file_connections.Add(LoadSerializedConnection(line));
-                        break;
-                    }
-                case START_OF_DECORATION_SERIALIZED:
-                    {
-                        map_file_decorations.Add(LoadSerializedDecoration(line));
-                        break;
-                    }
-            }
-        }        
-    }
-
-    private List<string> LoadCustomMap(string map_name)
+    private List<string> LoadRawCustonwMapData(string map_name)
     {
         List<string> file_lines = new List<string>();
 
@@ -154,52 +89,9 @@ public class DataController : MonoBehaviour {
         return file_lines;
     }
 
-    private List<string> LoadCampaignMap(string map_name)
+    private List<string> LoadRawCampaignMapData(TextAsset file)
     {
-        TextAsset selected_level = campaign_levels[map_name];
-
-        List<string> lines_temp = new List<string>(selected_level.text.Split("\n"[0]));
-        List<string> lines = new List<string>();
-
-        foreach (string line_temp in lines_temp)
-        {
-            if (line_temp.Length > 0)
-            {
-                string temp = line_temp.Replace("\n", string.Empty);
-                temp = temp.Replace("\r", string.Empty);
-                temp = temp.Replace("\t", string.Empty);
-
-                lines.Add(temp);
-            }                
-        }
-
-        return lines;
-    }
-
-    public List<string> AllLevelNames(GameController.GameStatus game_status)
-    {
-        List<string> level_names = new List<string>();
-
-        switch(game_status)
-        {
-            case GameController.GameStatus.GAME_MODE:
-                {
-                    level_names = AllCampaignLevelsNames();
-                    break;
-                }
-            case GameController.GameStatus.EDIT_MODE:
-                {
-                    level_names = AllCustomLevelsNames();
-                    break;
-                }
-        }
-
-        return level_names;
-    }
-
-    private List<string> AllCampaignLevelsNames()
-    {
-        return new List<string>(campaign_levels.Keys);
+        return new List<string>(file.text.Split("\n"[0]));
     }
 
     private List<string> AllCustomLevelsNames()
@@ -213,6 +105,30 @@ public class DataController : MonoBehaviour {
             level_names.Add(file_name);
         }
         return level_names;
+    }
+
+    public IDictionary<string, List<string>> AllRawDataOfAllCustomMaps()
+    {
+        IDictionary<string, List<string>> information_of_all_maps = new Dictionary<string, List<string>>();
+
+        foreach(string level_name in AllCustomLevelsNames())
+        {
+            information_of_all_maps.Add(level_name, LoadRawCustonwMapData(level_name));
+        }
+
+        return information_of_all_maps;
+    }
+
+    public IDictionary<string, List<string>> AllRawDataOfAllCampaignMaps()
+    {
+        IDictionary<string, List<string>> information_of_all_maps = new Dictionary<string, List<string>>();
+
+        foreach (TextAsset map in campaign_map_files)
+        {
+            information_of_all_maps.Add(map.name, LoadRawCampaignMapData(map));
+        }
+
+        return information_of_all_maps;
     }
 
     private string AvailableFileName()
@@ -247,20 +163,5 @@ public class DataController : MonoBehaviour {
     private string CustomMapPath()
     {
         return custom_level_path;
-    }
-
-    private MachineSerialized LoadSerializedMachine(string json)
-    {
-        return JsonUtility.FromJson<MachineSerialized>(json);
-    }
-
-    private ConnectionSerialized LoadSerializedConnection(string json)
-    {
-        return JsonUtility.FromJson<ConnectionSerialized>(json);
-    }
-
-    private DecorationSerialized LoadSerializedDecoration(string json)
-    {
-        return JsonUtility.FromJson<DecorationSerialized>(json);
     }
 }

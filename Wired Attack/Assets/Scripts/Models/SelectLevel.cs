@@ -5,7 +5,7 @@ using UnityEngine;
 public class SelectLevel : MonoBehaviour {
 
     public SelectLevelController select_level_controller = null;
-    public string level_target = DataController.NEW_GAME_KEY;
+    public Map map_target = null;
 	
 	void Start () {	}	
 	
@@ -13,6 +13,6 @@ public class SelectLevel : MonoBehaviour {
 
     public void SelectThisLevel()
     {
-        select_level_controller.SelectLevel(level_target);
+        select_level_controller.SelectLevel(map_target);
     }
 }

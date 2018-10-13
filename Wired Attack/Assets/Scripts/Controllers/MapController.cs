@@ -368,62 +368,15 @@ public class MapController : MonoBehaviour
 
     public void SaveCurrentMap()
     {
-        List<string> data_prepared_to_save = PrepareCurrentMapBeforeSave();
+        Map map_to_save = new Map(MachinesOnTiles(), ConnectionsOnMachines(), DecorationsOnTiles());
+        map_to_save.name = current_map_name;
 
-        data_controller.SaveMap(data_prepared_to_save, current_map_name);
-    }
-
-    public List<string> PrepareCurrentMapBeforeSave()
-    {
-        string json_format_of_serialized_model = "";
-        List<string> lines_of_serialized_model = new List<string>();
-
-        lines_of_serialized_model.Add(DataController.START_OF_MACHINE_SERIALIZED);
-
-        foreach (GameObject machine in MachinesOnTiles())
-        {
-            MachineSerialized machine_serialized = new MachineSerialized(machine.GetComponent<Machine>());
-            json_format_of_serialized_model = machine_serialized.ToJson();
-
-            lines_of_serialized_model.Add(json_format_of_serialized_model);
-        }
-
-        lines_of_serialized_model.Add(DataController.START_OF_CONNECTION_SERIALIZED);
-
-        foreach (GameObject con in ConnectionsOnMachines())
-        {
-            ConnectionSerialized connection_serialized = new ConnectionSerialized(con.GetComponent<Connection>());
-            json_format_of_serialized_model = connection_serialized.ToJson();
-
-            lines_of_serialized_model.Add(json_format_of_serialized_model);
-        }
-
-        lines_of_serialized_model.Add(DataController.START_OF_DECORATION_SERIALIZED);
-
-        foreach (GameObject deco in DecorationsOnTiles())
-        {
-            DecorationSerialized decoration_serialized = new DecorationSerialized(deco.GetComponent<Decoration>());
-            json_format_of_serialized_model = decoration_serialized.ToJson();
-
-            lines_of_serialized_model.Add(json_format_of_serialized_model);
-        }
-
-        return lines_of_serialized_model;
+        data_controller.SaveMap(map_to_save);
     }
     
-    public void LoadMapByName(string map_name,
-                              GameController.GameStatus list_to_look_for,
-                              GameController.GameStatus game_mode)
+    public void LoadMap(Map map_to_load, GameController.GameStatus current_game_status)
     {
-        current_status = game_mode;
-        current_map_name = map_name;
-        data_controller.LoadMap(current_map_name, list_to_look_for);
-
-        List<MachineSerialized> serialized_machines = data_controller.map_file_machines;
-        List<ConnectionSerialized> serialized_connections = data_controller.map_file_connections;
-        List<DecorationSerialized> serialized_decorations = data_controller.map_file_decorations;
-
-        foreach (MachineSerialized machine_s in serialized_machines)
+        foreach (MachineSerialized machine_s in map_to_load.serialized_machines)
         {
             GameObject machine_go = Instantiate(MachinePreFabByModel(machine_s.machine_model));
 
@@ -437,7 +390,7 @@ public class MapController : MonoBehaviour
             PlaceNewMachineOnSelectedTile(machine_go);
         }
 
-        foreach (ConnectionSerialized con_s in serialized_connections)
+        foreach (ConnectionSerialized con_s in map_to_load.serialized_connections)
         {
             GameObject first_machine_point = MachinesOnTiles().Find(machine => machine.GetComponent<Machine>().id == con_s.connection_ids[0]);
             GameObject secound_machine_point = MachinesOnTiles().Find(machine => machine.GetComponent<Machine>().id == con_s.connection_ids[1]);
@@ -448,7 +401,7 @@ public class MapController : MonoBehaviour
             CreateConnectionBetweenMachinesOn(first_floor, secound_floor, ConnectionPreFabByType(con_s.wire_type), con_s.id);
         }
 
-        foreach (DecorationSerialized deco_s in serialized_decorations)
+        foreach (DecorationSerialized deco_s in map_to_load.serialized_decorations)
         {
             GameObject decoration_go = Instantiate(DecoractionPreFabByModel(deco_s.type));
             //Decoration decoration = decoration_go.GetComponent<Decoration>();
@@ -458,7 +411,10 @@ public class MapController : MonoBehaviour
             GiveToSelectedFloor(decoration_go);
         }
 
-        if (game_mode == GameController.GameStatus.GAME_MODE)
+        current_status = current_game_status;
+        current_map_name = map_to_load.name;
+
+        if (current_game_status == GameController.GameStatus.GAME_MODE)
         {
             machine_controller.StartGame(MachinesOnTiles(), ConnectionsOnMachines());
             game_controller.CreatePlayers();
