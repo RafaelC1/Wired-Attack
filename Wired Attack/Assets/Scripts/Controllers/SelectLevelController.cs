@@ -10,11 +10,18 @@ public class SelectLevelController : MonoBehaviour {
     public MapController map_controller = null;
     public DataController data_controller = null;
 
-    public GameController.GameStatus game_mode = GameController.GameStatus.GAME_MODE;
-    public GameController.GameStatus list_of_level_mode = GameController.GameStatus.GAME_MODE;
+    public enum TypeOfMaps
+    {
+        CAMPAIGN_MAPS,
+        CUSTOM_MAPS
+    }
+
+    public TypeOfMaps list_of = TypeOfMaps.CAMPAIGN_MAPS;
+    public GameController.GameMode start_game_in = GameController.GameMode.PLAY_MODE;
 
     public GameObject list = null;
-    public GameObject level_btn_pre_fab = null;
+    public GameObject choose_level_btn_pre_fab = null;
+    public GameObject new_level_btn_pre_fab = null;
     public GameObject play_btn = null;
     
     private Map selected_map = null;
@@ -29,8 +36,8 @@ public class SelectLevelController : MonoBehaviour {
     public void StartGame()
     {
         map_controller.ClearMap();
-        map_controller.CreateMap(game_mode);
-        map_controller.LoadMap(selected_map, game_mode);
+        map_controller.CreateMap(start_game_in);
+        map_controller.LoadMap(selected_map, start_game_in);
     }
 
     public void SelectLevel(Map map)
@@ -54,21 +61,21 @@ public class SelectLevelController : MonoBehaviour {
     {
         IDictionary<string, List<string>> raw_maps = new Dictionary<string, List<string>>();
 
-        switch (list_of_level_mode)
+        switch (list_of)
         {
-            case GameController.GameStatus.GAME_MODE:
+            case TypeOfMaps.CAMPAIGN_MAPS:
                 {
                     raw_maps = data_controller.AllRawDataOfAllCampaignMaps();
                     break;
                 }
-            case GameController.GameStatus.EDIT_MODE:
+            case TypeOfMaps.CUSTOM_MAPS:
                 {
                     raw_maps = data_controller.AllRawDataOfAllCustomMaps();
                     break;
                 }
         }
 
-        if (game_mode == GameController.GameStatus.EDIT_MODE)
+        if (start_game_in == GameController.GameMode.EDIT_MODE)
         {
             raw_maps.Add(DataController.NEW_GAME_KEY, new List<string>());
         }
@@ -87,10 +94,16 @@ public class SelectLevelController : MonoBehaviour {
     {
         Transform list_transform = list.transform;
 
-        GameObject new_button = Instantiate(level_btn_pre_fab);
+        GameObject btn_pre_fab = choose_level_btn_pre_fab;
+
+        if (map_target.name == DataController.NEW_GAME_KEY)
+        {
+            btn_pre_fab = new_level_btn_pre_fab;
+        }
+
+        GameObject new_button = Instantiate(btn_pre_fab);
 
         new_button.name = map_target.name;
-        new_button.transform.name = map_target.name;
         new_button.transform.SetParent(list_transform);
         new_button.transform.localScale = new Vector3(1, 1, 1);
         new_button.transform.GetChild(0).GetComponent<Text>().text = map_target.name;
@@ -98,6 +111,7 @@ public class SelectLevelController : MonoBehaviour {
         SelectLevel select_level = new_button.GetComponent<SelectLevel>();
         select_level.map_target = map_target;
         select_level.select_level_controller = this;
+        select_level.DefineButtonStatus();
     }
 
     private void OnEnable()

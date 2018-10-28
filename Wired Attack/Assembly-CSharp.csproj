@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\Controllers\MusicController.cs" />
     <Compile Include="Assets\Scripts\Controllers\PopUpTextController.cs" />
     <Compile Include="Assets\Scripts\Controllers\SelectLevelController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\SoundEffectController.cs" />
     <Compile Include="Assets\Scripts\Controllers\TranslationController.cs" />
     <Compile Include="Assets\Scripts\Helpers\PlayerHelpers.cs" />
     <Compile Include="Assets\Scripts\Helpers\TeamHelpers.cs" />

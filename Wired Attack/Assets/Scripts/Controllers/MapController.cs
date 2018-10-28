@@ -34,13 +34,6 @@ public class MapController : MonoBehaviour
         bottom_right
     }
 
-    public enum TypeOfDecoration
-    {
-        build_01,
-        build_02,
-        build_03
-    }
-
     public List<GameObject> connection_pre_fabs = new List<GameObject>();
     public List<GameObject> machines_pre_fabs = new List<GameObject>();
     public List<GameObject> decoractions_pre_fabs = new List<GameObject>();
@@ -53,6 +46,7 @@ public class MapController : MonoBehaviour
 
     public GameObject floor_editor_menu = null;
     public GameObject machine_editor_menu = null;
+    public GameObject decoration_editor_menu = null;
 
     public GameObject machine_parent = null;
     public GameObject connection_parent = null;
@@ -71,7 +65,7 @@ public class MapController : MonoBehaviour
     public int height = 7;
     public int width = 5;
 
-    private GameController.GameStatus current_status;
+    private GameController.GameMode current_status;
 
     #endregion
 
@@ -82,7 +76,7 @@ public class MapController : MonoBehaviour
 
     void Update()
     {
-        if (current_status == GameController.GameStatus.EDIT_MODE)
+        if (current_status == GameController.GameMode.EDIT_MODE)
         {
             DetectClickOnTiles();
         }
@@ -118,13 +112,13 @@ public class MapController : MonoBehaviour
         tiles.Clear();
     }
 
-    public void CreateMap(GameController.GameStatus game_mode)
+    public void CreateMap(GameController.GameMode game_mode)
     {
         CreateTiles(game_mode);
         DesactiveAllMenus();
     }
 
-    private void CreateTiles(GameController.GameStatus game_mode)
+    private void CreateTiles(GameController.GameMode game_mode)
     {
         tile_size = FloorAccordingPositionAndType(0, 0, TypeOfFloor.side_walk).GetComponent<Renderer>().bounds.size;
 
@@ -145,7 +139,7 @@ public class MapController : MonoBehaviour
                 GameObject floor_go = Instantiate(FloorAccordingPositionAndType(j, i, TypeOfFloor.side_walk));
                 Floor floor = floor_go.GetComponent<Floor>();
 
-                if (game_mode == GameController.GameStatus.EDIT_MODE)
+                if (game_mode == GameController.GameMode.EDIT_MODE)
                 {
                     floor.TurnToEdit(true);
                 }
@@ -244,10 +238,22 @@ public class MapController : MonoBehaviour
 
                     if (IsCurrentSelectedFloorHoldingSomething())
                     {
-                        ActiveMachineEditorMenu(true);
+                        Debug.Log(selected_floor.GetComponent<Floor>().object_holded.tag);
+                        switch (selected_floor.GetComponent<Floor>().object_holded.tag)
+                        {
+                            case "machine":
+                                {
+                                    ActiveMachineEditorMenu(true);
+                                    break;
+                                }
+                            case "decoration":
+                                {
+                                    ActiveDecorationEditorMenu(true);
+                                    break;
+                                }
+                        }
                     }
-                    else if (!IsCurrentSelectedFloorHoldingSomething())
-                    {
+                    else {
                         ActiveFloorEditorMenu(true);
                     }
 
@@ -297,12 +303,11 @@ public class MapController : MonoBehaviour
 
     public void PlaceNewDecorationOnSelectedTile(GameObject decoration_pre_fab)
     {
-        //GameObject decoration_go = Instantiate(DecoractionPreFabByModel(decoration_pre_fab.GetComponent<Decoration>().model));
         GameObject decoration_go = Instantiate(decoration_pre_fab);
         Decoration decoration = decoration_go.GetComponent<Decoration>();
 
         decoration.id = 0;
-
+        Debug.Log(1);
         decoration_go.transform.SetParent(decoration_parent.transform);
         GiveToSelectedFloor(decoration_go);
         DeselectCurrentFloor();
@@ -374,7 +379,7 @@ public class MapController : MonoBehaviour
         data_controller.SaveMap(map_to_save);
     }
     
-    public void LoadMap(Map map_to_load, GameController.GameStatus current_game_status)
+    public void LoadMap(Map map_to_load, GameController.GameMode current_game_status)
     {
         foreach (MachineSerialized machine_s in map_to_load.serialized_machines)
         {
@@ -403,18 +408,15 @@ public class MapController : MonoBehaviour
 
         foreach (DecorationSerialized deco_s in map_to_load.serialized_decorations)
         {
-            GameObject decoration_go = Instantiate(DecoractionPreFabByModel(deco_s.type));
-            //Decoration decoration = decoration_go.GetComponent<Decoration>();
-
             selected_floor = tiles[deco_s.floor_id];
+            PlaceNewDecorationOnSelectedTile(DecoractionPreFabByModel(deco_s.type));
 
-            GiveToSelectedFloor(decoration_go);
         }
 
         current_status = current_game_status;
         current_map_name = map_to_load.name;
 
-        if (current_game_status == GameController.GameStatus.GAME_MODE)
+        if (current_game_status == GameController.GameMode.PLAY_MODE)
         {
             machine_controller.StartGame(MachinesOnTiles(), ConnectionsOnMachines());
             game_controller.CreatePlayers();
@@ -425,6 +427,7 @@ public class MapController : MonoBehaviour
     {
         ActiveFloorEditorMenu(false);
         ActiveMachineEditorMenu(false);
+        ActiveDecorationEditorMenu(false);
     }
 
     private void ActiveFloorEditorMenu(bool activate)
@@ -451,6 +454,18 @@ public class MapController : MonoBehaviour
         }
     }
 
+    private void ActiveDecorationEditorMenu(bool activate)
+    {
+        if (activate)
+        {
+            editor_mode_menus.OpenMenuByObject(decoration_editor_menu);
+        }
+        else
+        {
+            editor_mode_menus.CloseMenuByObject(decoration_editor_menu);
+        }
+    }
+
     private GameObject ConnectionPreFabByType(string wire_name)
     {
         return connection_pre_fabs.Find(connection => connection.GetComponent<Connection>().wire_type == wire_name);
@@ -461,7 +476,7 @@ public class MapController : MonoBehaviour
         return machines_pre_fabs.Find(machine => machine.GetComponent<Machine>().model == machine_model);
     }
 
-    private GameObject DecoractionPreFabByModel(TypeOfDecoration model)
+    private GameObject DecoractionPreFabByModel(Decoration.TypeOfDecoration model)
     {
         return decoractions_pre_fabs.Find(decoration => decoration.GetComponent<Decoration>().model == model);
     }

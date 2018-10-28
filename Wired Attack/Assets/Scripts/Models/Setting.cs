@@ -26,11 +26,11 @@ public class Setting : MonoBehaviour {
 
     public void NextLanguage()
     {
-        translation_controller.current_language_id++;
+        translation_controller.NextLanguage();
 
-        if (translation_controller.current_language_id > translation_controller.available_languages.Count-1)
+        if (!translation_controller.CurrentLanguageExist())
         {
-            translation_controller.current_language_id = 0;
+            translation_controller.SelectFirstLanguage();
         }
         translation_controller.UpdateAllTextFields();
         UpdateLanguateTextField();
@@ -38,11 +38,11 @@ public class Setting : MonoBehaviour {
 
     public void BackLanguage()
     {
-        translation_controller.current_language_id--;
+        translation_controller.BackLanguage();
 
-        if (translation_controller.current_language_id < 0)
+        if (!translation_controller.CurrentLanguageExist())
         {
-            translation_controller.current_language_id = translation_controller.available_languages.Count-1;
+            translation_controller.SelectLastLanguage();
         }
         translation_controller.UpdateAllTextFields();
         UpdateLanguateTextField();

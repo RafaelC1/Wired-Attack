@@ -55,10 +55,11 @@ MonoBehaviour:
   connection_points:
   - {fileID: 0}
   - {fileID: 0}
+  messages: []
   id: 0
-  type: optical
-  wire_name: fibra
-  time_to_travel: 1
+  wire_type: optical
+  connection_name: fibra
+  travel_time: 5
   wire_color: {r: 1, g: 0.99437773, b: 0, a: 1}
 --- !u!120 &120186667409535612
 LineRenderer:
@@ -94,7 +95,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 972073117
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 1, y: 0, z: 1}

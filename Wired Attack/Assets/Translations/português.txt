@@ -1,2 +1,11 @@
+play_campaign:Campanha
+play_custom:Mapas Customizados
+play_editor:Editor de Mapas
+campaign_mode_title:Modo Campanha
+custom_mode:Mapas Customizados
+editor_mode:Editor de Mapas
+back_pause:Continuar
+go_pause:Pausar
+settings_mode:Configurações
 music:musica
-sounds:sons
+sound:sons

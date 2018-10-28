@@ -13,9 +13,15 @@ public class Translation : MonoBehaviour {
     {
         translation_controller.AddTranslationManager(this);
         text_field = GetComponent<Text>();
-	}
+        UpdateMyText();
+    }
 	
 	void Update () { }
+
+    public void UpdateMyText()
+    {
+        text_field.text = translation_controller.TranslationByKey(text_key);
+    }
 
     public void ChangeText(string new_text)
     {

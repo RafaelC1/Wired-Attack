@@ -57,17 +57,59 @@ public class TranslationController : MonoBehaviour {
     }
 
     public string CurrentLanguage()
-    {        
-        return available_languages[current_language_id];
+    {
+        try {
+            return available_languages[current_language_id];
+        } catch (System.Exception e) {
+            return "";
+        }
     }
 
     public string TranslationByKey(string key)
     {
-        return translations[CurrentLanguage()][key];
+        string translation = null;
+        try{
+            translation = translations[CurrentLanguage()][key];
+        } catch(KeyNotFoundException e) {
+            Debug.Log("key: " + key + " not found");
+            translation = key;
+        }
+        return translation;
     }
 
     public void AddTranslationManager(Translation new_translation)
     {
         text_field_translations.Add(new_translation);
+    }
+
+    public int CountOfAvailableLanguages()
+    {
+        return available_languages.Count - 1;
+    }
+
+    public void NextLanguage()
+    {
+        current_language_id++;
+    }
+
+    public void BackLanguage()
+    {
+        current_language_id--;
+    }
+
+    public void SelectLastLanguage()
+    {
+        current_language_id = CountOfAvailableLanguages();
+    }
+
+    public void SelectFirstLanguage()
+    {
+        current_language_id = 0;
+    }
+
+    public bool CurrentLanguageExist()
+    {
+        return current_language_id <= CountOfAvailableLanguages() &&
+               current_language_id >= 0;
     }
 }

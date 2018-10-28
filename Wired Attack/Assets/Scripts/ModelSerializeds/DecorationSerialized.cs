@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DecorationSerialized : Serializable {
 
-    public MapController.TypeOfDecoration type = MapController.TypeOfDecoration.build_01;
+    public Decoration.TypeOfDecoration type = Decoration.TypeOfDecoration.build_01;
 
     public DecorationSerialized(Decoration decoration_to_serialize)
     {

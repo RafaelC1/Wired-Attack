@@ -11,11 +11,10 @@ public class GameController : MonoBehaviour {
 
     public bool pause = false;
     
-    public enum GameStatus
+    public enum GameMode
     {
         EDIT_MODE,
-        GAME_MODE,
-        MENU_MODE
+        PLAY_MODE
     }
 
 	void Start () { }

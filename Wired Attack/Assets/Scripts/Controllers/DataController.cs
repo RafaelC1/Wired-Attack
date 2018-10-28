@@ -13,6 +13,7 @@ public class DataController : MonoBehaviour {
     private const string DEFAULT_START_FILE_NAME = "MAP_";
     private const string DEFAULT_END_FILE_EXTENSION = ".txt";
 
+    public const string START_OF_DESCRIPTION_SERIALIZED = "description";
     public const string START_OF_MACHINE_SERIALIZED = "machines";
     public const string START_OF_CONNECTION_SERIALIZED = "connections";
     public const string START_OF_DECORATION_SERIALIZED = "decorations";
@@ -25,23 +26,27 @@ public class DataController : MonoBehaviour {
 
     public static string NEW_GAME_KEY = "create_a_new_level";
 
-    private string custom_level_path = "";
+    private string full_path_of_custom_maps_directory = "";
 
     void Start()
     {
-        custom_level_path = Application.persistentDataPath + CUSTOM_LEVEL_FOLDER;
-
-        CreateCustomLevelDirectory();
+        DefineFullPathOfCustomMapsDirectory();
+        CreateCustomMapsDirectory();
     }
     void Update()
     {
     }
 
-    private void CreateCustomLevelDirectory()
+    private void DefineFullPathOfCustomMapsDirectory()
     {
-        if (!Directory.Exists(CustomMapPath()))
+        full_path_of_custom_maps_directory = Application.persistentDataPath + CUSTOM_LEVEL_FOLDER;
+    }
+
+    private void CreateCustomMapsDirectory()
+    {
+        if (!Directory.Exists(full_path_of_custom_maps_directory))
         {
-            Directory.CreateDirectory(custom_level_path);
+            Directory.CreateDirectory(full_path_of_custom_maps_directory);
         }
     }
 
@@ -55,7 +60,7 @@ public class DataController : MonoBehaviour {
             file_full_path = AvailableFileName();
             File.Open(file_full_path, FileMode.OpenOrCreate, FileAccess.Write).Close();
         } else {
-            file_full_path = FilePathFormat(map_name);
+            file_full_path = fullPathOfFileInCustomMapsDirectory(map_name);
             File.Open(file_full_path, FileMode.Truncate, FileAccess.Write).Close();
         }
 
@@ -73,7 +78,7 @@ public class DataController : MonoBehaviour {
         List<string> file_lines = new List<string>();
 
         string line = "";
-        string full_map_path = FilePathFormat(map_name);
+        string full_map_path = fullPathOfFileInCustomMapsDirectory(map_name);
 
         if (!File.Exists(full_map_path)) { return new List<string>(); }
 
@@ -97,7 +102,7 @@ public class DataController : MonoBehaviour {
     private List<string> AllCustomLevelsNames()
     {
         List<string> level_names = new List<string>();
-        DirectoryInfo dir_info = new DirectoryInfo(CustomMapPath());
+        DirectoryInfo dir_info = new DirectoryInfo(full_path_of_custom_maps_directory);
     
         foreach(FileInfo file in dir_info.GetFiles())
         {
@@ -139,29 +144,22 @@ public class DataController : MonoBehaviour {
         do
         {
             file_end_id ++;
-            name = FilePathFormat(FileNameFormat(file_end_id));
+            name = fullPathOfFileInCustomMapsDirectory(FileNameFormat(file_end_id));
         } while (File.Exists(name));
 
         return name;
     }
 
-    private string FilePathFormat(string file_name)
+    private string fullPathOfFileInCustomMapsDirectory(string file_name)
     {
         return string.Format("{0}/{1}{2}",
-                             CustomMapPath(),
+                             full_path_of_custom_maps_directory,
                              file_name,
                              DEFAULT_END_FILE_EXTENSION);
     }
 
     private string FileNameFormat(int id)
     {
-        return string.Format("{0}{1}",
-                             DEFAULT_START_FILE_NAME,
-                             id.ToString());
-    }
-
-    private string CustomMapPath()
-    {
-        return custom_level_path;
+        return string.Format("{0}{1}", DEFAULT_START_FILE_NAME, id.ToString());
     }
 }

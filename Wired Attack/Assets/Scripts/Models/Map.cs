@@ -5,13 +5,23 @@ using UnityEngine;
 public class Map {
 
     public string name = null;
+    public string file_path = null;
+
     [TextArea]
     public string description = null;
+    public int map_status = -1;
     public float time = 0f;
 
     public List<MachineSerialized> serialized_machines = new List<MachineSerialized>();
     public List<ConnectionSerialized> serialized_connections = new List<ConnectionSerialized>();
     public List<DecorationSerialized> serialized_decorations = new List<DecorationSerialized>();
+
+    public enum MapStatus
+    {
+        BLOCKED,
+        ALLOWED,
+        PASSED
+    }
 
     public Map(List<GameObject> machine_gos, List<GameObject> connection_gos, List<GameObject> decoration_gos)
     {
@@ -39,7 +49,8 @@ public class Map {
         {
             if (line.Contains(DataController.START_OF_MACHINE_SERIALIZED) ||
                 line.Contains(DataController.START_OF_CONNECTION_SERIALIZED) ||
-                line.Contains(DataController.START_OF_DECORATION_SERIALIZED))
+                line.Contains(DataController.START_OF_DECORATION_SERIALIZED) ||
+                line.Contains(DataController.START_OF_DESCRIPTION_SERIALIZED))
             {
                 current_model_loaded = line;
                 continue;
@@ -62,6 +73,11 @@ public class Map {
                         serialized_decorations.Add(LoadSerializedDecoration(line));
                         break;
                     }
+                case DataController.START_OF_DESCRIPTION_SERIALIZED:
+                    {
+                        description += line;
+                        break;
+                    }
             }
         }
     }
@@ -69,6 +85,9 @@ public class Map {
     public List<string> Serialized()
     {
         List<string> lines_of_serialized_model = new List<string>();
+
+        lines_of_serialized_model.Add(DataController.START_OF_DESCRIPTION_SERIALIZED);
+        lines_of_serialized_model.Add(description);
 
         lines_of_serialized_model.Add(DataController.START_OF_MACHINE_SERIALIZED);
 
@@ -108,6 +127,5 @@ public class Map {
     {
         return JsonUtility.FromJson<DecorationSerialized>(json);
     }
-
-
+    
 }

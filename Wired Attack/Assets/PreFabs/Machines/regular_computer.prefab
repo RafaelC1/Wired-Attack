@@ -111,7 +111,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1394526555283242}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.85277575, y: 1.6671294, z: 0}
+  m_LocalPosition: {x: 1.1733953, y: 0.6801754, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4310326065505574}
@@ -157,6 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  current_floor: {fileID: 0}
   team_id: 1
   model: regular_machine
   description: 
@@ -166,10 +167,9 @@ MonoBehaviour:
   background: {fileID: 1485186818851262}
   text_holder: {fileID: 1570226115076032}
   bits_label: {fileID: 114752707185643428}
-  current_floor: {fileID: 0}
   max_connections: 2
   max_bit_storage: 10
-  current_bit_stored: 0
+  current_stored_bits: 0
   process_time: 1
   current_process_time: 0
   bit_defense: 1
