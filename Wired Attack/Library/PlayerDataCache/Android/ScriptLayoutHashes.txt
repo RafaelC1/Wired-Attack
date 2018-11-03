@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-D:/projects/unity_workBanch/WiredAttack_apks/wired_attack_v2.apk
+D:/projects/unity_workBanch/WiredAttack_apks/wired_attack_v3.apk
 SceneListBegin?
 Assets/Scenes/SampleScene.unity
 SceneListEnd?
@@ -19,7 +19,7 @@ c7dd12c15208b0447e101f80038706df UnityEngine.Timeline.dll:UnityEngine.Timeline.A
 0ddb2c46096a1e59e0dce07886ce4769 UnityEngine.Timeline.dll:UnityEngine.Timeline.PlayableTrack
 64f3a13c1277a7f1324321d93d0ec13b UnityEngine.Timeline.dll:UnityEngine.Timeline.TimelineAsset
 f6637497451c9a030c421de4a1ad5cdb Unity.TextMeshPro.dll:TMPro.TMP_ScrollbarEventHandler
-cdd938a3d2997a6e2ca5eee2a9a5abcd Assembly-CSharp.dll:.SelectLevelController
+d3ea0939f9c3a2291728ce20cb43a44a Assembly-CSharp.dll:.SelectLevelController
 b14b4630cc47b6e9ea8a644551a6a8cc Unity.TextMeshPro.dll:TMPro.TMP_Text
 07f10af69d2094d93480b229c1caba64 Assembly-CSharp.dll:.MachineController
 53cefe5d98cadefbab750835e70b89c0 UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
@@ -131,10 +131,12 @@ dfd33ff9ae3ce8d7ca1f22b475ec2387 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 96f3ea9f23b6f08e60710ebb4af49174 Unity.TextMeshPro.dll:TMPro.TMP_SpriteAsset
 49b351883880a7cdc3a8ec1dae2cf954 Assembly-CSharp.dll:.GameController
 f16835701e71dd5d6fb1fed4b7aff1d8 Unity.TextMeshPro.dll:TMPro.TMP_Asset
+c81fc22baae9a7b354c027f30bccd0f7 Assembly-CSharp.dll:.MusicController
 87e41129f7434bf39670d4e774e93c93 Assembly-CSharp.dll:.Player
-5a07e9794166e1699ed1635676890aa9 Assembly-CSharp.dll:.Setting
+15930133841f910c1e6d88501cc82c8b Assembly-CSharp.dll:.Setting
 aa5f0da12c42714ca29d4037b4a3bea6 Assembly-CSharp.dll:.TranslationController
 486cd95c82d8305219c352c06b776e1f Unity.TextMeshPro.dll:TMPro.TMP_SpriteAnimator
+aabd40027bf642d02c73ba553a248609 Assembly-CSharp.dll:.MusicList
 eaf0bcdb10d442a4029d615f41d09957 Unity.TextMeshPro.dll:TMPro.TextContainer
 13228c3592f6f6bafefff925ccae1c16 Assembly-CSharp.dll:.Machine
 201273fb4f889724fb090164b7d6c657 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
@@ -151,7 +153,7 @@ da21fc3f8056b1f91c3dd09c7bf4f90a UnityEngine.Networking.dll:UnityEngine.Networki
 529a95e9e8e7686c4816e08fbb37183f UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransform
 fc061f3ae8a876c0687e86378d4a447c UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformChild
 7ca56e063bd071986fff4f513cc4f477 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkTransformVisualizer
-bfe9aa21c5685abbda7cf46912e8a401 Assembly-CSharp.dll:.SelectLevel
+0ab4eb71c60ac4fdcc58de26189f73c7 Assembly-CSharp.dll:.SelectLevel
 d027c9c8c763b95f1929d7cf49b72ed0 Assembly-CSharp.dll:.PopUpTextController
 72a8523b432c0a5317826b7a9e0a0e79 Unity.TextMeshPro.dll:TMPro.PackageResourceImporterWindow
 e53cc67d84060d628c7f03fc725766d8 Unity.TextMeshPro.dll:TMPro.TMP_FontAsset
@@ -174,7 +176,7 @@ e1ea12ca952c81d81a9a21fdf34446ed UnityEngine.HoloLens.dll:UnityEngine.EventSyste
 98d69a140ec0084cde3b6a5e09aea295 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingCollider
 dfd33ff9ae3ce8d7ca1f22b475ec2387 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.SpatialMappingRenderer
 aac9c55ae7ba4b95b852a7d9c191acd1 Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
-b501360dbdac21e2c553f448b33cb253 Assembly-CSharp.dll:.MusicController
+926c870f878e2656534a8130d358f4e3 Assembly-CSharp.dll:.SoundEffectController
 0a006f3734181ba8b26758f0866152c0 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 d68e55ced46dbaa663531affe2f65aad Assembly-CSharp.dll:.Holdable
 e04611b8715e6833d2bd7010fc6be10b Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet

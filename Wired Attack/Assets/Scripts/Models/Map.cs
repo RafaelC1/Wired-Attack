@@ -23,6 +23,8 @@ public class Map {
         PASSED
     }
 
+    public Map() { }
+
     public Map(List<GameObject> machine_gos, List<GameObject> connection_gos, List<GameObject> decoration_gos)
     {
         foreach(GameObject machine_go in machine_gos)

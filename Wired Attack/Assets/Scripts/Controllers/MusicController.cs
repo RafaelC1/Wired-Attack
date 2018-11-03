@@ -3,81 +3,86 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MusicController : MonoBehaviour {
+    
+    public MusicList game_list;
+    public MusicList menu_list;
 
-    public AudioClip[] music;
-    private int current_music_id = -1;
-
-    private AudioSource sound_source;
+    private MusicList current_list = null;
 
     public bool play = false;
     public bool repeat = false;
-    private float current_music_volumn = 1f;
 
     void Start()
     {
-        sound_source = GetComponent<AudioSource>();
-        ResetList();
-        if (play) { StartCurrentMusic(); }
+        ChangeToMenuMusics();
+        if (current_list == null) { ChangeToGameList(); }
+
+        if (play) { PlayCurrentMusic(); }
     }
 
     void Update()
     {
-        if (!sound_source.isPlaying && play)
+        if (!GetAudioSource().isPlaying)
         {
-            NextMusic();
-            StartCurrentMusic();
+            current_list.NextMusic();
+            if (current_list.CurrentMusicExist())
+            {
+                UpdateCurrentMusicToClip();
+                StartCurrentMusic();
+            } else if (repeat) {
+                ResetCurrentList();
+                StartCurrentMusic();
+            }
         }
     }
 
-    public void StartPlayingList()
+    private AudioSource GetAudioSource()
     {
-        ResetList();
-        play = true;
-    }
-
-    public void StartCurrentMusic()
-    {
-        sound_source.Play();
+        return GetComponent<AudioSource>();
     }
 
     private void UpdateCurrentMusicToClip()
     {
-        sound_source.clip = music[current_music_id];
+        GetAudioSource().Stop();
+        GetAudioSource().clip = current_list.CurrentMusic();
     }
 
-    public void NextMusic()
+    private void PlayCurrentMusic()
     {
-        current_music_id++;
-        if (!CurrentMusicIdExist()){ ResetList(); }
+        GetAudioSource().Play();
+    }
+
+    public void ChangeToMenuMusics()
+    {
+        ResetCurrentList();
+        current_list = menu_list;
         UpdateCurrentMusicToClip();
+        StartCurrentMusic();
     }
 
-    public void BackMusic()
+    public void ChangeToGameList()
     {
-        current_music_id--;
-        if (!CurrentMusicIdExist()) { current_music_id = MusicCount(); }
+        ResetCurrentList();
+        current_list = game_list;
         UpdateCurrentMusicToClip();
+        StartCurrentMusic();
     }
 
-    public void ResetList()
+    private void ResetCurrentList()
     {
-        if (!repeat) { play = false; }
-        current_music_id = 0;
+        if (current_list != null)
+        {
+            current_list.GoStartOfTheList();
+        }
     }
 
-    public int MusicCount()
+    public void StartCurrentMusic()
     {
-        return music.Length - 1;
+        GetAudioSource().Play();
     }
 
-    private bool CurrentMusicIdExist()
+    public void ChangeSoundSourceVolume(float new_volume)
     {
-        return current_music_id >= 0 && current_music_id < music.Length - 1;
-    }
-
-    private void OnEnable()
-    {
-        sound_source.Pause();
-        current_music_id = 0;
+        GetAudioSource().volume = new_volume;
     }
 }

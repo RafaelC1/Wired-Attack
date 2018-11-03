@@ -62,8 +62,11 @@ public class MapController : MonoBehaviour
     public string current_map_name = "";
 
     public float gap_size = 0;
-    public int height = 7;
-    public int width = 5;
+    public int REGULAR_MAP_WIDTH = 5;
+    public int REGULAR_MAP_HEIGHT = 7;
+
+    public int MENU_MAP_WIDTH = 20;
+    public int MENU_MAP_HEIGHT = 30;
 
     private GameController.GameMode current_status;
 
@@ -72,6 +75,7 @@ public class MapController : MonoBehaviour
     void Start()
     {
         PrepareTilesInDictionaries();
+        //CreateMenuMap();
     }
 
     void Update()
@@ -103,7 +107,7 @@ public class MapController : MonoBehaviour
         }
     }
 
-    public void ClearMap()
+    public void ClearCurrentMap()
     {
         foreach (GameObject tile in tiles)
         {
@@ -112,18 +116,24 @@ public class MapController : MonoBehaviour
         tiles.Clear();
     }
 
-    public void CreateMap(GameController.GameMode game_mode)
+    public void CreateMenuMap()
     {
-        CreateTiles(game_mode);
+        CreateTiles(GameController.GameMode.DEMOSTRATION, MENU_MAP_WIDTH, MENU_MAP_HEIGHT);
+        LoadMap(CreateAFakeMenuMap(), GameController.GameMode.DEMOSTRATION);
+    }
+
+    public void CreateGameMap(GameController.GameMode game_mode)
+    {
+        CreateTiles(game_mode, REGULAR_MAP_WIDTH, REGULAR_MAP_HEIGHT);
         DesactiveAllMenus();
     }
 
-    private void CreateTiles(GameController.GameMode game_mode)
+    private void CreateTiles(GameController.GameMode game_mode, int map_width, int map_height)
     {
         tile_size = FloorAccordingPositionAndType(0, 0, TypeOfFloor.side_walk).GetComponent<Renderer>().bounds.size;
 
-        float total_width = tile_size.x * width;
-        float total_height = tile_size.y * height;
+        float total_width = tile_size.x * map_width;
+        float total_height = tile_size.y * map_height;
 
         Vector3 start_pos = Vector3.zero;
 
@@ -132,20 +142,30 @@ public class MapController : MonoBehaviour
 
         Vector3 current_pos = start_pos;
 
-        for (int i = 0; i < height; i++)
+        for (int i = 0; i < REGULAR_MAP_HEIGHT; i++)
         {
-            for (int j = 0; j < width; j++)
+            for (int j = 0; j < REGULAR_MAP_WIDTH; j++)
             {
                 GameObject floor_go = Instantiate(FloorAccordingPositionAndType(j, i, TypeOfFloor.side_walk));
                 Floor floor = floor_go.GetComponent<Floor>();
 
-                if (game_mode == GameController.GameMode.EDIT_MODE)
+                switch(game_mode)
                 {
-                    floor.TurnToEdit(true);
-                }
-                else
-                {
-                    floor.TurnToEdit(false);
+                    case GameController.GameMode.EDIT_MODE:
+                        {
+                            floor.TurnToEdit(true);
+                            break;
+                        }
+                    case GameController.GameMode.PLAY_MODE:
+                        {
+                            floor.TurnToEdit(false);
+                            break;
+                        }
+                    case GameController.GameMode.DEMOSTRATION:
+                        {
+                            floor.TurnToEdit(false);
+                            break;
+                        }
                 }
 
                 floor_go.transform.SetParent(transform);
@@ -170,19 +190,19 @@ public class MapController : MonoBehaviour
         if (pos_y == 0)
         {
             if (pos_x == 0) { floor = floor_groups[floor_type][SideOfFloor.top_left]; }
-            else if (pos_x == width - 1) { floor = floor_groups[floor_type][SideOfFloor.top_right]; }
+            else if (pos_x == REGULAR_MAP_WIDTH - 1) { floor = floor_groups[floor_type][SideOfFloor.top_right]; }
             else { floor = floor_groups[floor_type][SideOfFloor.top_center]; }
         }
-        else if (pos_y == height - 1)
+        else if (pos_y == REGULAR_MAP_HEIGHT - 1)
         {
             if (pos_x == 0) { floor = floor_groups[floor_type][SideOfFloor.bottom_left]; }
-            else if (pos_x == width - 1) { floor = floor_groups[floor_type][SideOfFloor.bottom_right]; }
+            else if (pos_x == REGULAR_MAP_WIDTH - 1) { floor = floor_groups[floor_type][SideOfFloor.bottom_right]; }
             else { floor = floor_groups[floor_type][SideOfFloor.bottom_center]; }
         }
         else
         {
             if (pos_x == 0) { floor = floor_groups[floor_type][SideOfFloor.left]; }
-            else if (pos_x == width - 1) { floor = floor_groups[floor_type][SideOfFloor.right]; }
+            else if (pos_x == REGULAR_MAP_WIDTH - 1) { floor = floor_groups[floor_type][SideOfFloor.right]; }
             else { floor = floor_groups[floor_type][SideOfFloor.center]; }
         }
 
@@ -307,7 +327,6 @@ public class MapController : MonoBehaviour
         Decoration decoration = decoration_go.GetComponent<Decoration>();
 
         decoration.id = 0;
-        Debug.Log(1);
         decoration_go.transform.SetParent(decoration_parent.transform);
         GiveToSelectedFloor(decoration_go);
         DeselectCurrentFloor();
@@ -377,6 +396,19 @@ public class MapController : MonoBehaviour
         map_to_save.name = current_map_name;
 
         data_controller.SaveMap(map_to_save);
+    }
+
+    private Map CreateAFakeMenuMap()
+    {
+        Map fake_map = new Map();
+        int amount_of_decorations = MENU_MAP_HEIGHT * MENU_MAP_WIDTH;
+
+        for (int i = 0; i < amount_of_decorations; i++)
+        {
+            fake_map.serialized_decorations.Add(new DecorationSerialized(i, i));
+        }
+
+        return fake_map;
     }
     
     public void LoadMap(Map map_to_load, GameController.GameMode current_game_status)

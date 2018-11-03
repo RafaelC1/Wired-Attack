@@ -21,4 +21,9 @@ public class SoundEffectController : MonoBehaviour {
     {
         sound_source.PlayOneShot(click_over_btn, current_sound_volumn);
     }
+
+    public void ChangeSoundSourceVolume(float new_volume)
+    {
+        sound_source.volume = new_volume;
+    }
 }

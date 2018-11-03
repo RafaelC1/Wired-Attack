@@ -26,17 +26,14 @@ public class SelectLevelController : MonoBehaviour {
     
     private Map selected_map = null;
     
-	void Start ()
-    {
-        CreateAllLevelButtons();
-    }
+	void Start () { }
 	
 	void Update () { }
 
     public void StartGame()
     {
-        map_controller.ClearMap();
-        map_controller.CreateMap(start_game_in);
+        map_controller.ClearCurrentMap();
+        map_controller.CreateGameMap(start_game_in);
         map_controller.LoadMap(selected_map, start_game_in);
     }
 
@@ -90,6 +87,15 @@ public class SelectLevelController : MonoBehaviour {
 
     }
 
+    private void DeleteAllLevelButtons()
+    {
+        Transform list_transform = list.transform;
+        for(int i = 0; i < list_transform.childCount; i++)
+        {
+            Destroy(list_transform.GetChild(0));
+        }
+    }
+
     private void CreateNewlevelButton(Map map_target)
     {
         Transform list_transform = list.transform;
@@ -116,6 +122,7 @@ public class SelectLevelController : MonoBehaviour {
 
     private void OnEnable()
     {
+        CreateAllLevelButtons();
         SelectLevel(selected_map);
     }
 }

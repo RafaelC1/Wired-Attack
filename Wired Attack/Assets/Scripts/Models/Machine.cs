@@ -102,7 +102,8 @@ public class Machine : Holdable {
 
     public bool CanReceiveAliedBits()
     {
-        return !(current_stored_bits == max_bit_storage);
+        //return !(current_stored_bits == max_bit_storage);
+        return true;
     }
 
     private void UpdateExternalInformations()

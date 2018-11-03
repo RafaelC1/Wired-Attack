@@ -6,20 +6,27 @@ using UnityEngine.UI;
 public class Setting : MonoBehaviour {
 
     public TranslationController translation_controller = null;
+    public SoundEffectController sound_controller = null;
+    public MusicController music_controller = null;
 
     public Slider music_slider;
     public Slider sound_slider;
 
     public Text language_text_field;
 
-    public float music_volumn = 1f;
-    public float sound_volumn = 1f;
+    private string MUSIC_VOLUME_KEY = "music_volume";
+    private string SOUND_VOLUME_KEY = "sound_volume";
+    private string LANGUAGE_KEY = "user_language";
 
     void Start()
     {
-        //LoadSavedSettings();
-        music_slider.onValueChanged.AddListener(delegate { MusicVolumnChanged(); });
-        sound_slider.onValueChanged.AddListener(delegate { SoundVolumnChanged(); });
+        music_slider.onValueChanged.AddListener(delegate { VolumeChanged(); });
+        sound_slider.onValueChanged.AddListener(delegate { VolumeChanged(); });
+
+        DefineFirstGameSettings();
+
+        LoadSavedSettings();
+        UpdateSoundSourcesVolume();
     }
 
     void Update() { }
@@ -33,7 +40,7 @@ public class Setting : MonoBehaviour {
             translation_controller.SelectFirstLanguage();
         }
         translation_controller.UpdateAllTextFields();
-        UpdateLanguateTextField();
+        LanguageChanged();
     }
 
     public void BackLanguage()
@@ -45,35 +52,56 @@ public class Setting : MonoBehaviour {
             translation_controller.SelectLastLanguage();
         }
         translation_controller.UpdateAllTextFields();
-        UpdateLanguateTextField();
+        LanguageChanged();
     }
 
-    private void UpdateLanguateTextField()
+    private void LanguageChanged()
     {
         language_text_field.text = translation_controller.CurrentLanguage();
     }
 
-    private void MusicVolumnChanged()
+    private void VolumeChanged()
     {
-        music_volumn = music_slider.value;
-        SaveCurrentSettings();
+        UpdateSoundSourcesVolume();
     }
 
-    private void SoundVolumnChanged()
+    public void SaveCurrentSettings()
     {
-        sound_volumn = sound_slider.value;
-        SaveCurrentSettings();
-    }
-
-    private void SaveCurrentSettings()
-    {
-
+        PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, music_slider.value);
+        PlayerPrefs.SetFloat(SOUND_VOLUME_KEY, sound_slider.value);
+        PlayerPrefs.SetInt(LANGUAGE_KEY, translation_controller.current_language_id);
+        PlayerPrefs.Save();
     }
 
     private void LoadSavedSettings()
     {
+        LoadVolumeSettings();
+        LoadLanguageeSettings();
+        LanguageChanged();
+    }
 
+    private void LoadVolumeSettings()
+    {
+        music_slider.value = PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY);
+        sound_slider.value = PlayerPrefs.GetFloat(SOUND_VOLUME_KEY);
+    }
+
+    private void LoadLanguageeSettings()
+    {
+        translation_controller.current_language_id = PlayerPrefs.GetInt(LANGUAGE_KEY);
         translation_controller.UpdateAllTextFields();
-        UpdateLanguateTextField();
+    }
+
+    private void UpdateSoundSourcesVolume()
+    {
+        music_controller.ChangeSoundSourceVolume(music_slider.value);
+        sound_controller.ChangeSoundSourceVolume(sound_slider.value);
+    }
+
+    private void DefineFirstGameSettings()
+    {
+        if (!PlayerPrefs.HasKey(MUSIC_VOLUME_KEY)) PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, 0.5f);
+        if (!PlayerPrefs.HasKey(SOUND_VOLUME_KEY)) PlayerPrefs.SetFloat(SOUND_VOLUME_KEY, 0.5f);
+        if (!PlayerPrefs.HasKey(LANGUAGE_KEY)) PlayerPrefs.SetInt(LANGUAGE_KEY, 0);
     }
 }

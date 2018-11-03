@@ -14,10 +14,11 @@ public class GameController : MonoBehaviour {
     public enum GameMode
     {
         EDIT_MODE,
-        PLAY_MODE
+        PLAY_MODE,
+        DEMOSTRATION
     }
 
-	void Start () { }
+    void Start () { }
 
 	void Update () { }
 
