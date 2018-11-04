@@ -48,7 +48,7 @@ public class MachineController : MonoBehaviour {
 
     public int IAMachineCount()
     {
-        return machines.FindAll(machine => machine.team == TeamHelpers.Team.IA_TEAM).Count;
+        return machines.FindAll(machine => machine.team == TeamHelpers.Team.RED_TEAM).Count;
     }
 
     private void PrepareAllMachines(List<GameObject> machine_gos)

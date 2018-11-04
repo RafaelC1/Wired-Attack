@@ -27,15 +27,23 @@ public class GameController : MonoBehaviour {
         pause = !pause;
     }
 
-    public void CreatePlayers()
+    public void CreateHumanPlay()
     {
         GameObject temp = Instantiate(player_pre_fab);
         temp.GetComponent<Player>().machine_controller = machine_controller;
         temp.transform.SetParent(players_holder.transform);
+    }
 
-        temp = Instantiate(enemy_pre_fab);
-        temp.GetComponent<IA>().machine_controller = machine_controller;
+    public void CreateIAPlayer(TeamHelpers.Team ia_team)
+    {
+        GameObject temp = Instantiate(enemy_pre_fab);
+        IA ia = temp.GetComponent<IA>();
+
         temp.transform.SetParent(players_holder.transform);
+        temp.name = ia_team.ToString();
+
+        ia.machine_controller = machine_controller;
+        ia.team = ia_team;
     }
 
     public void DestroyPlayers()

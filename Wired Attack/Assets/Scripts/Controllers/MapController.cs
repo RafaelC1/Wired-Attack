@@ -451,7 +451,12 @@ public class MapController : MonoBehaviour
         if (current_game_status == GameController.GameMode.PLAY_MODE)
         {
             machine_controller.StartGame(MachinesOnTiles(), ConnectionsOnMachines());
-            game_controller.CreatePlayers();
+            if (machine_controller.machines.Find(machine => machine.team == TeamHelpers.Team.HUMAN_TEAM))
+                game_controller.CreateHumanPlay();
+            if (machine_controller.machines.Find(machine => machine.team == TeamHelpers.Team.RED_TEAM))
+                game_controller.CreateIAPlayer(TeamHelpers.Team.RED_TEAM);
+            if (machine_controller.machines.Find(machine => machine.team == TeamHelpers.Team.YELLOW_TEAM))
+                game_controller.CreateIAPlayer(TeamHelpers.Team.YELLOW_TEAM);
         }
     }
 

@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\Models\Floor.cs" />
     <Compile Include="Assets\Scripts\Models\Holdable.cs" />
     <Compile Include="Assets\Scripts\Models\IA.cs" />
+    <Compile Include="Assets\Scripts\Models\IADifficult.cs" />
     <Compile Include="Assets\Scripts\Models\Machine.cs" />
     <Compile Include="Assets\Scripts\Models\MachineTarget.cs" />
     <Compile Include="Assets\Scripts\Models\MachineTargetList.cs" />

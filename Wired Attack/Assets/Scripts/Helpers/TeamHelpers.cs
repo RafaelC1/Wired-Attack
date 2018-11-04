@@ -8,7 +8,8 @@ public static class TeamHelpers  {
     {
         NEUTRAL_TEAM,
         HUMAN_TEAM,
-        IA_TEAM
+        RED_TEAM,
+        YELLOW_TEAM
     }
 
     public static Color TeamColorOf(Team team)
@@ -21,9 +22,14 @@ public static class TeamHelpers  {
                 team_color = Color.blue;
                 break;
             }
-            case Team.IA_TEAM:
+            case Team.RED_TEAM:
             {
                 team_color = Color.red;
+                break;
+            }
+            case Team.YELLOW_TEAM:
+            {
+                team_color = Color.yellow;
                 break;
             }
             case Team.NEUTRAL_TEAM:

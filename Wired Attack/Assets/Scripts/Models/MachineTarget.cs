@@ -15,92 +15,93 @@ public class MachineTarget {
         this.searcher_team = searcher_team;
     }
 
-    public List<Machine> AlliesWithTheDoubleStoredBitsThanMine()
+    public List<Machine> AllMachinesConnected()
     {
-        return AlliedConnected().Where(allied => allied.current_stored_bits > 2 * machine.current_stored_bits)
-                                .ToList();
+        return machine.ConnectedMachines();
     }
 
-    public List<Machine> AlliesWithMoreStoredBitsThanMy()
+    public bool AnyAllyWithDoubleBitsConnected()
     {
-        return AlliedConnected().Where(allied => allied.current_stored_bits > machine.current_stored_bits)
-                                .ToList();
+        return StrongestAllyConnected().current_stored_bits > 2*Machine().current_stored_bits;
     }
 
-    public Machine StrongestAllyMachineConnected()
+    public bool AnyAllyWithMoreBitsConnected()
     {
-        int max = AlliedConnected().Max(machine => machine.current_stored_bits);
-        if (max > 0)
-        {
-            return AlliedConnected().Find(machine => machine.current_stored_bits == max);
-        } else
-        {
-            return null;
-        }
+        return StrongestAllyConnected().current_stored_bits > Machine().current_stored_bits;
     }
 
-    private List<Machine> AllAnotherMachines()
+    public bool AnyAllyConnected()
     {
-        return machine.ConnectedMachines().Where(machine => machine != this.machine).ToList();
+        return AllAlliesConnected().Any();
     }
 
-    public bool AnyAlliesConnected()
+    public Machine StrongestAllyConnected()
     {
-        return AlliedConnected().Any();
+        int max = AllAlliesConnected().Max(machine => machine.current_stored_bits);
+        return AllAlliesConnected().Find(machine => machine.current_stored_bits == max);
     }
 
-    public List<Machine> AlliedConnected()
+    public List<Machine> AllAlliesConnected()
     {
-        return AllAnotherMachines().FindAll(connected_machine => connected_machine.team == searcher_team);
+        return AllMachinesConnected().FindAll(machine => machine.team == searcher_team);
     }
 
-    public bool AnyStrongEnemyConnected()
+    public bool AnyEnemyConnected()
     {
-        return EnemiesWithMoreStoredBitsThanMy().Any();
+        return AllEnemiesConnected().Any();
     }
 
-    public bool AnyEnemieConnected()
+    public List<Machine> AllEnemiesConnected()
     {
-        return EnemiesConnected().Any();
-    }
-
-    public List<Machine> EnemiesWithDoubleStoredBitsThanMine()
-    {
-        return EnemiesWithMoreStoredBitsThanMy().FindAll(enemy => enemy.current_stored_bits > 2 * machine.current_stored_bits);
-    }
-
-    public List<Machine> EnemiesWithMoreStoredBitsThanMy()
-    {
-        return EnemiesConnected().Where(allied => allied.current_stored_bits > machine.current_stored_bits)
-                                .ToList();
-    }
-
-    public List<Machine> EnemiesConnected()
-    {
-        return AllAnotherMachines().FindAll(connected_machine => connected_machine.team != searcher_team &&
+        return AllMachinesConnected().FindAll(connected_machine => connected_machine.team != searcher_team &&
                                                                  connected_machine.team != TeamHelpers.Team.NEUTRAL_TEAM);
     }
 
     public bool AnyNeutralConnected()
     {
-        return NeutralsConnected().Any();
+        return AllNeutralsConnected().Any();
     }
 
-    public List<Machine> NeutralsConnected()
+    public List<Machine> AllNeutralsConnected()
     {
         return machine.ConnectedMachines()
-                      .FindAll(connected_machine => connected_machine.team != TeamHelpers.Team.NEUTRAL_TEAM &&
+                      .FindAll(connected_machine => connected_machine.IsNeutral() &&
                                                     connected_machine != machine);
     }
 
-    public bool IsEnemy()
+    public bool MachineIsEnemy()
     {
-        return machine.team != searcher_team;
+        return !MachineIsNeutral() && machine.team != searcher_team;
     }
 
-    public bool IsNeutral()
+    public bool MachineIsNeutral()
     {
-        return machine.team == TeamHelpers.Team.NEUTRAL_TEAM;
+        return machine.IsNeutral();
+    }
+
+    public bool MachineIsAllied()
+    {
+        return machine.team == searcher_team;
+    }
+
+    public bool IsMachineStorageFull()
+    {
+        return Machine().IsStorageFull();
+    }
+
+    public bool IsMachineStorageEmpty()
+    {
+        return Machine().IsStorageEmpty();
+    }
+
+    public bool IsMachineStorageHalfFull()
+    {
+        return !IsMachineStorageFull() && !IsMachineStorageEmpty();
+    }
+
+    public bool MachineCanProduceBits()
+    {
+        return Machine().produce_bit;
     }
 
     public Machine Machine()

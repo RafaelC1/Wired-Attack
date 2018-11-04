@@ -4,30 +4,17 @@ using UnityEngine;
 
 public class IA : Player {
 
-    public enum Difficult
-    {
-        EASY = 1,
-        MEDIUM = 2,
-        HARD = 3,
-        IMPOSSIBLE = 5
-    }
+    public IADifficult.Difficult level = IADifficult.Difficult.MEDIUM;
 
-
-    public Difficult level = Difficult.MEDIUM;
-    private int number_of_actions_per_thought = 0;
-
-    public float thought_time = 0;
+    public List<GameObject> difficult_settings = new List<GameObject>();
+    
     private float current_thought_time = 0;
     
-	void Start ()
-    {
-        number_of_actions_per_thought = level.GetHashCode();
-        team = TeamHelpers.Team.IA_TEAM;
-    }
+	void Start () { }
 
 	void Update ()
     {
-        if (current_thought_time > thought_time)
+        if (current_thought_time > CurrentDifficult().thought_time)
         {
             Think();
             current_thought_time = 0;
@@ -42,11 +29,11 @@ public class IA : Player {
 
         if (list_of_targets.BestTargets().Count > 0)
         {
-            Debug.Log(list_of_targets.BestTargets().Count);
-            int actions = number_of_actions_per_thought - (number_of_actions_per_thought - list_of_targets.BestTargets().Count);
-            for(int i=0; i < actions; i++)
+            for(int i=0; i < CurrentDifficult().number_of_actions_per_thought; i++)
             {
-                selected_machine = list_of_targets.BestTargets()[i].StrongestAllyMachineConnected();
+                if (i >= list_of_targets.BestTargets().Count)
+                    break;
+                selected_machine = list_of_targets.BestTargets()[i].StrongestAllyConnected();
                 target_machine = list_of_targets.BestTargets()[i].Machine();
                 TryAttackMachine();
             }
@@ -55,7 +42,9 @@ public class IA : Player {
 
     private void TryAttackMachine()
     {
-        if(selected_machine != null && target_machine != null)
+        if(selected_machine != null &&
+           target_machine != null &&
+           !selected_machine.IsStorageEmpty())
         {
             AttackMachine();
         } else {
@@ -81,5 +70,11 @@ public class IA : Player {
     private List<Machine> NeutralMachines()
     {
         return AllMachines().FindAll(machine => machine.team == TeamHelpers.Team.HUMAN_TEAM);
+    }
+    
+    private IADifficult CurrentDifficult()
+    {
+        return difficult_settings.Find(difficult => difficult.GetComponent<IADifficult>().difficult == level)
+                                 .GetComponent<IADifficult>();
     }
 }

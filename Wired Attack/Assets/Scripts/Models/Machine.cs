@@ -58,7 +58,7 @@ public class Machine : Holdable {
 
     void Update()
     {
-        if (actived && team != TeamHelpers.Team.NEUTRAL_TEAM)
+        if (actived && !IsNeutral())
         {
             Process();
         }
@@ -129,6 +129,11 @@ public class Machine : Holdable {
     {
         team = new_team;
         ChangeColor();
+    }
+
+    public bool IsNeutral()
+    {
+        return team == TeamHelpers.Team.NEUTRAL_TEAM;
     }
 
     private void ChangeColor()
