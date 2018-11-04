@@ -90,9 +90,9 @@ public class SelectLevelController : MonoBehaviour {
     private void DeleteAllLevelButtons()
     {
         Transform list_transform = list.transform;
-        for(int i = 0; i < list_transform.childCount; i++)
+        foreach(Transform child in list_transform)
         {
-            Destroy(list_transform.GetChild(0));
+            Destroy(child.gameObject);
         }
     }
 
@@ -122,6 +122,7 @@ public class SelectLevelController : MonoBehaviour {
 
     private void OnEnable()
     {
+        DeleteAllLevelButtons();
         CreateAllLevelButtons();
         SelectLevel(selected_map);
     }

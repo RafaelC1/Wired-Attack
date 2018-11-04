@@ -10,7 +10,7 @@ public class MachineSerialized : Serializable
 	public MachineSerialized(Machine machine_to_serialize)
     {
         id = machine_to_serialize.id;
-        team_id = machine_to_serialize.team_id;
+        team_id = machine_to_serialize.team.GetHashCode();
         floor_id = machine_to_serialize.current_floor.GetComponent<Floor>().id;
         machine_model = machine_to_serialize.model;
     }

@@ -10,8 +10,9 @@ public class Message : MonoBehaviour {
     private int bit_amount = 0;
 
     private Connection connection_in = null;
-    private GameObject from = null;
-    private GameObject to = null;
+    public GameObject from = null;
+    public TeamHelpers.Team from_team = TeamHelpers.Team.NEUTRAL_TEAM;
+    public GameObject to = null;
 
     void Start()
     {
@@ -39,6 +40,7 @@ public class Message : MonoBehaviour {
         transfer_time = time_to_transfer;
 
         this.from = from;
+        this.from_team = from.GetComponent<Machine>().team;
         this.to = to;
         connection_in = connection;
 
@@ -47,7 +49,6 @@ public class Message : MonoBehaviour {
 
     public bool ArrivedToDestine()
     {
-
         return current_transfer_time >= 1;
     }
 
@@ -61,8 +62,7 @@ public class Message : MonoBehaviour {
 
     public void DelivereBits()
     {
-        to.GetComponent<Machine>().ReceiveBits(bit_amount,
-                                               from.GetComponent<Machine>());
+        to.GetComponent<Machine>().ReceiveBits(bit_amount, from_team);
     }
 
 }

@@ -4,26 +4,29 @@ using UnityEngine;
 
 public static class TeamHelpers  {
 
-    public const int NEUTRAL_TEAM = 0;
-    public const int HUMAN_TEAM = 1;
-    public const int IA_TEAM = 2;
+    public enum Team
+    {
+        NEUTRAL_TEAM,
+        HUMAN_TEAM,
+        IA_TEAM
+    }
 
-    public static Color TeamColorOf(int team_id)
+    public static Color TeamColorOf(Team team)
     {
         Color team_color = Color.white;
-        switch(team_id)
+        switch(team)
         {
-            case HUMAN_TEAM:
+            case Team.HUMAN_TEAM:
             {
                 team_color = Color.blue;
                 break;
             }
-            case IA_TEAM:
+            case Team.IA_TEAM:
             {
                 team_color = Color.red;
                 break;
             }
-            case NEUTRAL_TEAM:
+            case Team.NEUTRAL_TEAM:
             {
                 team_color = Color.gray;
                 break;

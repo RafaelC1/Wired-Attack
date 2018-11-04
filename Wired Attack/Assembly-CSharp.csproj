@@ -75,11 +75,12 @@
     <Compile Include="Assets\Scripts\Helpers\TouchHelpers.cs" />
     <Compile Include="Assets\Scripts\Models\Connection.cs" />
     <Compile Include="Assets\Scripts\Models\Decoration.cs" />
-    <Compile Include="Assets\Scripts\Models\Delivery.cs" />
-    <Compile Include="Assets\Scripts\Models\Enemy.cs" />
     <Compile Include="Assets\Scripts\Models\Floor.cs" />
     <Compile Include="Assets\Scripts\Models\Holdable.cs" />
+    <Compile Include="Assets\Scripts\Models\IA.cs" />
     <Compile Include="Assets\Scripts\Models\Machine.cs" />
+    <Compile Include="Assets\Scripts\Models\MachineTarget.cs" />
+    <Compile Include="Assets\Scripts\Models\MachineTargetList.cs" />
     <Compile Include="Assets\Scripts\Models\Map.cs" />
     <Compile Include="Assets\Scripts\Models\Message.cs" />
     <Compile Include="Assets\Scripts\Models\MusicList.cs" />

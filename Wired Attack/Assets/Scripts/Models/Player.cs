@@ -6,8 +6,8 @@ public class Player : MonoBehaviour {
 
     public MachineController machine_controller = null;
 
-    public string player_name = "Rafael";
-    public int team_id = TeamHelpers.HUMAN_TEAM;
+    protected string player_name = "Rafael";
+    public TeamHelpers.Team team = TeamHelpers.Team.HUMAN_TEAM;
 
     public Machine selected_machine = null;
     public Machine target_machine = null;
@@ -35,7 +35,7 @@ public class Player : MonoBehaviour {
 
                 if (selected_machine == null)
                 {
-                    if (machine_hit.team_id == TeamHelpers.HUMAN_TEAM)
+                    if (machine_hit.team == TeamHelpers.Team.HUMAN_TEAM)
                     {
                         SelectMachine(machine_hit);
                     }
@@ -51,13 +51,18 @@ public class Player : MonoBehaviour {
 
             if (selected_machine != null && target_machine != null)
             {
-                machine_controller.TryTransferBitsBetweenMachines(target_machine, selected_machine);
-                DeselectAllMachines();
+                AttackMachine();
             }
         }
     }
 
-    private void SelectMachine(Machine machine)
+    protected void AttackMachine()
+    {
+        machine_controller.TryTransferBitsBetweenMachines(target_machine, selected_machine);
+        DeselectAllMachines();
+    }
+
+    protected void SelectMachine(Machine machine)
     {
         if (selected_machine == null)
         {
@@ -69,7 +74,7 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private void DeselectAllMachines()
+    protected void DeselectAllMachines()
     {
         if (selected_machine != null)
         {

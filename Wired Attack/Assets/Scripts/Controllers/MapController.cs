@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -62,8 +63,8 @@ public class MapController : MonoBehaviour
     public string current_map_name = "";
 
     public float gap_size = 0;
-    public int REGULAR_MAP_WIDTH = 5;
-    public int REGULAR_MAP_HEIGHT = 7;
+    public int REGULAR_MAP_WIDTH = 4;
+    public int REGULAR_MAP_HEIGHT = 4;
 
     public int MENU_MAP_WIDTH = 20;
     public int MENU_MAP_HEIGHT = 30;
@@ -75,7 +76,7 @@ public class MapController : MonoBehaviour
     void Start()
     {
         PrepareTilesInDictionaries();
-        //CreateMenuMap();
+        CreateFakeMap();
     }
 
     void Update()
@@ -116,10 +117,10 @@ public class MapController : MonoBehaviour
         tiles.Clear();
     }
 
-    public void CreateMenuMap()
+    public void CreateFakeMap()
     {
         CreateTiles(GameController.GameMode.DEMOSTRATION, MENU_MAP_WIDTH, MENU_MAP_HEIGHT);
-        LoadMap(CreateAFakeMenuMap(), GameController.GameMode.DEMOSTRATION);
+        LoadMap(CreateAFakeMapObjects(), GameController.GameMode.DEMOSTRATION);
     }
 
     public void CreateGameMap(GameController.GameMode game_mode)
@@ -130,7 +131,7 @@ public class MapController : MonoBehaviour
 
     private void CreateTiles(GameController.GameMode game_mode, int map_width, int map_height)
     {
-        tile_size = FloorAccordingPositionAndType(0, 0, TypeOfFloor.side_walk).GetComponent<Renderer>().bounds.size;
+        tile_size = FloorAccordingPositionAndType(0, 0, 0, 0, TypeOfFloor.side_walk).GetComponent<Renderer>().bounds.size;
 
         float total_width = tile_size.x * map_width;
         float total_height = tile_size.y * map_height;
@@ -142,11 +143,11 @@ public class MapController : MonoBehaviour
 
         Vector3 current_pos = start_pos;
 
-        for (int i = 0; i < REGULAR_MAP_HEIGHT; i++)
+        for (int i = 0; i < map_height; i++)
         {
-            for (int j = 0; j < REGULAR_MAP_WIDTH; j++)
+            for (int j = 0; j < map_width; j++)
             {
-                GameObject floor_go = Instantiate(FloorAccordingPositionAndType(j, i, TypeOfFloor.side_walk));
+                GameObject floor_go = Instantiate(FloorAccordingPositionAndType(j, i, map_width, map_height, TypeOfFloor.side_walk));
                 Floor floor = floor_go.GetComponent<Floor>();
 
                 switch(game_mode)
@@ -183,26 +184,26 @@ public class MapController : MonoBehaviour
         }
     }
 
-    private GameObject FloorAccordingPositionAndType(int pos_x, int pos_y, TypeOfFloor floor_type)
+    private GameObject FloorAccordingPositionAndType(int pos_x, int pos_y, int max_width, int max_height, TypeOfFloor floor_type)
     {
         GameObject floor = null;
 
         if (pos_y == 0)
         {
             if (pos_x == 0) { floor = floor_groups[floor_type][SideOfFloor.top_left]; }
-            else if (pos_x == REGULAR_MAP_WIDTH - 1) { floor = floor_groups[floor_type][SideOfFloor.top_right]; }
+            else if (pos_x == max_width - 1) { floor = floor_groups[floor_type][SideOfFloor.top_right]; }
             else { floor = floor_groups[floor_type][SideOfFloor.top_center]; }
         }
-        else if (pos_y == REGULAR_MAP_HEIGHT - 1)
+        else if (pos_y == max_height - 1)
         {
             if (pos_x == 0) { floor = floor_groups[floor_type][SideOfFloor.bottom_left]; }
-            else if (pos_x == REGULAR_MAP_WIDTH - 1) { floor = floor_groups[floor_type][SideOfFloor.bottom_right]; }
+            else if (pos_x == max_width - 1) { floor = floor_groups[floor_type][SideOfFloor.bottom_right]; }
             else { floor = floor_groups[floor_type][SideOfFloor.bottom_center]; }
         }
         else
         {
             if (pos_x == 0) { floor = floor_groups[floor_type][SideOfFloor.left]; }
-            else if (pos_x == REGULAR_MAP_WIDTH - 1) { floor = floor_groups[floor_type][SideOfFloor.right]; }
+            else if (pos_x == max_width - 1) { floor = floor_groups[floor_type][SideOfFloor.right]; }
             else { floor = floor_groups[floor_type][SideOfFloor.center]; }
         }
 
@@ -258,7 +259,6 @@ public class MapController : MonoBehaviour
 
                     if (IsCurrentSelectedFloorHoldingSomething())
                     {
-                        Debug.Log(selected_floor.GetComponent<Floor>().object_holded.tag);
                         switch (selected_floor.GetComponent<Floor>().object_holded.tag)
                         {
                             case "machine":
@@ -343,12 +343,12 @@ public class MapController : MonoBehaviour
         DeselectCurrentFloor();
     }
 
-    public void SetMachineTeam(int new_team_id)
+    public void SetMachineTeam(int new_team)
     {
         if (CurrentSelectedFloor().IsHoldingSomething())
         {
             Machine holded_machine = CurrentSelectedFloor().object_holded.GetComponent<Machine>();
-            holded_machine.ChangeOwner(new_team_id);
+            holded_machine.ChangeOwner((TeamHelpers.Team)new_team);
         }
         DeselectCurrentFloor();
     }
@@ -398,14 +398,14 @@ public class MapController : MonoBehaviour
         data_controller.SaveMap(map_to_save);
     }
 
-    private Map CreateAFakeMenuMap()
+    private Map CreateAFakeMapObjects()
     {
         Map fake_map = new Map();
         int amount_of_decorations = MENU_MAP_HEIGHT * MENU_MAP_WIDTH;
 
         for (int i = 0; i < amount_of_decorations; i++)
         {
-            fake_map.serialized_decorations.Add(new DecorationSerialized(i, i));
+            fake_map.serialized_decorations.Add(new DecorationSerialized(i, i, Decoration.TypeOfDecoration.build_02));
         }
 
         return fake_map;
@@ -420,7 +420,7 @@ public class MapController : MonoBehaviour
             Machine machine = machine_go.GetComponent<Machine>();
 
             machine.id = machine_s.id;
-            machine.team_id = machine_s.team_id;
+            machine.team = (TeamHelpers.Team)machine_s.team_id;
             machine.model = machine_s.machine_model;
             selected_floor = tiles[machine_s.floor_id];
 

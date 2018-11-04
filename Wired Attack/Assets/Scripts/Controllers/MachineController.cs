@@ -38,17 +38,17 @@ public class MachineController : MonoBehaviour {
 
     public int NeutralMachineCount()
     {
-        return machines.FindAll(machine => machine.team_id == TeamHelpers.NEUTRAL_TEAM).Count;
+        return machines.FindAll(machine => machine.team == TeamHelpers.Team.NEUTRAL_TEAM).Count;
     }
 
     public int PlayerMachineCount()
     {
-        return machines.FindAll(machine => machine.team_id == TeamHelpers.HUMAN_TEAM).Count;
+        return machines.FindAll(machine => machine.team == TeamHelpers.Team.HUMAN_TEAM).Count;
     }
 
     public int IAMachineCount()
     {
-        return machines.FindAll(machine => machine.team_id == TeamHelpers.IA_TEAM).Count;
+        return machines.FindAll(machine => machine.team == TeamHelpers.Team.IA_TEAM).Count;
     }
 
     private void PrepareAllMachines(List<GameObject> machine_gos)

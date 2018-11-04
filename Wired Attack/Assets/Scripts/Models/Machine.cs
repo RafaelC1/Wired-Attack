@@ -7,9 +7,9 @@ using System.Dynamic;
 public class Machine : Holdable {
 
     #region variables
-    
-    public int team_id = 0;
-    public string model =  "regular_machine";
+
+    public TeamHelpers.Team team = TeamHelpers.Team.NEUTRAL_TEAM;
+    public string model = "regular_machine";
     public string description = "machine";
 
     public MachineController controller;
@@ -58,7 +58,7 @@ public class Machine : Holdable {
 
     void Update()
     {
-        if (actived)
+        if (actived && team != TeamHelpers.Team.NEUTRAL_TEAM)
         {
             Process();
         }
@@ -90,6 +90,20 @@ public class Machine : Holdable {
         return is_connected_to;
     }
 
+    public List<Machine> ConnectedMachines()
+    {
+        List<Machine> points = new List<Machine>();
+        foreach (GameObject con_go in connections)
+            foreach (GameObject machine_go in con_go.GetComponent<Connection>().connection_points)
+            {
+                Machine machine = machine_go.GetComponent<Machine>();
+                if (machine != this)
+                    points.Add(machine);
+            }
+
+        return points;
+    }
+
     public bool CanHaveMoreConnections()
     {
         return connections.Count < max_connections;
@@ -111,15 +125,15 @@ public class Machine : Holdable {
         bits_label.text = AmountOfBitsFormatted();
     }
 
-    public void ChangeOwner(int new_team_owner_id)
+    public void ChangeOwner(TeamHelpers.Team new_team)
     {
-        team_id = new_team_owner_id;
+        team = new_team;
         ChangeColor();
     }
 
     private void ChangeColor()
     {
-        Color new_color = TeamHelpers.TeamColorOf(team_id);
+        Color new_color = TeamHelpers.TeamColorOf(team);
         this.GetComponent<SpriteRenderer>().color = new_color;
     }
 
@@ -135,9 +149,9 @@ public class Machine : Holdable {
         UpdateExternalInformations();
     }
 
-    public void ReceiveBits(int received_bit, Machine sender)
+    public void ReceiveBits(int received_bit, TeamHelpers.Team sender_team)
     {
-        if (sender.team_id == team_id)
+        if (sender_team == team)
         {
             StoreBits(received_bit);
         }
@@ -152,7 +166,7 @@ public class Machine : Holdable {
                 int leftover_bits = -current_stored_bits;
                 current_stored_bits = 0;
                 StoreBits(leftover_bits);
-                ChangeOwner(sender.team_id);
+                ChangeOwner(sender_team);
             }
         }
     }
@@ -190,9 +204,14 @@ public class Machine : Holdable {
         background.GetComponent<SpriteRenderer>().enabled = activate;
     }
 
-    private bool IsStorageFull()
+    public bool IsStorageFull()
     {
         return current_stored_bits >= max_bit_storage;
+    }
+
+    public bool IsStorageEmpty()
+    {
+        return current_stored_bits == 0;
     }
 
     public void TurnMachineOn()

@@ -34,7 +34,7 @@ public class GameController : MonoBehaviour {
         temp.transform.SetParent(players_holder.transform);
 
         temp = Instantiate(enemy_pre_fab);
-        temp.GetComponent<Enemy>().machine_controller = machine_controller;
+        temp.GetComponent<IA>().machine_controller = machine_controller;
         temp.transform.SetParent(players_holder.transform);
     }
 
