@@ -106,7 +106,7 @@ public class Machine : Holdable {
 
     public bool CanHaveMoreConnections()
     {
-        return connections.Count < max_connections;
+        return connections.Count <= max_connections;
     }
 
     public bool CanSendBits()
@@ -176,6 +176,17 @@ public class Machine : Holdable {
         }
     }
 
+    public List<Message> AllMyMessagesOnMyWay()
+    {
+        List<Message> messages_on_way = new List<Message>();
+        foreach(GameObject con_go in connections)
+        {
+            messages_on_way.AddRange(con_go.GetComponent<Connection>().AllMessagesOnWayTo(this));
+        }
+ 
+        return messages_on_way;
+    }
+
     public int SendBits()
     {
         int bits_to_send = 0;
@@ -216,7 +227,7 @@ public class Machine : Holdable {
 
     public bool IsStorageEmpty()
     {
-        return current_stored_bits == 0;
+        return current_stored_bits <= 0;
     }
 
     public void TurnMachineOn()

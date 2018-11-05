@@ -86,7 +86,7 @@ Transform:
   m_GameObject: {fileID: 1485186818851262}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalScale: {x: 3.5, y: 3.5, z: 1}
   m_Children: []
   m_Father: {fileID: 4332631324286362}
   m_RootOrder: 0
@@ -111,7 +111,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1394526555283242}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.1733953, y: 0.6801754, z: 0}
+  m_LocalPosition: {x: -0.35925037, y: -1.2905052, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4310326065505574}
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   current_floor: {fileID: 0}
-  team_id: 1
+  team: 0
   model: regular_machine
   description: 
   controller: {fileID: 0}
@@ -170,7 +170,7 @@ MonoBehaviour:
   max_connections: 2
   max_bit_storage: 10
   current_stored_bits: 0
-  process_time: 1
+  process_time: 0.8
   current_process_time: 0
   bit_defense: 1
   produce_bit: 1
@@ -303,7 +303,7 @@ SpriteRenderer:
   m_SortingLayerID: 972073117
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 018587b52ee6a7642aa96abe634da0c8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 02577aaded7e394478dd3d6a50db352a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.32941177}
   m_FlipX: 0
   m_FlipY: 0

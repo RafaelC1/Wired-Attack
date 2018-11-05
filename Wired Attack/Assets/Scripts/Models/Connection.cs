@@ -36,6 +36,18 @@ public class Connection : MonoBehaviour {
         }
     }
 
+    public List<Message> AllMessagesOnWayTo(Machine owner_of_message)
+    {
+        List<Message> messages_on_way = new List<Message>();
+        foreach(Message msg in messages)
+        {
+            if (msg.to.GetComponent<Machine>() == owner_of_message)
+                messages_on_way.Add(msg);
+        }
+        
+        return messages_on_way;
+    }
+
     public void RemoveMessage(Message message_to_delete)
     {
         messages.Remove(message_to_delete);

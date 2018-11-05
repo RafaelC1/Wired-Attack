@@ -27,9 +27,19 @@ public class MachineTargetList {
             {
                 if (target.MachineIsNeutral())
                 {
-                    target.AddScore(3);
+                    if (target.AnyAlliedMessageOnWay())
+                    {
+                        target.AddScore(1);
+                    } else {
+                        target.AddScore(3);
+                    }
                     if (target.AnyEnemyConnected())
-                        target.AddScore(2);
+                        if (target.AnyEnemyMessageOnWay())
+                        {
+                            target.AddScore(3);
+                        } else {
+                            target.AddScore(2);
+                        }
                 } else if (target.MachineIsEnemy())
                 {
                     if (target.AnyAllyWithDoubleBitsConnected())
@@ -72,6 +82,7 @@ public class MachineTargetList {
         int max_score = machine_targets.Max(target => target.Score());
         return machine_targets.Where(target => target.AnyAllyConnected())
                               .Where(target => target.Score() > 0)
+                              .Where(target => target.AnyAllyConnectedWithBits())
                               .OrderByDescending(target => target.Score())
                               .ToList();
                               

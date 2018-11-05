@@ -311,7 +311,7 @@ public class MapController : MonoBehaviour
 
         if (machine.id == 0)
         {
-            machine.id = MachinesOnTiles().Count + 1;
+            machine.id = AvailableMachineId();
         }
 
         machine_go.transform.name = machine.model + machine.id.ToString();
@@ -319,6 +319,20 @@ public class MapController : MonoBehaviour
 
         GiveToSelectedFloor(machine_go);
         DeselectCurrentFloor();
+    }
+
+    private int AvailableMachineId()
+    {
+        int available_id = 1;
+        while (MachinesOnTiles().Find(machine => machine.GetComponent<Machine>().id == available_id))
+        {
+            if (available_id >= REGULAR_MAP_HEIGHT * REGULAR_MAP_WIDTH)
+                break;
+
+            available_id++;
+        }
+
+        return available_id;
     }
 
     public void PlaceNewDecorationOnSelectedTile(GameObject decoration_pre_fab)

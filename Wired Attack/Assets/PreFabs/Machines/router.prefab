@@ -98,7 +98,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1656517557335526}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.1189702, y: 1.2279149, z: 0}
+  m_LocalPosition: {x: -2.033152, y: -3.0341527, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4625531816623128}
@@ -115,7 +115,7 @@ Transform:
   m_GameObject: {fileID: 1093594198607488}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.452, y: 1.452, z: 1.452}
+  m_LocalScale: {x: 3.5, y: 4.5, z: 1.452}
   m_Children: []
   m_Father: {fileID: 4382245280314084}
   m_RootOrder: 0
@@ -191,7 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   current_floor: {fileID: 0}
-  team_id: 1
+  team: 0
   model: router
   description: 
   controller: {fileID: 0}
@@ -303,7 +303,7 @@ SpriteRenderer:
   m_SortingLayerID: 972073117
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 018587b52ee6a7642aa96abe634da0c8, type: 3}
+  m_Sprite: {fileID: 21300004, guid: 02577aaded7e394478dd3d6a50db352a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.32941177}
   m_FlipX: 0
   m_FlipY: 0

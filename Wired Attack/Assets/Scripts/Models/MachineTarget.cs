@@ -15,6 +15,16 @@ public class MachineTarget {
         this.searcher_team = searcher_team;
     }
 
+    public bool AnyEnemyMessageOnWay()
+    {
+        return Machine().AllMyMessagesOnMyWay().Find(msg => msg.from_team != searcher_team);
+    }
+
+    public bool AnyAlliedMessageOnWay()
+    {
+        return Machine().AllMyMessagesOnMyWay().Find(msg => msg.from_team == searcher_team);
+    }
+
     public List<Machine> AllMachinesConnected()
     {
         return machine.ConnectedMachines();
@@ -39,6 +49,11 @@ public class MachineTarget {
     {
         int max = AllAlliesConnected().Max(machine => machine.current_stored_bits);
         return AllAlliesConnected().Find(machine => machine.current_stored_bits == max);
+    }
+
+    public bool AnyAllyConnectedWithBits()
+    {
+        return AllAlliesConnected().Find(machine => !machine.IsStorageEmpty());
     }
 
     public List<Machine> AllAlliesConnected()
