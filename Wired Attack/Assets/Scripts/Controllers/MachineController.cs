@@ -24,16 +24,9 @@ public class MachineController : MonoBehaviour {
 
     public void StartGame(List<GameObject> machine_gos, List<GameObject> connection_gos)
     {
+        machines.Clear();
         PrepareAllMachines(machine_gos);
         PrepareAllConnections(connection_gos);
-    }
-
-    public void DestroyAllMachines()
-    {
-        foreach(Machine machine in machines)
-        {
-            Destroy(machine.gameObject);
-        }
     }
 
     public int NeutralMachineCount()
@@ -127,6 +120,7 @@ public class MachineController : MonoBehaviour {
         Message message = message_new.GetComponent<Message>();
 
         connection_between.messages.Add(message);
+        message.game_controller = game_controller;
         message.DefineTransferSettings(from.SendBits(),
                                        connection_between.travel_time,
                                        from.gameObject,

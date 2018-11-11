@@ -6,6 +6,7 @@ public class Connection : MonoBehaviour {
    
     public List<GameObject> connection_points = new List<GameObject>(2);
     public List<Message> messages = new List<Message>();
+    public GameController game_controller = null;
 
     public int id = 0;
     public string wire_type = "optical";
@@ -76,6 +77,12 @@ public class Connection : MonoBehaviour {
         foreach(GameObject points in connection_points)
         {
             points.GetComponent<Machine>().RemoveConnection(this.transform.gameObject);
+        }
+
+        foreach(Message msg in messages)
+        {
+            if (msg.gameObject != null)
+                Destroy(msg.gameObject);
         }
     }
 }

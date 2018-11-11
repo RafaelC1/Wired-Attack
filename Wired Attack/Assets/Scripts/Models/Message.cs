@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Message : MonoBehaviour {
 
+    public GameController game_controller = null;
     private float transfer_time = 0f;
     private float current_transfer_time = 0f;
 
@@ -21,6 +22,7 @@ public class Message : MonoBehaviour {
 
     void Update()
     {
+        if (game_controller.isPaused()) return;
         MoveToDestine();
 
         if(ArrivedToDestine())

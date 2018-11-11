@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class SelectLevelController : MonoBehaviour {
 
-
     public GameController game_controller = null;
     public MapController map_controller = null;
     public DataController data_controller = null;
@@ -80,7 +79,8 @@ public class SelectLevelController : MonoBehaviour {
         foreach (KeyValuePair<string, List<string>> raw_map in raw_maps)
         {
             Map map = new Map(raw_map.Value);
-            map.name = raw_map.Key;
+            //map.name = raw_map.Key;
+            map.file_name = raw_map.Key;
 
             CreateNewlevelButton(map);
         }

@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
     public MachineController machine_controller = null;
+    public List<Player> players = new List<Player>();
 
     public GameObject player_pre_fab = null;
     public GameObject enemy_pre_fab = null;
@@ -22,16 +24,37 @@ public class GameController : MonoBehaviour {
 
 	void Update () { }
 
-    public void Pause()
+    public void PauseResume()
     {
         pause = !pause;
+    }
+
+    public void Pause()
+    {
+        pause = true;
+    }
+
+    public void Resume()
+    {
+        pause = false;
+    }
+
+    public bool isPaused()
+    {
+        return pause;
     }
 
     public void CreateHumanPlay()
     {
         GameObject temp = Instantiate(player_pre_fab);
-        temp.GetComponent<Player>().machine_controller = machine_controller;
+        Player player = temp.GetComponent<Player>();
+
+        player.machine_controller = machine_controller;
+        player.game_controller = this;
+
         temp.transform.SetParent(players_holder.transform);
+
+        players.Add(player);
     }
 
     public void CreateIAPlayer(TeamHelpers.Team ia_team)
@@ -44,6 +67,19 @@ public class GameController : MonoBehaviour {
 
         ia.machine_controller = machine_controller;
         ia.team = ia_team;
+        ia.game_controller = GetComponent<GameController>();
+
+        players.Add(ia);
+    }
+
+    public void RemoveAllPlayers()
+    {
+        foreach(Player pl in players)
+        {
+            Destroy(pl.gameObject);
+        }
+
+        players.Clear();
     }
 
     public void DestroyPlayers()

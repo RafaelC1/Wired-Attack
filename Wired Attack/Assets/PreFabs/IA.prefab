@@ -175,7 +175,7 @@ MonoBehaviour:
   team: 2
   selected_machine: {fileID: 0}
   target_machine: {fileID: 0}
-  level: 0
+  level: 2
   difficult_settings:
   - {fileID: 1923056569880180}
   - {fileID: 1973799679612774}

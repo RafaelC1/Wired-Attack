@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class MapController : MonoBehaviour
 {
-
     #region variables
 
     public MachineController machine_controller = null;
@@ -49,6 +49,9 @@ public class MapController : MonoBehaviour
     public GameObject machine_editor_menu = null;
     public GameObject decoration_editor_menu = null;
 
+    public InputField map_title_text = null;
+    public InputField map_description_text = null;
+
     public GameObject machine_parent = null;
     public GameObject connection_parent = null;
     public GameObject decoration_parent = null;
@@ -60,7 +63,7 @@ public class MapController : MonoBehaviour
 
     private Vector3 tile_size;
 
-    public string current_map_name = "";
+    public Map current_map = null;
 
     public float gap_size = 0;
     public int REGULAR_MAP_WIDTH = 4;
@@ -81,6 +84,7 @@ public class MapController : MonoBehaviour
 
     void Update()
     {
+        if (game_controller.isPaused()) return;
         if (current_status == GameController.GameMode.EDIT_MODE)
         {
             DetectClickOnTiles();
@@ -114,6 +118,7 @@ public class MapController : MonoBehaviour
         {
             Destroy(tile);
         }
+        game_controller.RemoveAllPlayers();
         tiles.Clear();
     }
 
@@ -308,6 +313,7 @@ public class MapController : MonoBehaviour
     {
         Machine machine = machine_go.GetComponent<Machine>();
         machine.canvas = canvas;
+        machine.game_controller = game_controller;
 
         if (machine.id == 0)
         {
@@ -406,10 +412,14 @@ public class MapController : MonoBehaviour
 
     public void SaveCurrentMap()
     {
-        Map map_to_save = new Map(MachinesOnTiles(), ConnectionsOnMachines(), DecorationsOnTiles());
-        map_to_save.name = current_map_name;
+        current_map.ReplaceListOfMachines(MachinesOnTiles());
+        current_map.ReplaceListOfConnections(ConnectionsOnMachines());
+        current_map.ReplaceListOfDecorations(DecorationsOnTiles());
 
-        data_controller.SaveMap(map_to_save);
+        current_map.name = map_title_text.text;
+        current_map.description = map_description_text.text;
+
+        data_controller.SaveMap(current_map);
     }
 
     private Map CreateAFakeMapObjects()
@@ -427,7 +437,9 @@ public class MapController : MonoBehaviour
     
     public void LoadMap(Map map_to_load, GameController.GameMode current_game_status)
     {
-        foreach (MachineSerialized machine_s in map_to_load.serialized_machines)
+        current_map = map_to_load;
+
+        foreach (MachineSerialized machine_s in current_map.serialized_machines)
         {
             GameObject machine_go = Instantiate(MachinePreFabByModel(machine_s.machine_model));
 
@@ -441,7 +453,7 @@ public class MapController : MonoBehaviour
             PlaceNewMachineOnSelectedTile(machine_go);
         }
 
-        foreach (ConnectionSerialized con_s in map_to_load.serialized_connections)
+        foreach (ConnectionSerialized con_s in current_map.serialized_connections)
         {
             GameObject first_machine_point = MachinesOnTiles().Find(machine => machine.GetComponent<Machine>().id == con_s.connection_ids[0]);
             GameObject secound_machine_point = MachinesOnTiles().Find(machine => machine.GetComponent<Machine>().id == con_s.connection_ids[1]);
@@ -452,7 +464,7 @@ public class MapController : MonoBehaviour
             CreateConnectionBetweenMachinesOn(first_floor, secound_floor, ConnectionPreFabByType(con_s.wire_type), con_s.id);
         }
 
-        foreach (DecorationSerialized deco_s in map_to_load.serialized_decorations)
+        foreach (DecorationSerialized deco_s in current_map.serialized_decorations)
         {
             selected_floor = tiles[deco_s.floor_id];
             PlaceNewDecorationOnSelectedTile(DecoractionPreFabByModel(deco_s.type));
@@ -460,17 +472,25 @@ public class MapController : MonoBehaviour
         }
 
         current_status = current_game_status;
-        current_map_name = map_to_load.name;
 
         if (current_game_status == GameController.GameMode.PLAY_MODE)
         {
             machine_controller.StartGame(MachinesOnTiles(), ConnectionsOnMachines());
+
             if (machine_controller.machines.Find(machine => machine.team == TeamHelpers.Team.HUMAN_TEAM))
                 game_controller.CreateHumanPlay();
             if (machine_controller.machines.Find(machine => machine.team == TeamHelpers.Team.RED_TEAM))
                 game_controller.CreateIAPlayer(TeamHelpers.Team.RED_TEAM);
             if (machine_controller.machines.Find(machine => machine.team == TeamHelpers.Team.YELLOW_TEAM))
                 game_controller.CreateIAPlayer(TeamHelpers.Team.YELLOW_TEAM);
+
+            if (current_map.tip_texts.Count > 0)
+                game_controller.Pause();
+                pop_text_controller.CreateTips(map_to_load.tip_texts);
+        } else if (current_game_status == GameController.GameMode.EDIT_MODE)
+        {
+            map_title_text.text = current_map.name;
+            map_description_text.text = current_map.description;
         }
     }
 

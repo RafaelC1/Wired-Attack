@@ -56,11 +56,12 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   messages: []
+  game_controller: {fileID: 0}
   id: 0
   wire_type: optical
   connection_name: fibra
   travel_time: 5
-  wire_color: {r: 1, g: 0.99437773, b: 0, a: 1}
+  wire_color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
 --- !u!120 &120186667409535612
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -107,7 +108,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.25
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -116,7 +117,7 @@ LineRenderer:
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
-        value: 1
+        value: 0.25
         inSlope: 0
         outSlope: 0
         tangentMode: 0

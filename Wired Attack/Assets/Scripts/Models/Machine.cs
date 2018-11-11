@@ -13,6 +13,7 @@ public class Machine : Holdable {
     public string description = "machine";
 
     public MachineController controller;
+    public GameController game_controller = null;
     public List<GameObject> connections = new List<GameObject>();
 
     public GameObject canvas = null;
@@ -58,6 +59,7 @@ public class Machine : Holdable {
 
     void Update()
     {
+        if (game_controller.isPaused()) return;
         if (actived && !IsNeutral())
         {
             Process();

@@ -14,6 +14,7 @@ public class IA : Player {
 
 	void Update ()
     {
+        if (game_controller.isPaused()) return;
         if (current_thought_time > CurrentDifficult().thought_time)
         {
             Think();

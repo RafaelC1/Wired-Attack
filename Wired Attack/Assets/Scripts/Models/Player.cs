@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
     public MachineController machine_controller = null;
+    public GameController game_controller = null;
 
     protected string player_name = "Rafael";
     public TeamHelpers.Team team = TeamHelpers.Team.HUMAN_TEAM;
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour {
 	
 	void Update ()
     {
+        if (game_controller.isPaused()) return;
         DetectClickOnMachines();
     }
 

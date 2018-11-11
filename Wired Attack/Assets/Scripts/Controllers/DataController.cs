@@ -17,6 +17,8 @@ public class DataController : MonoBehaviour {
     public const string START_OF_MACHINE_SERIALIZED = "machines";
     public const string START_OF_CONNECTION_SERIALIZED = "connections";
     public const string START_OF_DECORATION_SERIALIZED = "decorations";
+    public const string START_OF_TIPS_SERIALIZED = "tips";
+    public const string START_OF_TITLE_SERIALIZED = "title";
 
     public List<TextAsset> campaign_map_files = new List<TextAsset>();
 
@@ -52,7 +54,7 @@ public class DataController : MonoBehaviour {
 
     public void SaveMap(Map map)
     {
-        string map_name = map.name;
+        string map_name = map.file_name;
         string file_full_path = "";
 
         if (map_name == NEW_GAME_KEY)

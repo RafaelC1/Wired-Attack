@@ -2,17 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopUpTextController : MonoBehaviour {
-
+public class PopUpTextController : MonoBehaviour
+{
+    public GameController game_controller = null;
+    public GameObject tip_list_pre_fab = null;
     public PopUpText pop_up_text_pre_fab = null;
     public GameObject canvas = null;
 
     void Start()
-    {    
+    {
     }
 
     void Update()
     {
+    }
+
+    public void CreateTips(List<string> tips)
+    {
+        GameObject tip_go = Instantiate(tip_list_pre_fab);
+        tip_go.transform.SetParent(canvas.transform, false);
+        TipList tip_list = tip_go.GetComponent<TipList>();
+        tip_list.tips = tips;
+        tip_list.game_controller = game_controller;
     }
 
     public void CreatePopText(string text, Transform location)

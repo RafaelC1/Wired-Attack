@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SoundEffectController : MonoBehaviour {
 
-    public AudioClip click_over_btn;
+    public List<AudioClip> sfx_list = new List<AudioClip>();
+    private IDictionary<string, AudioClip> sfx_dictionary = new Dictionary<string, AudioClip>();
 
     private AudioSource sound_source;
 
@@ -12,14 +13,23 @@ public class SoundEffectController : MonoBehaviour {
 
     void Start ()
     {
+        OrganizeSfxDictionary();
         sound_source = GetComponent<AudioSource>();
     }	
 	
 	void Update () { }
 
-    public void ButtonClick()
+    private void OrganizeSfxDictionary()
     {
-        sound_source.PlayOneShot(click_over_btn, current_sound_volumn);
+        foreach(AudioClip sfx in sfx_list)
+        {
+            sfx_dictionary.Add(sfx.name, sfx);
+        }
+    }
+
+    public void PlaySfx(string sfx_name)
+    {
+        sound_source.PlayOneShot(sfx_dictionary[sfx_name], current_sound_volumn);
     }
 
     public void ChangeSoundSourceVolume(float new_volume)
