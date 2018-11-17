@@ -19,7 +19,7 @@ public static class TeamHelpers  {
         {
             case Team.HUMAN_TEAM:
             {
-                team_color = Color.blue;
+                team_color = Color.green;
                 break;
             }
             case Team.RED_TEAM:

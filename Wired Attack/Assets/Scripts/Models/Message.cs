@@ -47,6 +47,14 @@ public class Message : MonoBehaviour {
         connection_in = connection;
 
         transform.position = from.transform.position;
+
+        DefineColor();
+    }
+
+    private void DefineColor()
+    {
+        Color new_color = TeamHelpers.TeamColorOf(from_team);
+        this.GetComponent<SpriteRenderer>().color = new_color;
     }
 
     public bool ArrivedToDestine()
@@ -65,6 +73,12 @@ public class Message : MonoBehaviour {
     public void DelivereBits()
     {
         to.GetComponent<Machine>().ReceiveBits(bit_amount, from_team);
+    }
+
+    private void OnDestroy()
+    {
+        if (from != null)
+            from.GetComponent<Machine>().controller.DetermineTeamVictory();
     }
 
 }

@@ -59,12 +59,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36b3e1d98f49c3c45b0e431cdbb15896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level_blocked_icon: {fileID: 0}
-  level_desblocked_icon: {fileID: 0}
-  level_finished_icon: {fileID: 0}
-  title: {fileID: 114695163241499624}
+  title: {fileID: 0}
   description: {fileID: 0}
   select_level_controller: {fileID: 0}
+  map_score: {fileID: 0}
 --- !u!114 &114149652854539962
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -195,7 +193,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LEVEL NAME
+  m_Text: CRIAR NOVO MAPA
 --- !u!222 &222206693048743396
 CanvasRenderer:
   m_ObjectHideFlags: 1

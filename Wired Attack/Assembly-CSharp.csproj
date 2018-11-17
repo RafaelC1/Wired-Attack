@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\Helpers\TouchHelpers.cs" />
     <Compile Include="Assets\Scripts\Models\Connection.cs" />
     <Compile Include="Assets\Scripts\Models\Decoration.cs" />
+    <Compile Include="Assets\Scripts\Models\FinalScore.cs" />
     <Compile Include="Assets\Scripts\Models\Floor.cs" />
     <Compile Include="Assets\Scripts\Models\Holdable.cs" />
     <Compile Include="Assets\Scripts\Models\IA.cs" />
@@ -100,7 +101,6 @@
     <None Include="Assets\Translations\english.txt" />
     <None Include="Assets\Translations\português.txt" />
     <None Include="Assets\Maps\MAP_1.txt" />
-    <None Include="Assets\Maps\MAP_2.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/projects/unity_workBanch/Wired-Attack/Wired Attack/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

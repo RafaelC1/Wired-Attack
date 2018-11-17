@@ -11,8 +11,7 @@ public class IADifficult : MonoBehaviour {
         HARD,
         IMPOSSIBLE
     }
-
-    public string name = "";
+    
     public Difficult difficult = Difficult.EASY;
     public float thought_time = 1f;
     public int number_of_actions_per_thought = 1;

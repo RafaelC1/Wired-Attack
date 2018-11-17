@@ -144,4 +144,59 @@ public class MachineController : MonoBehaviour {
     {
         return ConnectionBetween(first_machine, last_machine) != null;
     }
+
+    public void DetermineTeamVictory()
+    {
+        if (!IsThereMoreThanOneTeamAlive() &&
+            !AnyMessageStillTraveling())
+                game_controller.EndCurrentGame(AliveMachineTeams()[0]);
+    }
+
+    public bool IsThereMoreThanOneTeamAlive()
+    {
+        return AliveMachineTeams().Count > 1;
+    }
+
+    private List<TeamHelpers.Team> AliveMachineTeams()
+    {
+        List<TeamHelpers.Team> alive_teams = new List<TeamHelpers.Team>();
+
+        foreach (Machine machine in machines)
+            if (!alive_teams.Contains(machine.team))
+                alive_teams.Add(machine.team);
+
+        return alive_teams;
+    }
+
+    public bool AnyMessageStillTraveling()
+    {
+        return MessagesTraveling().Count > 0;
+    }
+
+    private List<Message> MessagesTraveling()
+    {
+        List<Message> messages = new List<Message>();
+
+        foreach (Machine machine in machines)
+            foreach (GameObject con in machine.connections)
+                foreach (Message msg in con.GetComponent<Connection>().messages)
+                    messages.Add(msg);
+
+        return messages;
+    }
+
+    private List<TeamHelpers.Team> AliveMessageTeams()
+    {
+        List<TeamHelpers.Team> alive_teams = new List<TeamHelpers.Team>();
+
+        foreach (Machine machine in machines)
+            foreach(GameObject con in machine.connections)
+                foreach(Message msg in con.GetComponent<Connection>().messages)
+                    if (!alive_teams.Contains(msg.from_team))
+                        alive_teams.Add(msg.from_team);
+
+        return alive_teams;
+    }
+
+    
 }

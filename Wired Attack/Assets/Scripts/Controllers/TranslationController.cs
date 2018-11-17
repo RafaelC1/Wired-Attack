@@ -60,7 +60,7 @@ public class TranslationController : MonoBehaviour {
     {
         try {
             return available_languages[current_language_id];
-        } catch (System.Exception e) {
+        } catch (System.Exception) {
             return "";
         }
     }

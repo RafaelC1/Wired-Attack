@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Music : MonoBehaviour {
 
-    public string name = "";
-
     public AudioClip main_version = null;
     public AudioClip loop_version = null;
 

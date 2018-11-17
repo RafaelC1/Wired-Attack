@@ -16,7 +16,7 @@ public class Machine : Holdable {
     public GameController game_controller = null;
     public List<GameObject> connections = new List<GameObject>();
 
-    public GameObject canvas = null;
+    public GameObject text_parent = null;
 
     public GameObject background = null;
 
@@ -52,7 +52,7 @@ public class Machine : Holdable {
     public void SetTextParentAndPosition()
     {
         bits_label.gameObject.SetActive(true);
-        bits_label.transform.SetParent(canvas.transform);
+        bits_label.transform.SetParent(text_parent.transform);
         bits_label.transform.position = text_holder.transform.position;
         bits_label.transform.localScale = new Vector3(1, 1, 1);
     }
@@ -131,6 +131,8 @@ public class Machine : Holdable {
     {
         team = new_team;
         ChangeColor();
+        if (controller != null)
+            controller.DetermineTeamVictory();
     }
 
     public bool IsNeutral()

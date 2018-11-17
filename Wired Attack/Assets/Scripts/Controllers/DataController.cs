@@ -98,7 +98,8 @@ public class DataController : MonoBehaviour {
 
     private List<string> LoadRawCampaignMapData(TextAsset file)
     {
-        return new List<string>(file.text.Split("\n"[0]));
+        char[] archDelim = new char[] { '\r', '\n' };
+        return new List<string>(file.text.Split(archDelim, System.StringSplitOptions.RemoveEmptyEntries));
     }
 
     private List<string> AllCustomLevelsNames()

@@ -81,7 +81,7 @@ public class Connection : MonoBehaviour {
 
         foreach(Message msg in messages)
         {
-            if (msg.gameObject != null)
+            if (msg!= null)
                 Destroy(msg.gameObject);
         }
     }

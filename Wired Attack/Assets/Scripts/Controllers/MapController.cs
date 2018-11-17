@@ -35,6 +35,8 @@ public class MapController : MonoBehaviour
         bottom_right
     }
 
+    public GameController.GameMode current_game_mode = GameController.GameMode.DEMOSTRATION;
+
     public List<GameObject> connection_pre_fabs = new List<GameObject>();
     public List<GameObject> machines_pre_fabs = new List<GameObject>();
     public List<GameObject> decoractions_pre_fabs = new List<GameObject>();
@@ -55,7 +57,7 @@ public class MapController : MonoBehaviour
     public GameObject machine_parent = null;
     public GameObject connection_parent = null;
     public GameObject decoration_parent = null;
-    public GameObject canvas = null;
+    public GameObject bit_text_holder = null;
 
     private List<GameObject> tiles = new List<GameObject>();
 
@@ -72,8 +74,6 @@ public class MapController : MonoBehaviour
     public int MENU_MAP_WIDTH = 20;
     public int MENU_MAP_HEIGHT = 30;
 
-    private GameController.GameMode current_status;
-
     #endregion
 
     void Start()
@@ -85,7 +85,7 @@ public class MapController : MonoBehaviour
     void Update()
     {
         if (game_controller.isPaused()) return;
-        if (current_status == GameController.GameMode.EDIT_MODE)
+        if (current_game_mode == GameController.GameMode.EDIT_MODE)
         {
             DetectClickOnTiles();
         }
@@ -114,27 +114,40 @@ public class MapController : MonoBehaviour
 
     public void ClearCurrentMap()
     {
+        game_controller.RemoveAllPlayers();
+
         foreach (GameObject tile in tiles)
         {
             Destroy(tile);
         }
-        game_controller.RemoveAllPlayers();
         tiles.Clear();
     }
 
     public void CreateFakeMap()
     {
-        CreateTiles(GameController.GameMode.DEMOSTRATION, MENU_MAP_WIDTH, MENU_MAP_HEIGHT);
-        LoadMap(CreateAFakeMapObjects(), GameController.GameMode.DEMOSTRATION);
+        CreateTiles(MENU_MAP_WIDTH, MENU_MAP_HEIGHT);
+        DefineGameMode(GameController.GameMode.DEMOSTRATION);
+        DefineMap(CreateAFakeMapObjects());
     }
 
-    public void CreateGameMap(GameController.GameMode game_mode)
+    public void DefineGameMode(GameController.GameMode game_mode)
     {
-        CreateTiles(game_mode, REGULAR_MAP_WIDTH, REGULAR_MAP_HEIGHT);
+        current_game_mode = game_mode;
+    }
+
+    public void DefineMap(Map map)
+    {
+        current_map = map;
+    }
+
+    public void CreateCurrentMap()
+    {
+        CreateTiles(REGULAR_MAP_WIDTH, REGULAR_MAP_HEIGHT);
+        PlaceMachinesOfCurrentMap();
         DesactiveAllMenus();
     }
 
-    private void CreateTiles(GameController.GameMode game_mode, int map_width, int map_height)
+    private void CreateTiles(int map_width, int map_height)
     {
         tile_size = FloorAccordingPositionAndType(0, 0, 0, 0, TypeOfFloor.side_walk).GetComponent<Renderer>().bounds.size;
 
@@ -155,7 +168,7 @@ public class MapController : MonoBehaviour
                 GameObject floor_go = Instantiate(FloorAccordingPositionAndType(j, i, map_width, map_height, TypeOfFloor.side_walk));
                 Floor floor = floor_go.GetComponent<Floor>();
 
-                switch(game_mode)
+                switch(current_game_mode)
                 {
                     case GameController.GameMode.EDIT_MODE:
                         {
@@ -312,7 +325,7 @@ public class MapController : MonoBehaviour
     private void PlaceNewMachineOnSelectedTile(GameObject machine_go)
     {
         Machine machine = machine_go.GetComponent<Machine>();
-        machine.canvas = canvas;
+        machine.text_parent = bit_text_holder;
         machine.game_controller = game_controller;
 
         if (machine.id == 0)
@@ -435,10 +448,8 @@ public class MapController : MonoBehaviour
         return fake_map;
     }
     
-    public void LoadMap(Map map_to_load, GameController.GameMode current_game_status)
+    public void PlaceMachinesOfCurrentMap()
     {
-        current_map = map_to_load;
-
         foreach (MachineSerialized machine_s in current_map.serialized_machines)
         {
             GameObject machine_go = Instantiate(MachinePreFabByModel(machine_s.machine_model));
@@ -470,10 +481,8 @@ public class MapController : MonoBehaviour
             PlaceNewDecorationOnSelectedTile(DecoractionPreFabByModel(deco_s.type));
 
         }
-
-        current_status = current_game_status;
-
-        if (current_game_status == GameController.GameMode.PLAY_MODE)
+        
+        if (current_game_mode == GameController.GameMode.PLAY_MODE)
         {
             machine_controller.StartGame(MachinesOnTiles(), ConnectionsOnMachines());
 
@@ -486,8 +495,8 @@ public class MapController : MonoBehaviour
 
             if (current_map.tip_texts.Count > 0)
                 game_controller.Pause();
-                pop_text_controller.CreateTips(map_to_load.tip_texts);
-        } else if (current_game_status == GameController.GameMode.EDIT_MODE)
+                pop_text_controller.CreateTips(current_map.tip_texts);
+        } else if (current_game_mode == GameController.GameMode.EDIT_MODE)
         {
             map_title_text.text = current_map.name;
             map_description_text.text = current_map.description;

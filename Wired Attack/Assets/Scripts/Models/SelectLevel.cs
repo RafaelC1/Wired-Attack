@@ -4,16 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SelectLevel : MonoBehaviour {
-
-    public GameObject level_blocked_icon = null;
-    public GameObject level_desblocked_icon = null;
-    public GameObject level_finished_icon = null;
-
+    
     public Text title = null;
     public Text description = null;
 
     public SelectLevelController select_level_controller = null;
     public Map map_target = null;
+
+    public FinalScore map_score = null;
 	
 	void Start ()
     {
@@ -25,71 +23,33 @@ public class SelectLevel : MonoBehaviour {
     {
         DefineTitle(map_target.name);
         DefineDescription(map_target.description);
-
-        switch(map_target.map_status)
-        {
-            case 0:
-                {
-                    BlockLevel();
-                    break;
-                }
-            case 1:
-                {
-                    UnblockLevel();
-                    break;
-                }
-            case 2:
-                {
-                    PassLevel();
-                    break;
-                }
-            default:
-                {
-                    DisableAllStatusIcons();
-                    break;
-                }
-        }
+        DefineFinalScore();
     }
 
 
     private void DefineTitle(string new_title)
     {
-        title.text = new_title;
+        if (new_title != DataController.NEW_GAME_KEY)
+            title.text = new_title;
     }
 
     private void DefineDescription(string new_description)
     {
         if (description != null)
-        {
             description.text = new_description;
-        }
     }
 
-    private void DisableAllStatusIcons()
+    private void DefineFinalScore()
     {
-        if (level_blocked_icon != null) { level_blocked_icon.SetActive(false); }
-        if (level_desblocked_icon != null) { level_desblocked_icon.SetActive(false); }
-        if (level_finished_icon != null) { level_finished_icon.SetActive(false); }
+        if (map_score == null)
+            return;
+        map_score.DefineMapName(map_target.name);
+        map_score.LoadLevelScore();
     }
-
+    
     public void SelectThisLevel()
     {
         select_level_controller.SelectLevel(map_target);
     }
-
-    public void BlockLevel()
-    {
-        level_blocked_icon.SetActive(true);
-        GetComponent<Button>().enabled = false;
-    }
-
-    public void UnblockLevel()
-    {
-        level_desblocked_icon.SetActive(true);
-    }
-
-    public void PassLevel()
-    {
-        level_finished_icon.SetActive(true);
-    }
+    
 }

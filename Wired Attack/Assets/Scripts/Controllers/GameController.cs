@@ -4,14 +4,22 @@ using System.Collections.Generic;
 public class GameController : MonoBehaviour {
 
     public MachineController machine_controller = null;
+    public MapController map_controller = null;
     public List<Player> players = new List<Player>();
 
     public GameObject player_pre_fab = null;
     public GameObject enemy_pre_fab = null;
 
     public GameObject players_holder = null;
+    public GameObject end_menu = null;
+
+    public MenuController menu_controller = null;
+
+    public FinalScore end_score = null;
 
     public bool pause = false;
+
+    public float timer = 0;
     
     public enum GameMode
     {
@@ -22,7 +30,22 @@ public class GameController : MonoBehaviour {
 
     void Start () { }
 
-	void Update () { }
+	void Update ()
+    {
+        if (map_controller.current_game_mode == GameMode.PLAY_MODE && !isPaused())
+            UpdateTimer();
+
+    }
+
+    private void UpdateTimer()
+    {
+        timer += Time.deltaTime;
+    }
+
+    public void ResetTime()
+    {
+        timer = 0;
+    }
 
     public void PauseResume()
     {
@@ -82,11 +105,17 @@ public class GameController : MonoBehaviour {
         players.Clear();
     }
 
-    public void DestroyPlayers()
+    public void EndCurrentGame(TeamHelpers.Team team_winnner)
     {
-        for(int i = 0; i<players_holder.transform.childCount; i++)
-        {
-            Destroy(players_holder.transform.GetChild(i));
-        }
+        Player winner = players.Find(player => player.team == team_winnner);
+        players.Remove(winner);
+        players.Add(winner);
+
+        Pause();
+
+        menu_controller.OpenMenuByObjectCloseAll(end_menu);
+
+        end_score.DefineMapName(map_controller.current_map.name);
+        end_score.DefineTime((int)timer);
     }
 }

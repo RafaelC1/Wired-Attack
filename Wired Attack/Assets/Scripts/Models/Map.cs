@@ -37,7 +37,6 @@ public class Map {
     public Map(List<string> lines_of_file)
     {
         string current_model_loaded = DataController.START_OF_MACHINE_SERIALIZED;
-
         foreach (string line in lines_of_file)
         {
             if (line == DataController.START_OF_MACHINE_SERIALIZED ||
@@ -50,7 +49,6 @@ public class Map {
                 current_model_loaded = line;
                 continue;
             }
-
             switch (current_model_loaded)
             {
                 case DataController.START_OF_MACHINE_SERIALIZED:

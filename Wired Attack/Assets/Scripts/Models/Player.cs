@@ -34,21 +34,21 @@ public class Player : MonoBehaviour {
             if (hit && hit.transform.tag == "machine")
             {
                 Machine machine_hit = hit.transform.GetComponent<Machine>(); ;
-
-                if (selected_machine == null)
-                {
-                    if (machine_hit.team == TeamHelpers.Team.HUMAN_TEAM)
+                if (machine_hit.controller.IsThereMoreThanOneTeamAlive())
+                    if (selected_machine == null)
                     {
-                        SelectMachine(machine_hit);
-                    }
-                } else {
-                    if (selected_machine == machine_hit)
-                    {
-                        DeselectAllMachines();
+                        if (machine_hit.team == TeamHelpers.Team.HUMAN_TEAM)
+                        {
+                            SelectMachine(machine_hit);
+                        }
                     } else {
-                        SelectMachine(machine_hit);
-                    }                    
-                }
+                        if (selected_machine == machine_hit)
+                        {
+                            DeselectAllMachines();
+                        } else {
+                            SelectMachine(machine_hit);
+                        }                    
+                    }
             }
 
             if (selected_machine != null && target_machine != null)
