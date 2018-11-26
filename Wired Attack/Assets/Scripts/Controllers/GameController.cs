@@ -5,13 +5,20 @@ public class GameController : MonoBehaviour {
 
     public MachineController machine_controller = null;
     public MapController map_controller = null;
+    public MusicController music_controller = null;
+
     public List<Player> players = new List<Player>();
 
     public GameObject player_pre_fab = null;
     public GameObject enemy_pre_fab = null;
 
     public GameObject players_holder = null;
-    public GameObject end_menu = null;
+
+    public GameObject victory_end_menu = null;
+    public GameObject defeat_end_menu = null;
+
+    public MusicList victory_end_menu_music_list = null;
+    public MusicList defeat_end_menu_music_list = null;
 
     public MenuController menu_controller = null;
 
@@ -113,7 +120,14 @@ public class GameController : MonoBehaviour {
 
         Pause();
 
-        menu_controller.OpenMenuByObjectCloseAll(end_menu);
+        if (winner.team == TeamHelpers.Team.HUMAN_TEAM)
+        {
+            menu_controller.OpenMenuByObjectCloseAll(victory_end_menu);
+            music_controller.ChangeTo(victory_end_menu_music_list);
+        } else {
+            menu_controller.OpenMenuByObjectCloseAll(defeat_end_menu);
+            music_controller.ChangeTo(defeat_end_menu_music_list);
+        }
 
         end_score.DefineMapName(map_controller.current_map.name);
         end_score.DefineTime((int)timer);

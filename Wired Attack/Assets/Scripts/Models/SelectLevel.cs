@@ -44,7 +44,7 @@ public class SelectLevel : MonoBehaviour {
         if (map_score == null)
             return;
         map_score.DefineMapName(map_target.name);
-        map_score.LoadLevelScore();
+        map_score.LoadNestTime();
     }
     
     public void SelectThisLevel()

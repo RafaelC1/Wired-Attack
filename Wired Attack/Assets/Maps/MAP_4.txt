@@ -1,0 +1,11 @@
+title
+03
+description
+
+tips
+machines
+{"id":1,"floor_id":11,"team_id":1,"machine_model":"regular"}
+{"id":2,"floor_id":13,"team_id":0,"machine_model":"regular"}
+connections
+{"id":0,"floor_id":0,"wire_type":"optical","connection_ids":[1,2]}
+decorations

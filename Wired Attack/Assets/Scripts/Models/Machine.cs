@@ -9,8 +9,7 @@ public class Machine : Holdable {
     #region variables
 
     public TeamHelpers.Team team = TeamHelpers.Team.NEUTRAL_TEAM;
-    public string model = "regular_machine";
-    public string description = "machine";
+    public string model = "";
 
     public MachineController controller;
     public GameController game_controller = null;
@@ -132,7 +131,10 @@ public class Machine : Holdable {
         team = new_team;
         ChangeColor();
         if (controller != null)
+        {
             controller.DetermineTeamVictory();
+            controller.ChangeMachineOwner();
+        }
     }
 
     public bool IsNeutral()

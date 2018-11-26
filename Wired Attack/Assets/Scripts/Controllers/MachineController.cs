@@ -7,6 +7,7 @@ public class MachineController : MonoBehaviour {
 
     public GameController game_controller = null;
     public PopUpTextController pop_text_controller = null;
+    public SoundEffectController sound_controller = null;
 
     public GameObject connection_pre_fab = null;
     public GameObject message_pre_fab = null;
@@ -126,6 +127,8 @@ public class MachineController : MonoBehaviour {
                                        from.gameObject,
                                        to.gameObject,
                                        connection_between);
+        if (message.from_team == TeamHelpers.Team.HUMAN_TEAM)
+            MessageSent();
     }
 
     public Connection ConnectionBetween(GameObject first_machine, GameObject last_machine)
@@ -196,6 +199,16 @@ public class MachineController : MonoBehaviour {
                         alive_teams.Add(msg.from_team);
 
         return alive_teams;
+    }
+
+    public void ChangeMachineOwner()
+    {
+        sound_controller.PlaySfx("base_lost01");
+    }
+
+    public void MessageSent()
+    {
+        sound_controller.PlaySfx("package_walk01");
     }
 
     

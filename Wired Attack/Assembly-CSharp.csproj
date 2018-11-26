@@ -78,6 +78,7 @@
     <Compile Include="Assets\Scripts\Models\FinalScore.cs" />
     <Compile Include="Assets\Scripts\Models\Floor.cs" />
     <Compile Include="Assets\Scripts\Models\Holdable.cs" />
+    <Compile Include="Assets\Scripts\Models\HoldableDescription.cs" />
     <Compile Include="Assets\Scripts\Models\IA.cs" />
     <Compile Include="Assets\Scripts\Models\IADifficult.cs" />
     <Compile Include="Assets\Scripts\Models\Machine.cs" />
@@ -98,9 +99,11 @@
     <Compile Include="Assets\Scripts\ModelSerializeds\DecorationSerialized.cs" />
     <Compile Include="Assets\Scripts\ModelSerializeds\MachineSerialized.cs" />
     <Compile Include="Assets\Scripts\ModelSerializeds\Serializable.cs" />
+    <None Include="Assets\Maps\MAP_4.txt" />
     <None Include="Assets\Translations\english.txt" />
+    <None Include="Assets\Maps\MAP_2.txt" />
+    <None Include="Assets\Maps\MAP_3.txt" />
     <None Include="Assets\Translations\português.txt" />
-    <None Include="Assets\Maps\MAP_1.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/projects/unity_workBanch/Wired-Attack/Wired Attack/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

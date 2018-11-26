@@ -25,12 +25,7 @@ public class SelectLevelController : MonoBehaviour {
     
     public Map selected_map = null;
     
-	void Start ()
-    {
-        DeleteAllLevelButtons();
-        CreateAllLevelButtons();
-        SelectLevel(selected_map);
-    }
+	void Start () { }
 	
 	void Update () { }
 
@@ -77,24 +72,28 @@ public class SelectLevelController : MonoBehaviour {
                 }
         }
 
+        bool previus_level_finished = true;
         foreach (KeyValuePair<string, List<string>> raw_map in raw_maps)
         {
             Map map = new Map(raw_map.Value);
             map.file_name = raw_map.Key;
 
-            CreateLevelButton(map);
+            GameObject new_button = CreateLevelButton(map);
+
+            if (list_of != TypeOfMaps.CAMPAIGN_MAPS)
+                continue;
+
+            new_button.GetComponent<Button>().interactable = previus_level_finished;
+            previus_level_finished = new_button.GetComponent<SelectLevel>().map_score.total_time > 0;
         }
 
         if (start_game_in == GameController.GameMode.EDIT_MODE)
         {
             Map map = new Map(new List<string>());
-            map.file_name = map.name = DataController.NEW_GAME_KEY;           
+            map.file_name = map.name = DataController.NEW_GAME_KEY;
 
             CreateLevelButton(map);
         }
-
-        if (list_of == TypeOfMaps.CAMPAIGN_MAPS)
-            DisableForCampaign();
     }
 
     private void DeleteAllLevelButtons()
@@ -106,7 +105,7 @@ public class SelectLevelController : MonoBehaviour {
         }
     }
 
-    private void CreateLevelButton(Map map_target)
+    private GameObject CreateLevelButton(Map map_target)
     {
         Transform list_transform = list.transform;
 
@@ -124,24 +123,12 @@ public class SelectLevelController : MonoBehaviour {
         select_level.map_target = map_target;
         select_level.select_level_controller = this;
         select_level.DefineButtonStatus();
-    }
 
-    private void DisableForCampaign()
-    {
-        bool previus_level_finished = true;
-        foreach (Transform btn in list.transform)
-        {
-            Button button = btn.GetComponent<Button>();
-            button.interactable = previus_level_finished;
-            previus_level_finished = btn.GetComponent<SelectLevel>().map_score.total_time > 0;
-        }
+        return new_button;
     }
 
     private void OnEnable()
     {
-        DisableForCampaign();
-        if (list_of == TypeOfMaps.CAMPAIGN_MAPS)
-            return;
         DeleteAllLevelButtons();
         CreateAllLevelButtons();
         SelectLevel(selected_map);

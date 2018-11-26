@@ -98,7 +98,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1656517557335526}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.033152, y: -3.0341527, z: 0}
+  m_LocalPosition: {x: 0.98148954, y: -0.76515114, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4625531816623128}
@@ -115,7 +115,7 @@ Transform:
   m_GameObject: {fileID: 1093594198607488}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.5, y: 4.5, z: 1.452}
+  m_LocalScale: {x: 3.7, y: 3.8, z: 1.452}
   m_Children: []
   m_Father: {fileID: 4382245280314084}
   m_RootOrder: 0
@@ -190,13 +190,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  title: roteador
+  description: "roteador com mais conex\xF5es"
   current_floor: {fileID: 0}
   team: 0
   model: router
-  description: 
   controller: {fileID: 0}
+  game_controller: {fileID: 0}
   connections: []
-  canvas: {fileID: 0}
+  text_parent: {fileID: 0}
   background: {fileID: 1093594198607488}
   text_holder: {fileID: 1613389296605716}
   bits_label: {fileID: 114173960247484366}
@@ -255,7 +257,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2033076589
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300004, guid: a153990b7e7d5ca4a9b984a3fe783a30, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -301,9 +303,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 972073117
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300004, guid: 02577aaded7e394478dd3d6a50db352a, type: 3}
+  m_Sprite: {fileID: 21300004, guid: 7bc8075ad4c390a4c845c97c0c89bc5d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.32941177}
   m_FlipX: 0
   m_FlipY: 0

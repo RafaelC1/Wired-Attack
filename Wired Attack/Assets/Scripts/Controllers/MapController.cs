@@ -74,12 +74,13 @@ public class MapController : MonoBehaviour
     public int MENU_MAP_WIDTH = 20;
     public int MENU_MAP_HEIGHT = 30;
 
+    private string type_of_connection_to_create = null; 
+
     #endregion
 
     void Start()
     {
         PrepareTilesInDictionaries();
-        CreateFakeMap();
     }
 
     void Update()
@@ -123,12 +124,12 @@ public class MapController : MonoBehaviour
         tiles.Clear();
     }
 
-    public void CreateFakeMap()
-    {
-        CreateTiles(MENU_MAP_WIDTH, MENU_MAP_HEIGHT);
-        DefineGameMode(GameController.GameMode.DEMOSTRATION);
-        DefineMap(CreateAFakeMapObjects());
-    }
+    //public void CreateFakeMap()
+    //{
+    //    CreateTiles(MENU_MAP_WIDTH, MENU_MAP_HEIGHT);
+    //    DefineGameMode(GameController.GameMode.DEMOSTRATION);
+    //    DefineMap(CreateAFakeMapObjects());
+    //}
 
     public void DefineGameMode(GameController.GameMode game_mode)
     {
@@ -233,6 +234,16 @@ public class MapController : MonoBehaviour
         return string.Format("Tile {0} X {1}", pos_x + 1, pos_y + 1);
     }
 
+    public void ConnectionModeOn(Connection connection_type)
+    {
+        type_of_connection_to_create = connection_type.wire_type;
+    }
+
+    public void ConnectionModeOff()
+    {
+        type_of_connection_to_create = null;
+    }
+
     private void DetectClickOnTiles()
     {
         if (!TouchHelpers.IsTouchingOrClickingOverUI())
@@ -252,7 +263,8 @@ public class MapController : MonoBehaviour
                         return;
                     }
 
-                    if (selected_floor != null)
+                    if (selected_floor != null &&
+                        type_of_connection_to_create != null)
                     {
                         Floor current_floor = CurrentSelectedFloor();
                         Floor another_floor = hit.transform.GetComponent<Floor>();
@@ -264,8 +276,9 @@ public class MapController : MonoBehaviour
                         {
                             CreateConnectionBetweenMachinesOn(selected_floor,
                                                               hit.transform.gameObject,
-                                                              ConnectionPreFabByType("optical"),
+                                                              ConnectionPreFabByType(type_of_connection_to_create),
                                                               ConnectionsOnMachines().Count);
+                            ConnectionModeOff();
                             DeselectCurrentFloor();
                             return;
                         }
@@ -333,7 +346,7 @@ public class MapController : MonoBehaviour
             machine.id = AvailableMachineId();
         }
 
-        machine_go.transform.name = machine.model + machine.id.ToString();
+        machine_go.transform.name = machine.title + machine.id.ToString();
         machine_go.transform.SetParent(machine_parent.transform);
 
         GiveToSelectedFloor(machine_go);
@@ -435,18 +448,18 @@ public class MapController : MonoBehaviour
         data_controller.SaveMap(current_map);
     }
 
-    private Map CreateAFakeMapObjects()
-    {
-        Map fake_map = new Map();
-        int amount_of_decorations = MENU_MAP_HEIGHT * MENU_MAP_WIDTH;
+    //private Map CreateAFakeMapObjects()
+    //{
+    //    Map fake_map = new Map();
+    //    int amount_of_decorations = MENU_MAP_HEIGHT * MENU_MAP_WIDTH;
 
-        for (int i = 0; i < amount_of_decorations; i++)
-        {
-            fake_map.serialized_decorations.Add(new DecorationSerialized(i, i, Decoration.TypeOfDecoration.build_02));
-        }
+    //    for (int i = 0; i < amount_of_decorations; i++)
+    //    {
+    //        fake_map.serialized_decorations.Add(new DecorationSerialized(i, i, Decoration.TypeOfDecoration.build_02));
+    //    }
 
-        return fake_map;
-    }
+    //    return fake_map;
+    //}
     
     public void PlaceMachinesOfCurrentMap()
     {

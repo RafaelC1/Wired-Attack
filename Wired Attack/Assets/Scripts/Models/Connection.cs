@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Connection : MonoBehaviour {
+public class Connection : Holdable {
    
     public List<GameObject> connection_points = new List<GameObject>(2);
     public List<Message> messages = new List<Message>();
     public GameController game_controller = null;
-
-    public int id = 0;
+    
     public string wire_type = "optical";
-    public string connection_name = "fibra";
     public float travel_time = 5;
     public Color wire_color;
 

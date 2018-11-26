@@ -52,14 +52,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63c9c37fe47b67c478904bbc15d99b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
+  title: fibra oticas
+  description: fibra otica, muito rapida! usada para conectar duas maquinas
+  current_floor: {fileID: 0}
   connection_points:
   - {fileID: 0}
   - {fileID: 0}
   messages: []
   game_controller: {fileID: 0}
-  id: 0
   wire_type: optical
-  connection_name: fibra
   travel_time: 5
   wire_color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
 --- !u!120 &120186667409535612
@@ -95,7 +97,7 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 972073117
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 3
   m_Positions:
   - {x: 0, y: 0, z: 0}

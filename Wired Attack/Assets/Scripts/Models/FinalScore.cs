@@ -12,7 +12,7 @@ public class FinalScore : MonoBehaviour {
 
 	void Start ()
     {
-        LoadLevelScore();
+        LoadNestTime();
     }
 
 	void Update () { }
@@ -47,7 +47,8 @@ public class FinalScore : MonoBehaviour {
 
     public void SaveLevelScore()
     {
-        if (current_map_name != null && total_time < PlayerPrefs.GetInt(TimeKey()))
+        if (current_map_name != null &&
+            (total_time < PlayerPrefs.GetInt(TimeKey()) || !PlayerPrefs.HasKey(TimeKey())))
             PlayerPrefs.SetInt(TimeKey(), total_time);
     }
 
@@ -56,7 +57,7 @@ public class FinalScore : MonoBehaviour {
         return current_map_name + TIME_KEY;
     }
 
-    public void LoadLevelScore()
+    public void LoadNestTime()
     {
         total_time = 0;
         if (PlayerPrefs.HasKey(TimeKey()))

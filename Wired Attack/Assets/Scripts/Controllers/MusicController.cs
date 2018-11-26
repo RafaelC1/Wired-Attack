@@ -4,20 +4,14 @@ using UnityEngine;
 
 public class MusicController : MonoBehaviour {
     
-    public MusicList game_list;
-    public MusicList menu_list;
-
-    private MusicList current_list = null;
+    public MusicList current_list = null;
 
     public bool play = false;
     public bool repeat = false;
 
     void Start()
     {
-        ChangeToMenuMusics();
-        if (current_list == null) { ChangeToGameList(); }
-
-        if (play) { PlayCurrentMusic(); }
+        if (play && current_list != null) { PlayCurrentMusic(); }
     }
 
     void Update()
@@ -52,18 +46,10 @@ public class MusicController : MonoBehaviour {
         GetAudioSource().Play();
     }
 
-    public void ChangeToMenuMusics()
+    public void ChangeTo(MusicList new_list)
     {
         ResetCurrentList();
-        current_list = menu_list;
-        UpdateCurrentMusicToClip();
-        StartCurrentMusic();
-    }
-
-    public void ChangeToGameList()
-    {
-        ResetCurrentList();
-        current_list = game_list;
+        current_list = new_list;
         UpdateCurrentMusicToClip();
         StartCurrentMusic();
     }

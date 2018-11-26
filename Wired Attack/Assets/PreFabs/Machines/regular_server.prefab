@@ -98,7 +98,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1046815188092360}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.4890163, y: -1.4997429, z: 0}
+  m_LocalPosition: {x: 0.20956492, y: -0.7831031, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 4517082433172708}
@@ -115,7 +115,7 @@ Transform:
   m_GameObject: {fileID: 1723916189931518}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.5, y: 3.5, z: 1.452}
+  m_LocalScale: {x: 3.7, y: 3.6, z: 1.452}
   m_Children: []
   m_Father: {fileID: 4251847963253292}
   m_RootOrder: 0
@@ -204,13 +204,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
+  title: servidor
+  description: grande servidor (produz mais rapido)
   current_floor: {fileID: 0}
   team: 0
-  model: regular_server
-  description: 
+  model: server
   controller: {fileID: 0}
+  game_controller: {fileID: 0}
   connections: []
-  canvas: {fileID: 0}
+  text_parent: {fileID: 0}
   background: {fileID: 1723916189931518}
   text_holder: {fileID: 1084099175796046}
   bits_label: {fileID: 114593692852849868}
@@ -255,7 +257,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2033076589
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300006, guid: a153990b7e7d5ca4a9b984a3fe783a30, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -301,9 +303,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 972073117
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300008, guid: 02577aaded7e394478dd3d6a50db352a, type: 3}
+  m_Sprite: {fileID: 21300022, guid: 7bc8075ad4c390a4c845c97c0c89bc5d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.32941177}
   m_FlipX: 0
   m_FlipY: 0
