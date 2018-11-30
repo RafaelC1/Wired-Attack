@@ -1,4 +1,4 @@
-play_campaign:Campanha
+ï»¿play_campaign:Campanha
 play_custom:Mapas Customizados
 play_editor:Editor de Mapas
 campaign_mode_title:Modo Campanha
@@ -6,6 +6,11 @@ custom_mode:Mapas Customizados
 editor_mode:Editor de Mapas
 back_pause:Continuar
 go_pause:Pausar
-settings_mode:Configurações
+settings_mode:ConfiguraÃ§Ãµes
 music:musica
 sound:sons
+edit_floor_options:Posicionar...
+mission_end:Missao
+mission_end_success:cumprida
+mission_end_fail:falha
+best_time:melhor tempo

@@ -104,6 +104,7 @@
     <None Include="Assets\Maps\MAP_2.txt" />
     <None Include="Assets\Maps\MAP_3.txt" />
     <None Include="Assets\Translations\português.txt" />
+    <None Include="Assets\Translations\japanese.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/projects/unity_workBanch/Wired-Attack/Wired Attack/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

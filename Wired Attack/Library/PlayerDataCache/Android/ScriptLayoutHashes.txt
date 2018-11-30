@@ -1,6 +1,6 @@
 Android
 PlayerPath?
-D:/projects/unity_workBanch/WiredAttack_apks/wired_attack_v6.apk
+D:/projects/unity_workBanch/WiredAttack_apks/wired_attack_v7.apk
 SceneListBegin?
 Assets/Scenes/SampleScene.unity
 SceneListEnd?
@@ -142,7 +142,8 @@ aa5f0da12c42714ca29d4037b4a3bea6 Assembly-CSharp.dll:.TranslationController
 bf01897b43da133dd187adbcefb4cfe3 Assembly-CSharp.dll:.IADifficult
 aabd40027bf642d02c73ba553a248609 Assembly-CSharp.dll:.MusicList
 eaf0bcdb10d442a4029d615f41d09957 Unity.TextMeshPro.dll:TMPro.TextContainer
-07ce84286e700cac1d2aad2b9f807319 Assembly-CSharp.dll:.Machine
+774568db4c17d6c50a410693655e1990 Assembly-CSharp.dll:.HoldableDescription
+c0ca7ce94c021727f2e573b66ef1c885 Assembly-CSharp.dll:.Machine
 201273fb4f889724fb090164b7d6c657 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 486cd95c82d8305219c352c06b776e1f UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
 0f27c39183b9eb95eba0a228bea28273 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkDiscovery
@@ -183,11 +184,11 @@ dfd33ff9ae3ce8d7ca1f22b475ec2387 UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 aac9c55ae7ba4b95b852a7d9c191acd1 Unity.TextMeshPro.dll:TMPro.TextMeshProUGUI
 21a362495d002144399bcd02c84f2e01 Assembly-CSharp.dll:.SoundEffectController
 0a006f3734181ba8b26758f0866152c0 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
-d68e55ced46dbaa663531affe2f65aad Assembly-CSharp.dll:.Holdable
+96d5888cbfaa7508c3bce7cc743b8295 Assembly-CSharp.dll:.Holdable
 e04611b8715e6833d2bd7010fc6be10b Unity.TextMeshPro.dll:TMPro.TMP_StyleSheet
 2f9af06a78208a67db480e9bfed4a076 Unity.TextMeshPro.dll:TMPro.TextMeshPro
 9318334b30e9f195f573b2ce00154b95 Unity.TextMeshPro.dll:TMPro.TMP_ColorGradient
 93307bd34e39d73fd24e00ec39c25a91 Unity.TextMeshPro.dll:TMPro.TMP_SubMesh
 f0efd5572ba7b23b5efe8693f4c9a78c Assembly-CSharp.dll:.DataController
-a893cf94817e194c322db8f5d138d4f4 Assembly-CSharp.dll:.Connection
-73c308170f5afd81278a67c0e282fa5e Assembly-CSharp.dll:.Decoration
+f9f882286ad185f7d070c3cbdbed2d9a Assembly-CSharp.dll:.Connection
+f0d55e580cc19f13fc5ae50b6abf5d60 Assembly-CSharp.dll:.Decoration

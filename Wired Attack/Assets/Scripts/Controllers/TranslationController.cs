@@ -68,10 +68,12 @@ public class TranslationController : MonoBehaviour {
     public string TranslationByKey(string key)
     {
         string translation = null;
-        try{
+
+        try
+        {
             translation = translations[CurrentLanguage()][key];
         } catch(KeyNotFoundException e) {
-            Debug.Log("key: " + key + " not found");
+            //Debug.Log("key: " + key + " not found");
             translation = key;
         }
         return translation;

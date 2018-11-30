@@ -62,7 +62,7 @@ MonoBehaviour:
   messages: []
   game_controller: {fileID: 0}
   wire_type: optical
-  travel_time: 5
+  travel_time: 2
   wire_color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
 --- !u!120 &120186667409535612
 LineRenderer:

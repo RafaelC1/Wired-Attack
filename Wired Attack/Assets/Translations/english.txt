@@ -1,2 +1,16 @@
-music:musics
-sounds:sounds
+﻿play_campaign:Campaign
+play_custom:Mapas Custom
+play_editor:Map Editor
+campaign_mode_title:Campaign Mode
+custom_mode:Mapas Custom
+editor_mode:Map Editor
+back_pause:Proceed
+go_pause:Pause
+settings_mode:Settings
+music:music
+sound:sfx
+edit_floor_options:Place...
+mission_end:Mission
+mission_end_success:Mission Success
+mission_end_fail:Failed
+best_time:Best Time

@@ -11,6 +11,9 @@ public class Translation : MonoBehaviour {
 
 	void Start ()
     {
+        if (translation_controller == null)
+            translation_controller = GameObject.Find("TranslationController")
+                                               .GetComponent<TranslationController>(); // soo wrong but for now its ok
         translation_controller.AddTranslationManager(this);
         text_field = GetComponent<Text>();
         UpdateMyText();
