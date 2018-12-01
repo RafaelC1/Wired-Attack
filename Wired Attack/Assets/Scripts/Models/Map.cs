@@ -5,17 +5,17 @@ using UnityEngine;
 public class Map {
 
     public string name = null;
-    public string file_name = null;
+    public string fileName = null;
 
     [TextArea]
     public string description = null;
-    public List<string> tip_texts = new List<string>();
-    public int map_status = -1;
+    public List<string> tipTexts = new List<string>();
+    public int mapStatus = -1;
     public float time = 0f;
 
-    public List<MachineSerialized> serialized_machines = new List<MachineSerialized>();
-    public List<ConnectionSerialized> serialized_connections = new List<ConnectionSerialized>();
-    public List<DecorationSerialized> serialized_decorations = new List<DecorationSerialized>();
+    public List<MachineSerialized> machinesSerializeds = new List<MachineSerialized>();
+    public List<ConnectionSerialized> connectionsSerializeds = new List<ConnectionSerialized>();
+    public List<DecorationSerialized> decorationsSerializeds = new List<DecorationSerialized>();
 
     public enum MapStatus
     {
@@ -26,17 +26,17 @@ public class Map {
 
     public Map() { }
 
-    public Map(List<GameObject> machine_gos, List<GameObject> connection_gos, List<GameObject> decoration_gos)
+    public Map(List<GameObject> machineGos, List<GameObject> connectionGos, List<GameObject> decorationGos)
     {
-        ReplaceListOfMachines(machine_gos);
-        ReplaceListOfConnections(connection_gos);
-        ReplaceListOfDecorations(decoration_gos);
+        ReplaceListOfMachines(machineGos);
+        ReplaceListOfConnections(connectionGos);
+        ReplaceListOfDecorations(decorationGos);
 
     }
 
     public Map(List<string> lines_of_file)
     {
-        string current_model_loaded = DataController.START_OF_MACHINE_SERIALIZED;
+        string currentModelToLoad = DataController.START_OF_MACHINE_SERIALIZED;
         foreach (string line in lines_of_file)
         {
             if (line == DataController.START_OF_MACHINE_SERIALIZED ||
@@ -46,24 +46,24 @@ public class Map {
                 line == DataController.START_OF_TIPS_SERIALIZED ||
                 line == DataController.START_OF_TITLE_SERIALIZED)
             {
-                current_model_loaded = line;
+                currentModelToLoad = line;
                 continue;
             }
-            switch (current_model_loaded)
+            switch (currentModelToLoad)
             {
                 case DataController.START_OF_MACHINE_SERIALIZED:
                     {
-                        serialized_machines.Add(LoadSerializedMachine(line));
+                        machinesSerializeds.Add(LoadSerializedMachine(line));
                         break;
                     }
                 case DataController.START_OF_CONNECTION_SERIALIZED:
                     {
-                        serialized_connections.Add(LoadSerializedConnection(line));
+                        connectionsSerializeds.Add(LoadSerializedConnection(line));
                         break;
                     }
                 case DataController.START_OF_DECORATION_SERIALIZED:
                     {
-                        serialized_decorations.Add(LoadSerializedDecoration(line));
+                        decorationsSerializeds.Add(LoadSerializedDecoration(line));
                         break;
                     }
                 case DataController.START_OF_DESCRIPTION_SERIALIZED:
@@ -73,7 +73,7 @@ public class Map {
                     }
                 case DataController.START_OF_TIPS_SERIALIZED:
                     {
-                        tip_texts.Add(line);
+                        tipTexts.Add(line);
                         break;
                     }
                 case DataController.START_OF_TITLE_SERIALIZED:
@@ -85,71 +85,71 @@ public class Map {
         }
     }
 
-    public void ReplaceListOfMachines(List<GameObject> machine_gos)
+    public void ReplaceListOfMachines(List<GameObject> machinesGos)
     {
-        serialized_machines.Clear();
-        foreach (GameObject machine_go in machine_gos)
+        machinesSerializeds.Clear();
+        foreach (GameObject machineGo in machinesGos)
         {
-            serialized_machines.Add(new MachineSerialized(machine_go.GetComponent<Machine>()));
+            machinesSerializeds.Add(new MachineSerialized(machineGo.GetComponent<Machine>()));
         }
     }
 
-    public void ReplaceListOfConnections(List<GameObject> connection_gos)
+    public void ReplaceListOfConnections(List<GameObject> connectionsGos)
     {
-        serialized_connections.Clear();
-        foreach (GameObject connection_go in connection_gos)
+        connectionsSerializeds.Clear();
+        foreach (GameObject connectionGo in connectionsGos)
         {
-            serialized_connections.Add(new ConnectionSerialized(connection_go.GetComponent<Connection>()));
+            connectionsSerializeds.Add(new ConnectionSerialized(connectionGo.GetComponent<Connection>()));
         }
     }
 
-    public void ReplaceListOfDecorations(List<GameObject> decoration_gos)
+    public void ReplaceListOfDecorations(List<GameObject> decorationsGos)
     {
-        serialized_decorations.Clear();
-        foreach (GameObject decoration_go in decoration_gos)
+        decorationsSerializeds.Clear();
+        foreach (GameObject decorationGo in decorationsGos)
         {
-            serialized_decorations.Add(new DecorationSerialized(decoration_go.GetComponent<Decoration>()));
+            decorationsSerializeds.Add(new DecorationSerialized(decorationGo.GetComponent<Decoration>()));
         }
     }
 
     public List<string> Serialized()
     {
-        List<string> lines_of_serialized_model = new List<string>();
+        List<string> linesOfSerializedObjectsOnMap = new List<string>();
 
-        lines_of_serialized_model.Add(DataController.START_OF_TITLE_SERIALIZED);
-        lines_of_serialized_model.Add(name);
+        linesOfSerializedObjectsOnMap.Add(DataController.START_OF_TITLE_SERIALIZED);
+        linesOfSerializedObjectsOnMap.Add(name);
 
-        lines_of_serialized_model.Add(DataController.START_OF_DESCRIPTION_SERIALIZED);
-        lines_of_serialized_model.Add(description);
+        linesOfSerializedObjectsOnMap.Add(DataController.START_OF_DESCRIPTION_SERIALIZED);
+        linesOfSerializedObjectsOnMap.Add(description);
 
-        lines_of_serialized_model.Add(DataController.START_OF_TIPS_SERIALIZED);
-        foreach (string tip in tip_texts)
+        linesOfSerializedObjectsOnMap.Add(DataController.START_OF_TIPS_SERIALIZED);
+        foreach (string tip in tipTexts)
         {
-            lines_of_serialized_model.Add(tip);
+            linesOfSerializedObjectsOnMap.Add(tip);
         }
 
-        lines_of_serialized_model.Add(DataController.START_OF_MACHINE_SERIALIZED);
+        linesOfSerializedObjectsOnMap.Add(DataController.START_OF_MACHINE_SERIALIZED);
 
-        foreach (MachineSerialized serialized_machine in serialized_machines)
+        foreach (MachineSerialized machineSerialized in machinesSerializeds)
         {
-            lines_of_serialized_model.Add(serialized_machine.ToJson());
+            linesOfSerializedObjectsOnMap.Add(machineSerialized.ToJson());
         }
 
-        lines_of_serialized_model.Add(DataController.START_OF_CONNECTION_SERIALIZED);
+        linesOfSerializedObjectsOnMap.Add(DataController.START_OF_CONNECTION_SERIALIZED);
 
-        foreach (ConnectionSerialized serialized_connection in serialized_connections)
+        foreach (ConnectionSerialized connectionSerialized in connectionsSerializeds)
         {
-            lines_of_serialized_model.Add(serialized_connection.ToJson());
+            linesOfSerializedObjectsOnMap.Add(connectionSerialized.ToJson());
         }
 
-        lines_of_serialized_model.Add(DataController.START_OF_DECORATION_SERIALIZED);
+        linesOfSerializedObjectsOnMap.Add(DataController.START_OF_DECORATION_SERIALIZED);
 
-        foreach (DecorationSerialized serialized_decoration in serialized_decorations)
+        foreach (DecorationSerialized deocrationSerializsed in decorationsSerializeds)
         {
-            lines_of_serialized_model.Add(serialized_decoration.ToJson());
+            linesOfSerializedObjectsOnMap.Add(deocrationSerializsed.ToJson());
         }
 
-        return lines_of_serialized_model;
+        return linesOfSerializedObjectsOnMap;
     }
 
     private MachineSerialized LoadSerializedMachine(string json)

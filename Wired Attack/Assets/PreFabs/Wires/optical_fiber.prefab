@@ -55,15 +55,15 @@ MonoBehaviour:
   id: 0
   title: fibra oticas
   description: fibra otica, muito rapida! usada para conectar duas maquinas
-  current_floor: {fileID: 0}
-  connection_points:
+  currentFloor: {fileID: 0}
+  connectionsPoints:
   - {fileID: 0}
   - {fileID: 0}
   messages: []
-  game_controller: {fileID: 0}
-  wire_type: optical
-  travel_time: 2
-  wire_color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
+  gameController: {fileID: 0}
+  wireType: optical
+  travelTime: 2
+  wireColor: {r: 0, g: 1, b: 0.9712162, a: 1}
 --- !u!120 &120186667409535612
 LineRenderer:
   m_ObjectHideFlags: 1
@@ -131,8 +131,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 0, g: 1, b: 1, a: 1}
+      key1: {r: 0, g: 1, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -155,7 +155,7 @@ LineRenderer:
       atime5: 0
       atime6: 0
       atime7: 0
-      m_Mode: 0
+      m_Mode: 1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0

@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class SelectLevelController : MonoBehaviour {
 
-    public GameController game_controller = null;
-    public MapController map_controller = null;
-    public DataController data_controller = null;
+    public GameController gameController = null;
+    public MapController mapController = null;
+    public DataController dataController = null;
 
     public enum TypeOfMaps
     {
@@ -16,14 +16,14 @@ public class SelectLevelController : MonoBehaviour {
     }
 
     public TypeOfMaps list_of = TypeOfMaps.CAMPAIGN_MAPS;
-    public GameController.GameMode start_game_in = GameController.GameMode.PLAY_MODE;
+    public GameController.GameMode startGameIn = GameController.GameMode.PLAY_MODE;
 
     public GameObject list = null;
-    public GameObject choose_level_btn_pre_fab = null;
-    public GameObject new_level_btn_pre_fab = null;
-    public GameObject play_btn = null;
+    public GameObject chooseLevelBtnPreFab = null;
+    public GameObject newLevelBtnPreFab = null;
+    public GameObject playerBtn = null;
     
-    public Map selected_map = null;
+    public Map selectedMap = null;
     
 	void Start () { }
 	
@@ -31,66 +31,66 @@ public class SelectLevelController : MonoBehaviour {
 
     public void StartGame()
     {
-        map_controller.ClearCurrentMap();
-        map_controller.DefineGameMode(start_game_in);
-        map_controller.DefineMap(selected_map);
-        map_controller.CreateCurrentMap();
+        mapController.ClearCurrentMap();
+        mapController.DefineGameMode(startGameIn);
+        mapController.DefineMap(selectedMap);
+        mapController.CreateCurrentMap();
     }
 
     public void SelectLevel(Map map)
     {
-        if (selected_map == map)
+        if (selectedMap == map)
         {
-            selected_map = null;
+            selectedMap = null;
             AllowGoToGame(false);
         } else {
-            selected_map = map;
+            selectedMap = map;
             AllowGoToGame(true);
         }
     }
 
     private void AllowGoToGame(bool allow)
     {
-        play_btn.SetActive(allow);
+        playerBtn.SetActive(allow);
     }
 
     private void CreateAllLevelButtons()
     {
-        IDictionary<string, List<string>> raw_maps = new Dictionary<string, List<string>>();
+        IDictionary<string, List<string>> rawMaps = new Dictionary<string, List<string>>();
 
         switch (list_of)
         {
             case TypeOfMaps.CAMPAIGN_MAPS:
                 {
-                    raw_maps = data_controller.AllRawDataOfAllCampaignMaps();
+                    rawMaps = dataController.AllRawDataOfAllCampaignMaps();
                     break;
                 }
             case TypeOfMaps.CUSTOM_MAPS:
                 {
-                    raw_maps = data_controller.AllRawDataOfAllCustomMaps();
+                    rawMaps = dataController.AllRawDataOfAllCustomMaps();
                     break;
                 }
         }
 
-        bool previus_level_finished = true;
-        foreach (KeyValuePair<string, List<string>> raw_map in raw_maps)
+        bool previusLevelFinished = true;
+        foreach (KeyValuePair<string, List<string>> rawMap in rawMaps)
         {
-            Map map = new Map(raw_map.Value);
-            map.file_name = raw_map.Key;
+            Map map = new Map(rawMap.Value);
+            map.fileName = rawMap.Key;
 
-            GameObject new_button = CreateLevelButton(map);
+            GameObject newBtn = CreateLevelButton(map);
 
             if (list_of != TypeOfMaps.CAMPAIGN_MAPS)
                 continue;
 
-            new_button.GetComponent<Button>().interactable = previus_level_finished;
-            previus_level_finished = new_button.GetComponent<SelectLevel>().map_score.total_time > 0;
+            newBtn.GetComponent<Button>().interactable = previusLevelFinished;
+            previusLevelFinished = newBtn.GetComponent<SelectLevel>().mapScore.totalTime > 0;
         }
 
-        if (start_game_in == GameController.GameMode.EDIT_MODE)
+        if (startGameIn == GameController.GameMode.EDIT_MODE)
         {
             Map map = new Map(new List<string>());
-            map.file_name = map.name = DataController.NEW_GAME_KEY;
+            map.fileName = map.name = DataController.NEW_GAME_KEY;
 
             CreateLevelButton(map);
         }
@@ -98,39 +98,39 @@ public class SelectLevelController : MonoBehaviour {
 
     private void DeleteAllLevelButtons()
     {
-        Transform list_transform = list.transform;
-        foreach(Transform child in list_transform)
+        Transform listTransform = list.transform;
+        foreach(Transform child in listTransform)
         {
             Destroy(child.gameObject);
         }
     }
 
-    private GameObject CreateLevelButton(Map map_target)
+    private GameObject CreateLevelButton(Map mapTarget)
     {
-        Transform list_transform = list.transform;
+        Transform listTransform = list.transform;
 
-        GameObject btn_pre_fab = choose_level_btn_pre_fab;
-        if (map_target.name == DataController.NEW_GAME_KEY)
-            btn_pre_fab = new_level_btn_pre_fab;
+        GameObject btnPreFab = chooseLevelBtnPreFab;
+        if (mapTarget.name == DataController.NEW_GAME_KEY)
+            btnPreFab = newLevelBtnPreFab;
 
-        GameObject new_button = Instantiate(btn_pre_fab);
+        GameObject newBtn = Instantiate(btnPreFab);
 
-        new_button.name = map_target.name;
-        new_button.transform.SetParent(list_transform);
-        new_button.transform.localScale = new Vector3(1, 1, 1);
+        newBtn.name = mapTarget.name;
+        newBtn.transform.SetParent(listTransform);
+        newBtn.transform.localScale = new Vector3(1, 1, 1);
 
-        SelectLevel select_level = new_button.GetComponent<SelectLevel>();
-        select_level.map_target = map_target;
-        select_level.select_level_controller = this;
+        SelectLevel select_level = newBtn.GetComponent<SelectLevel>();
+        select_level.mapTarget = mapTarget;
+        select_level.selectLevelController = this;
         select_level.DefineButtonStatus();
 
-        return new_button;
+        return newBtn;
     }
 
     private void OnEnable()
     {
         DeleteAllLevelButtons();
         CreateAllLevelButtons();
-        SelectLevel(selected_map);
+        SelectLevel(selectedMap);
     }
 }

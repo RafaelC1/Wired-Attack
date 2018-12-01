@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class Connection : Holdable {
    
-    public List<GameObject> connection_points = new List<GameObject>(2);
+    public List<GameObject> connectionsPoints = new List<GameObject>(2);
     public List<Message> messages = new List<Message>();
-    public GameController game_controller = null;
+    public GameController gameController = null;
     
-    public string wire_type = "optical";
-    public float travel_time = 5;
-    public Color wire_color;
+    public string wireType = "optical";
+    public float travelTime = 5;
+    public Color wireColor;
 
     void Start()
     {
-        GetComponent<LineRenderer>().endColor = wire_color;
-        GetComponent<LineRenderer>().startColor = wire_color;
-
-        Vector3[] points = new Vector3[] { connection_points[0].transform.position, connection_points[1].transform.position };
+        GetComponent<LineRenderer>().endColor = wireColor;
+        GetComponent<LineRenderer>().startColor = wireColor;
+        
+        Vector3[] points = new Vector3[] { connectionsPoints[0].transform.position, connectionsPoints[1].transform.position };
         GetComponent<LineRenderer>().SetPositions(points);
 
         PassReferenceToMachines();
@@ -27,52 +27,57 @@ public class Connection : Holdable {
     {
     }
 
+    public void UpdatePointsOnLine()
+    {
+
+    }
+
     public void PassReferenceToMachines()
     {
-        foreach(GameObject point in connection_points)
+        foreach(GameObject point in connectionsPoints)
         {
             //point.GetComponent<Machine>().AddConnection(this.transform.gameObject);
         }
     }
 
-    public List<Message> AllMessagesOnWayTo(Machine owner_of_message)
+    public List<Message> AllMessagesOnWayTo(Machine ownerOfMessage)
     {
-        List<Message> messages_on_way = new List<Message>();
+        List<Message> messagesOnWay = new List<Message>();
         foreach(Message msg in messages)
         {
-            if (msg.to.GetComponent<Machine>() == owner_of_message)
-                messages_on_way.Add(msg);
+            if (msg.to.GetComponent<Machine>() == ownerOfMessage)
+                messagesOnWay.Add(msg);
         }
         
-        return messages_on_way;
+        return messagesOnWay;
     }
 
-    public void RemoveMessage(Message message_to_delete)
+    public void RemoveMessage(Message messageToDelete)
     {
-        messages.Remove(message_to_delete);
-        Destroy(message_to_delete.gameObject);
+        messages.Remove(messageToDelete);
+        Destroy(messageToDelete.gameObject);
     }
 
-    public bool IsConnectedBetween(GameObject first_machine, GameObject last_machine)
+    public bool IsConnectedBetween(GameObject firstMachine, GameObject lastMachine)
     {
-        return (connection_points.Contains(first_machine) &&
-                connection_points.Contains(last_machine));
+        return (connectionsPoints.Contains(firstMachine) &&
+                connectionsPoints.Contains(lastMachine));
     }
 
     public Machine OpositeMachinePointFrom(Machine machine)
     {
-        Machine oposite_point = connection_points[0].GetComponent<Machine>();
-        if (machine == connection_points[0])
+        Machine opositePoint = connectionsPoints[0].GetComponent<Machine>();
+        if (machine == connectionsPoints[0])
         {
-            oposite_point = connection_points[1].GetComponent<Machine>();
+            opositePoint = connectionsPoints[1].GetComponent<Machine>();
         }
 
-        return oposite_point;
+        return opositePoint;
     }
 
     public void OnDestroy()
     {
-        foreach(GameObject points in connection_points)
+        foreach(GameObject points in connectionsPoints)
         {
             points.GetComponent<Machine>().RemoveConnection(this.transform.gameObject);
         }

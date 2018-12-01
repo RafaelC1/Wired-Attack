@@ -4,31 +4,37 @@ using UnityEngine;
 
 public class Music : MonoBehaviour {
 
-    public AudioClip main_version = null;
-    public AudioClip loop_version = null;
+    public AudioClip intro = null;
+    public AudioClip main = null;
 
-    private bool played = false;
-    public bool play = false;
-    public bool loop = false;
+    public bool play = true;
+    public bool introPlayed = false;
+    public bool mainPlayed = false;
 
     void Start () { }
 	
 	void Update () { }
 
-    public AudioClip Current()
+    public AudioClip CurrentPart()
     {
-        if (played)
-            return loop_version;
-        return loop_version;
+        if (!introPlayed)
+            return intro;
+        return main;
     }
 
-    public bool AlreadyPlayed()
+    public void NextPart()
     {
-        return played;
+        if (!introPlayed)
+        {
+            introPlayed = true;
+            return;
+        }
+
+        mainPlayed = true;
     }
 
-    public void MarkAsPlayed()
+    public void Reset()
     {
-        played = true;
+        mainPlayed = introPlayed = false;        
     }
 }

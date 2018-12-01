@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class DecorationSerialized : Serializable {
 
-    public Decoration.TypeOfDecoration type = Decoration.TypeOfDecoration.build_01;
+    public Decoration.TypeOfDecoration type = Decoration.TypeOfDecoration.BUILD_01;
 
-    public DecorationSerialized(int id, int floor_id, Decoration.TypeOfDecoration type)
+    public DecorationSerialized(int id, int floorId, Decoration.TypeOfDecoration type)
     {
         this.id = id;
-        this.floor_id = floor_id;
+        this.floorId = floorId;
         this.type = type;
     }
 
-    public DecorationSerialized(Decoration decoration_to_serialize)
+    public DecorationSerialized(Decoration decorationToSerialized)
     {
-        floor_id = decoration_to_serialize.current_floor.id;
-        type = decoration_to_serialize.model;
+        floorId = decorationToSerialized.currentFloor.id;
+        type = decorationToSerialized.model;
     }
 }

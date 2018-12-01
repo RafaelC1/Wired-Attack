@@ -206,23 +206,23 @@ MonoBehaviour:
   id: 0
   title: servidor
   description: grande servidor (produz mais rapido)
-  current_floor: {fileID: 0}
+  currentFloor: {fileID: 0}
   team: 0
-  model: server
-  controller: {fileID: 0}
-  game_controller: {fileID: 0}
+  model: regular_server
+  machineController: {fileID: 0}
+  gameController: {fileID: 0}
   connections: []
-  text_parent: {fileID: 0}
+  textParent: {fileID: 0}
   background: {fileID: 1723916189931518}
   text_holder: {fileID: 1084099175796046}
   bits_label: {fileID: 114593692852849868}
-  max_connections: 2
-  max_bit_storage: 20
-  current_stored_bits: 0
-  process_time: 0.5
-  current_process_time: 0
-  bit_defense: 1
-  produce_bit: 1
+  maxConnections: 4
+  maxBitStorage: 10
+  currentStoredBits: 0
+  processTime: 0.3
+  currentProcessTime: 0
+  bitDefense: 1
+  produceBit: 1
   actived: 0
 --- !u!212 &212409939289789476
 SpriteRenderer:

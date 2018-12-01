@@ -6,13 +6,13 @@ public class TranslationController : MonoBehaviour {
 
     private const char SYMBOL_TO_DIVID_KEY_AND_VALUE = ':';
 
-    public List<TextAsset> translation_files = new List<TextAsset>();
+    public List<TextAsset> translationFiles = new List<TextAsset>();
     private IDictionary<string, IDictionary<string, string>> translations = new Dictionary<string, IDictionary<string, string>>();
 
-    public List<string> available_languages = new List<string>();
-    public int current_language_id = 0;
+    public List<string> availableLanguages = new List<string>();
+    public int currentLanguageId = 0;
 
-    private List<Translation> text_field_translations = new List<Translation>();
+    private List<Translation> textFieldTranslations = new List<Translation>();
 
     void Start ()
     {
@@ -23,17 +23,17 @@ public class TranslationController : MonoBehaviour {
 
     private void OrganizeTranslations()
     {
-        foreach(TextAsset translation_file in translation_files)
+        foreach(TextAsset translationFiles in translationFiles)
         {
-            available_languages.Add(translation_file.name);
+            availableLanguages.Add(translationFiles.name);
 
-            translations.Add(translation_file.name, TranslationFileContent(translation_file));
+            translations.Add(translationFiles.name, TranslationFileContent(translationFiles));
         }
     }
 
     private IDictionary<string, string> TranslationFileContent(TextAsset file)
     {
-        IDictionary<string, string> key_value_of_translations = new Dictionary<string, string>();
+        IDictionary<string, string> keyValueOfTranslation = new Dictionary<string, string>();
 
         List<string> all_lines = new List<string>(file.text.Split("\n"[0]));
 
@@ -42,24 +42,24 @@ public class TranslationController : MonoBehaviour {
             string key = line.Split(SYMBOL_TO_DIVID_KEY_AND_VALUE)[0];
             string value = line.Split(SYMBOL_TO_DIVID_KEY_AND_VALUE)[1];
 
-            key_value_of_translations.Add(key, value);
+            keyValueOfTranslation.Add(key, value);
         }
 
-        return key_value_of_translations;
+        return keyValueOfTranslation;
     }
 
     public void UpdateAllTextFields()
     {
-        foreach(Translation translation in text_field_translations)
+        foreach(Translation translation in textFieldTranslations)
         {
-            translation.ChangeText(TranslationByKey(translation.text_key));
+            translation.ChangeText(TranslationByKey(translation.textKey));
         }
     }
 
     public string CurrentLanguage()
     {
         try {
-            return available_languages[current_language_id];
+            return availableLanguages[currentLanguageId];
         } catch (System.Exception) {
             return "";
         }
@@ -79,39 +79,39 @@ public class TranslationController : MonoBehaviour {
         return translation;
     }
 
-    public void AddTranslationManager(Translation new_translation)
+    public void AddTranslationManager(Translation newTranslation)
     {
-        text_field_translations.Add(new_translation);
+        textFieldTranslations.Add(newTranslation);
     }
 
     public int CountOfAvailableLanguages()
     {
-        return available_languages.Count - 1;
+        return availableLanguages.Count - 1;
     }
 
     public void NextLanguage()
     {
-        current_language_id++;
+        currentLanguageId++;
     }
 
     public void BackLanguage()
     {
-        current_language_id--;
+        currentLanguageId--;
     }
 
     public void SelectLastLanguage()
     {
-        current_language_id = CountOfAvailableLanguages();
+        currentLanguageId = CountOfAvailableLanguages();
     }
 
     public void SelectFirstLanguage()
     {
-        current_language_id = 0;
+        currentLanguageId = 0;
     }
 
     public bool CurrentLanguageExist()
     {
-        return current_language_id <= CountOfAvailableLanguages() &&
-               current_language_id >= 0;
+        return currentLanguageId <= CountOfAvailableLanguages() &&
+               currentLanguageId >= 0;
     }
 }

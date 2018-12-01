@@ -100,11 +100,13 @@
     <Compile Include="Assets\Scripts\ModelSerializeds\MachineSerialized.cs" />
     <Compile Include="Assets\Scripts\ModelSerializeds\Serializable.cs" />
     <None Include="Assets\Maps\MAP_4.txt" />
+    <None Include="Assets\Maps\MAP_1.txt" />
     <None Include="Assets\Translations\english.txt" />
     <None Include="Assets\Maps\MAP_2.txt" />
     <None Include="Assets\Maps\MAP_3.txt" />
+    <None Include="Assets\Maps\MAP_5.txt" />
     <None Include="Assets\Translations\português.txt" />
-    <None Include="Assets\Translations\japanese.txt" />
+    <None Include="Assets\Translations\日本語.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/projects/unity_workBanch/Wired-Attack/Wired Attack/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

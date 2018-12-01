@@ -8,73 +8,73 @@ public class MapController : MonoBehaviour
 {
     #region variables
 
-    public MachineController machine_controller = null;
-    public MenuController editor_mode_menus = null;
-    public GameController game_controller = null;
-    public DataController data_controller = null;
-    public PopUpTextController pop_text_controller = null;
+    public MachineController machineController = null;
+    public MenuController editorModeMenuController = null;
+    public GameController gameController = null;
+    public DataController dataController = null;
+    public PopUpTextController popTextController = null;
 
-    public List<GameObject> floor_pre_fabs = new List<GameObject>();
+    public List<GameObject> floorPreFabs = new List<GameObject>();
 
     public enum TypeOfFloor
     {
-        grass,
-        side_walk
+        GRASS,
+        SIDE_WALK
     }
 
     public enum SideOfFloor
     {
-        top_left,
-        top_center,
-        top_right,
-        left,
-        center,
-        right,
-        bottom_left,
-        bottom_center,
-        bottom_right
+        TOP_LEFT,
+        TOP_CENTER,
+        TOP_RIGHT,
+        LEFT,
+        CENTER,
+        RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_CENTER,
+        BOTTOM_RIGHT
     }
 
-    public GameController.GameMode current_game_mode = GameController.GameMode.DEMOSTRATION;
+    public GameController.GameMode currentGameMode = GameController.GameMode.DEMOSTRATION;
 
-    public List<GameObject> connection_pre_fabs = new List<GameObject>();
-    public List<GameObject> machines_pre_fabs = new List<GameObject>();
-    public List<GameObject> decoractions_pre_fabs = new List<GameObject>();
+    public List<GameObject> connectionPreFabs = new List<GameObject>();
+    public List<GameObject> machinePreFabs = new List<GameObject>();
+    public List<GameObject> decorationPreFabs = new List<GameObject>();
 
     private IDictionary<TypeOfFloor,
-                        IDictionary<SideOfFloor, GameObject>> floor_groups = new Dictionary<TypeOfFloor,
+                        IDictionary<SideOfFloor, GameObject>> floorGroups = new Dictionary<TypeOfFloor,
                                                                                             IDictionary<SideOfFloor, GameObject>>();
-    private IDictionary<SideOfFloor, GameObject> grass_floors = new Dictionary<SideOfFloor, GameObject>();
-    private IDictionary<SideOfFloor, GameObject> side_walk_floors = new Dictionary<SideOfFloor, GameObject>();
+    private IDictionary<SideOfFloor, GameObject> grassFloors = new Dictionary<SideOfFloor, GameObject>();
+    private IDictionary<SideOfFloor, GameObject> sideWalkFloors = new Dictionary<SideOfFloor, GameObject>();
 
-    public GameObject floor_editor_menu = null;
-    public GameObject machine_editor_menu = null;
-    public GameObject decoration_editor_menu = null;
+    public GameObject floorEditorMenu = null;
+    public GameObject machineEditorMenu = null;
+    public GameObject decorationEditorMenu = null;
 
-    public InputField map_title_text = null;
-    public InputField map_description_text = null;
+    public InputField mapTitleText = null;
+    public InputField mapDescriptionText = null;
 
-    public GameObject machine_parent = null;
-    public GameObject connection_parent = null;
-    public GameObject decoration_parent = null;
-    public GameObject bit_text_holder = null;
+    public GameObject machinesHolder = null;
+    public GameObject connectionsHolder = null;
+    public GameObject decorationsHolder = null;
+    public GameObject bitTextsHolder = null;
 
     private List<GameObject> tiles = new List<GameObject>();
 
-    public GameObject selected_floor = null;
+    public GameObject selectedFloor = null;
 
-    private Vector3 tile_size;
+    private Vector3 tileSize;
 
-    public Map current_map = null;
+    public Map currentMap = null;
 
-    public float gap_size = 0;
+    public float gapSize = 0;
     public int REGULAR_MAP_WIDTH = 4;
     public int REGULAR_MAP_HEIGHT = 4;
 
     public int MENU_MAP_WIDTH = 20;
     public int MENU_MAP_HEIGHT = 30;
 
-    private string type_of_connection_to_create = null; 
+    private string typeOfConnectionToCreate = null; 
 
     #endregion
 
@@ -85,8 +85,8 @@ public class MapController : MonoBehaviour
 
     void Update()
     {
-        if (game_controller.isPaused()) return;
-        if (current_game_mode == GameController.GameMode.EDIT_MODE)
+        if (gameController.IsPaused()) return;
+        if (currentGameMode == GameController.GameMode.EDIT_MODE)
         {
             DetectClickOnTiles();
         }
@@ -94,28 +94,28 @@ public class MapController : MonoBehaviour
 
     private void PrepareTilesInDictionaries()
     {
-        List<GameObject> grass_floors = floor_pre_fabs.FindAll(floor_go => floor_go.GetComponent<Floor>().type == TypeOfFloor.grass);
-        List<GameObject> side_walk_floors = floor_pre_fabs.FindAll(floor_go => floor_go.GetComponent<Floor>().type == TypeOfFloor.side_walk);
+        List<GameObject> grassFloors = floorPreFabs.FindAll(floor_go => floor_go.GetComponent<Floor>().type == TypeOfFloor.GRASS);
+        List<GameObject> sideWalkFloors = floorPreFabs.FindAll(floor_go => floor_go.GetComponent<Floor>().type == TypeOfFloor.SIDE_WALK);
 
-        PrepareTilesInDictionary(this.grass_floors, grass_floors);
-        PrepareTilesInDictionary(this.side_walk_floors, side_walk_floors);
+        PrepareTilesInDictionary(this.grassFloors, grassFloors);
+        PrepareTilesInDictionary(this.sideWalkFloors, sideWalkFloors);
 
-        floor_groups.Add(TypeOfFloor.grass, this.grass_floors);
-        floor_groups.Add(TypeOfFloor.side_walk, this.side_walk_floors);
+        floorGroups.Add(TypeOfFloor.GRASS, this.grassFloors);
+        floorGroups.Add(TypeOfFloor.SIDE_WALK, this.sideWalkFloors);
     }
 
     private void PrepareTilesInDictionary(IDictionary<SideOfFloor, GameObject> dictionary, List<GameObject> floors)
     {
-        foreach (GameObject floor_go in floors)
+        foreach (GameObject floorGo in floors)
         {
-            Floor floor = floor_go.GetComponent<Floor>();
-            dictionary.Add(floor.side, floor_go);
+            Floor floor = floorGo.GetComponent<Floor>();
+            dictionary.Add(floor.side, floorGo);
         }
     }
 
     public void ClearCurrentMap()
     {
-        game_controller.RemoveAllPlayers();
+        gameController.RemoveAllPlayers();
 
         foreach (GameObject tile in tiles)
         {
@@ -131,14 +131,14 @@ public class MapController : MonoBehaviour
     //    DefineMap(CreateAFakeMapObjects());
     //}
 
-    public void DefineGameMode(GameController.GameMode game_mode)
+    public void DefineGameMode(GameController.GameMode gameMode)
     {
-        current_game_mode = game_mode;
+        currentGameMode = gameMode;
     }
 
     public void DefineMap(Map map)
     {
-        current_map = map;
+        currentMap = map;
     }
 
     public void CreateCurrentMap()
@@ -148,28 +148,28 @@ public class MapController : MonoBehaviour
         DesactiveAllMenus();
     }
 
-    private void CreateTiles(int map_width, int map_height)
+    private void CreateTiles(int mapWidth, int mapHeight)
     {
-        tile_size = FloorAccordingPositionAndType(0, 0, 0, 0, TypeOfFloor.side_walk).GetComponent<Renderer>().bounds.size;
+        tileSize = FloorAccordingPositionAndType(0, 0, 0, 0, TypeOfFloor.SIDE_WALK).GetComponent<Renderer>().bounds.size;
 
-        float total_width = tile_size.x * map_width;
-        float total_height = tile_size.y * map_height;
+        float totalWidth = tileSize.x * mapWidth;
+        float totalHeight = tileSize.y * mapHeight;
 
-        Vector3 start_pos = Vector3.zero;
+        Vector3 startPos = Vector3.zero;
 
-        start_pos.x = -((total_width / 2) - tile_size.x / 2);
-        start_pos.y = +((total_height / 2) - tile_size.x / 2);
+        startPos.x = -((totalWidth / 2) - tileSize.x / 2);
+        startPos.y = +((totalHeight / 2) - tileSize.x / 2);
 
-        Vector3 current_pos = start_pos;
+        Vector3 currentPos = startPos;
 
-        for (int i = 0; i < map_height; i++)
+        for (int i = 0; i < mapHeight; i++)
         {
-            for (int j = 0; j < map_width; j++)
+            for (int j = 0; j < mapWidth; j++)
             {
-                GameObject floor_go = Instantiate(FloorAccordingPositionAndType(j, i, map_width, map_height, TypeOfFloor.side_walk));
-                Floor floor = floor_go.GetComponent<Floor>();
+                GameObject floorGo = Instantiate(FloorAccordingPositionAndType(j, i, mapWidth, mapHeight, TypeOfFloor.SIDE_WALK));
+                Floor floor = floorGo.GetComponent<Floor>();
 
-                switch(current_game_mode)
+                switch(currentGameMode)
                 {
                     case GameController.GameMode.EDIT_MODE:
                         {
@@ -188,60 +188,60 @@ public class MapController : MonoBehaviour
                         }
                 }
 
-                floor_go.transform.SetParent(transform);
-                floor_go.transform.localPosition = current_pos;
-                current_pos.x += tile_size.x;
+                floorGo.transform.SetParent(transform);
+                floorGo.transform.localPosition = currentPos;
+                currentPos.x += tileSize.x;
 
-                floor_go.transform.name = FormattedFloorName(j, i);
+                floorGo.transform.name = FormattedFloorName(j, i);
                 floor.controller = gameObject;
                 floor.id = tiles.Count;
 
-                tiles.Add(floor_go);
+                tiles.Add(floorGo);
             }
-            current_pos.x = start_pos.x;
-            current_pos.y -= tile_size.y;
+            currentPos.x = startPos.x;
+            currentPos.y -= tileSize.y;
         }
     }
 
-    private GameObject FloorAccordingPositionAndType(int pos_x, int pos_y, int max_width, int max_height, TypeOfFloor floor_type)
+    private GameObject FloorAccordingPositionAndType(int posX, int posY, int maxWidth, int maxHeight, TypeOfFloor floorType)
     {
         GameObject floor = null;
 
-        if (pos_y == 0)
+        if (posY == 0)
         {
-            if (pos_x == 0) { floor = floor_groups[floor_type][SideOfFloor.top_left]; }
-            else if (pos_x == max_width - 1) { floor = floor_groups[floor_type][SideOfFloor.top_right]; }
-            else { floor = floor_groups[floor_type][SideOfFloor.top_center]; }
+            if (posX == 0) { floor = floorGroups[floorType][SideOfFloor.TOP_LEFT]; }
+            else if (posX == maxWidth - 1) { floor = floorGroups[floorType][SideOfFloor.TOP_RIGHT]; }
+            else { floor = floorGroups[floorType][SideOfFloor.TOP_CENTER]; }
         }
-        else if (pos_y == max_height - 1)
+        else if (posY == maxHeight - 1)
         {
-            if (pos_x == 0) { floor = floor_groups[floor_type][SideOfFloor.bottom_left]; }
-            else if (pos_x == max_width - 1) { floor = floor_groups[floor_type][SideOfFloor.bottom_right]; }
-            else { floor = floor_groups[floor_type][SideOfFloor.bottom_center]; }
+            if (posX == 0) { floor = floorGroups[floorType][SideOfFloor.BOTTOM_LEFT]; }
+            else if (posX == maxWidth - 1) { floor = floorGroups[floorType][SideOfFloor.BOTTOM_RIGHT]; }
+            else { floor = floorGroups[floorType][SideOfFloor.BOTTOM_CENTER]; }
         }
         else
         {
-            if (pos_x == 0) { floor = floor_groups[floor_type][SideOfFloor.left]; }
-            else if (pos_x == max_width - 1) { floor = floor_groups[floor_type][SideOfFloor.right]; }
-            else { floor = floor_groups[floor_type][SideOfFloor.center]; }
+            if (posX == 0) { floor = floorGroups[floorType][SideOfFloor.LEFT]; }
+            else if (posX == maxWidth - 1) { floor = floorGroups[floorType][SideOfFloor.RIGHT]; }
+            else { floor = floorGroups[floorType][SideOfFloor.CENTER]; }
         }
 
         return floor;
     }
 
-    private string FormattedFloorName(int pos_x, int pos_y)
+    private string FormattedFloorName(int posX, int posY)
     {
-        return string.Format("Tile {0} X {1}", pos_x + 1, pos_y + 1);
+        return string.Format("Tile {0} X {1}", posX + 1, posY + 1);
     }
 
-    public void ConnectionModeOn(Connection connection_type)
+    public void ConnectionModeOn(Connection connectionType)
     {
-        type_of_connection_to_create = connection_type.wire_type;
+        typeOfConnectionToCreate = connectionType.wireType;
     }
 
     public void ConnectionModeOff()
     {
-        type_of_connection_to_create = null;
+        typeOfConnectionToCreate = null;
     }
 
     private void DetectClickOnTiles()
@@ -257,30 +257,32 @@ public class MapController : MonoBehaviour
 
                 if (hit.transform.tag == "floor")
                 {
-                    if (hit.transform.gameObject == selected_floor)
+                    if (hit.transform.gameObject == selectedFloor)
                     {
                         DeselectCurrentFloor();
                         return;
                     }
 
-                    if (selected_floor != null &&
-                        type_of_connection_to_create != null)
+                    if (selectedFloor != null)
                     {
-                        Floor current_floor = CurrentSelectedFloor();
-                        Floor another_floor = hit.transform.GetComponent<Floor>();
-
-                        if (current_floor.IsHoldingSomething() &&
-                            another_floor.IsHoldingSomething() &&
-                            !machine_controller.IsThereConnectionBetween(current_floor.object_holded,
-                                                                         another_floor.object_holded))
+                        if (typeOfConnectionToCreate != null)
                         {
-                            CreateConnectionBetweenMachinesOn(selected_floor,
-                                                              hit.transform.gameObject,
-                                                              ConnectionPreFabByType(type_of_connection_to_create),
-                                                              ConnectionsOnMachines().Count);
-                            ConnectionModeOff();
-                            DeselectCurrentFloor();
-                            return;
+                            Floor current_floor = CurrentSelectedFloor();
+                            Floor another_floor = hit.transform.GetComponent<Floor>();
+
+                            if (current_floor.IsHoldingSomething() &&
+                                another_floor.IsHoldingSomething() &&
+                                !machineController.IsThereConnectionBetween(current_floor.objectHolded,
+                                                                             another_floor.objectHolded))
+                            {
+                                CreateConnectionBetweenMachinesOn(selectedFloor,
+                                                                  hit.transform.gameObject,
+                                                                  ConnectionPreFabByType(typeOfConnectionToCreate),
+                                                                  ConnectionsOnMachines().Count);
+                                ConnectionModeOff();
+                                DeselectCurrentFloor();
+                                return;
+                            }
                         }
 
                         DeselectCurrentFloor();
@@ -290,7 +292,7 @@ public class MapController : MonoBehaviour
 
                     if (IsCurrentSelectedFloorHoldingSomething())
                     {
-                        switch (selected_floor.GetComponent<Floor>().object_holded.tag)
+                        switch (selectedFloor.GetComponent<Floor>().objectHolded.tag)
                         {
                             case "machine":
                                 {
@@ -319,68 +321,68 @@ public class MapController : MonoBehaviour
 
     private void SelectFloor(GameObject floor)
     {
-        selected_floor = floor;
+        selectedFloor = floor;
         CurrentSelectedFloor().ActiveBackGround(true);
     }
 
     private void DeselectCurrentFloor()
     {
         CurrentSelectedFloor().ActiveBackGround(false);
-        selected_floor = null;
+        selectedFloor = null;
     }
 
-    public void NewMachine(GameObject machine_pre_fab)
+    public void NewMachine(GameObject machinePreFab)
     {
-        GameObject machine = Instantiate(machine_pre_fab);
+        GameObject machine = Instantiate(machinePreFab);
         PlaceNewMachineOnSelectedTile(machine);
     }
 
-    private void PlaceNewMachineOnSelectedTile(GameObject machine_go)
+    private void PlaceNewMachineOnSelectedTile(GameObject machineGo)
     {
-        Machine machine = machine_go.GetComponent<Machine>();
-        machine.text_parent = bit_text_holder;
-        machine.game_controller = game_controller;
+        Machine machine = machineGo.GetComponent<Machine>();
+        machine.textParent = bitTextsHolder;
+        machine.gameController = gameController;
 
         if (machine.id == 0)
         {
             machine.id = AvailableMachineId();
         }
 
-        machine_go.transform.name = machine.title + machine.id.ToString();
-        machine_go.transform.SetParent(machine_parent.transform);
+        machineGo.transform.name = machine.title + machine.id.ToString();
+        machineGo.transform.SetParent(machinesHolder.transform);
 
-        GiveToSelectedFloor(machine_go);
+        GiveToSelectedFloor(machineGo);
         DeselectCurrentFloor();
     }
 
     private int AvailableMachineId()
     {
-        int available_id = 1;
-        while (MachinesOnTiles().Find(machine => machine.GetComponent<Machine>().id == available_id))
+        int availableId = 1;
+        while (MachinesOnTiles().Find(machine => machine.GetComponent<Machine>().id == availableId))
         {
-            if (available_id >= REGULAR_MAP_HEIGHT * REGULAR_MAP_WIDTH)
+            if (availableId >= REGULAR_MAP_HEIGHT * REGULAR_MAP_WIDTH)
                 break;
 
-            available_id++;
+            availableId++;
         }
 
-        return available_id;
+        return availableId;
     }
 
-    public void PlaceNewDecorationOnSelectedTile(GameObject decoration_pre_fab)
+    public void PlaceNewDecorationOnSelectedTile(GameObject decorationPreFab)
     {
-        GameObject decoration_go = Instantiate(decoration_pre_fab);
-        Decoration decoration = decoration_go.GetComponent<Decoration>();
+        GameObject decorationGo = Instantiate(decorationPreFab);
+        Decoration decoration = decorationGo.GetComponent<Decoration>();
 
         decoration.id = 0;
-        decoration_go.transform.SetParent(decoration_parent.transform);
-        GiveToSelectedFloor(decoration_go);
+        decorationGo.transform.SetParent(decorationsHolder.transform);
+        GiveToSelectedFloor(decorationGo);
         DeselectCurrentFloor();
     }
 
-    private void GiveToSelectedFloor(GameObject object_to_hold)
+    private void GiveToSelectedFloor(GameObject objectToHold)
     {
-        CurrentSelectedFloor().ReceiveObjectToHold(object_to_hold);
+        CurrentSelectedFloor().ReceiveObjectToHold(objectToHold);
     }
 
     public void RemoveFromSelectedFloor()
@@ -389,45 +391,46 @@ public class MapController : MonoBehaviour
         DeselectCurrentFloor();
     }
 
-    public void SetMachineTeam(int new_team)
+    public void SetMachineTeam(int newTeam)
     {
         if (CurrentSelectedFloor().IsHoldingSomething())
         {
-            Machine holded_machine = CurrentSelectedFloor().object_holded.GetComponent<Machine>();
-            holded_machine.ChangeOwner((TeamHelpers.Team)new_team);
+            Machine holdedMachine = CurrentSelectedFloor().objectHolded.GetComponent<Machine>();
+            holdedMachine.ChangeOwner((TeamHelpers.Team)newTeam);
         }
         DeselectCurrentFloor();
     }
 
-    public void CreateConnectionBetweenMachinesOn(GameObject first_floor,
-                                                  GameObject secound_floor,
-                                                  GameObject wire_pre_fab,
+    public void CreateConnectionBetweenMachinesOn(GameObject firstFloor,
+                                                  GameObject lastFloor,
+                                                  GameObject wirePreFab,
                                                   int connection_id)
     {
-        GameObject first_machine = first_floor.GetComponent<Floor>().object_holded;
-        GameObject secound_machine = secound_floor.GetComponent<Floor>().object_holded;
+        GameObject firstMachine = firstFloor.GetComponent<Floor>().objectHolded;
+        GameObject lastMachine = lastFloor.GetComponent<Floor>().objectHolded;
 
-        if (first_machine.GetComponent<Machine>().CanHaveMoreConnections() &&
-            secound_machine.GetComponent<Machine>().CanHaveMoreConnections())
+        if (firstMachine.GetComponent<Machine>().CanHaveMoreConnections() &&
+            lastMachine.GetComponent<Machine>().CanHaveMoreConnections())
         {
-            GameObject connection_go = Instantiate(wire_pre_fab);
-            Connection connection = connection_go.GetComponent<Connection>();
+            GameObject connectionGo = Instantiate(wirePreFab);
+            Connection connection = connectionGo.GetComponent<Connection>();
 
-            connection.connection_points[0] = first_machine;
-            connection.connection_points[1] = secound_machine;
+            connection.connectionsPoints[0] = firstMachine;
+            connection.connectionsPoints[1] = lastMachine;
+            connection.UpdatePointsOnLine();
 
-            first_machine.GetComponent<Machine>().connections.Add(connection_go);
-            secound_machine.GetComponent<Machine>().connections.Add(connection_go);
+            firstMachine.GetComponent<Machine>().connections.Add(connectionGo);
+            lastMachine.GetComponent<Machine>().connections.Add(connectionGo);
 
             connection.id = connection_id;
 
-            connection_go.name = connection.wire_type + connection.id.ToString();
+            connectionGo.name = connection.wireType + connection.id.ToString();
 
-            connection_go.transform.SetParent(connection_parent.transform);
+            connectionGo.transform.SetParent(connectionsHolder.transform);
         }
         else
         {
-            pop_text_controller.CreatePopText("connections limit", first_machine.transform);
+            popTextController.CreatePopText("connections limit", firstMachine.transform);
         }
     }
 
@@ -438,14 +441,14 @@ public class MapController : MonoBehaviour
 
     public void SaveCurrentMap()
     {
-        current_map.ReplaceListOfMachines(MachinesOnTiles());
-        current_map.ReplaceListOfConnections(ConnectionsOnMachines());
-        current_map.ReplaceListOfDecorations(DecorationsOnTiles());
+        currentMap.ReplaceListOfMachines(MachinesOnTiles());
+        currentMap.ReplaceListOfConnections(ConnectionsOnMachines());
+        currentMap.ReplaceListOfDecorations(DecorationsOnTiles());
 
-        current_map.name = map_title_text.text;
-        current_map.description = map_description_text.text;
+        currentMap.name = mapTitleText.text;
+        currentMap.description = mapDescriptionText.text;
 
-        data_controller.SaveMap(current_map);
+        dataController.SaveMap(currentMap);
     }
 
     //private Map CreateAFakeMapObjects()
@@ -463,56 +466,58 @@ public class MapController : MonoBehaviour
     
     public void PlaceMachinesOfCurrentMap()
     {
-        foreach (MachineSerialized machine_s in current_map.serialized_machines)
+        foreach (MachineSerialized machineSerialized in currentMap.machinesSerializeds)
         {
-            GameObject machine_go = Instantiate(MachinePreFabByModel(machine_s.machine_model));
+            GameObject machineGo = Instantiate(MachinePreFabByModel(machineSerialized.machineModel));
 
-            Machine machine = machine_go.GetComponent<Machine>();
+            Machine machine = machineGo.GetComponent<Machine>();
 
-            machine.id = machine_s.id;
-            machine.team = (TeamHelpers.Team)machine_s.team_id;
-            machine.model = machine_s.machine_model;
-            selected_floor = tiles[machine_s.floor_id];
+            machine.id = machineSerialized.id;
+            machine.team = (TeamHelpers.Team)machineSerialized.teamId;
+            machine.model = machineSerialized.machineModel;
+            selectedFloor = tiles[machineSerialized.floorId];
 
-            PlaceNewMachineOnSelectedTile(machine_go);
+            PlaceNewMachineOnSelectedTile(machineGo);
         }
 
-        foreach (ConnectionSerialized con_s in current_map.serialized_connections)
+        foreach (ConnectionSerialized connectionSerialized in currentMap.connectionsSerializeds)
         {
-            GameObject first_machine_point = MachinesOnTiles().Find(machine => machine.GetComponent<Machine>().id == con_s.connection_ids[0]);
-            GameObject secound_machine_point = MachinesOnTiles().Find(machine => machine.GetComponent<Machine>().id == con_s.connection_ids[1]);
+            GameObject firstMachinePoint = MachinesOnTiles()
+                .Find(machine =>machine.GetComponent<Machine>().id == connectionSerialized.connectionIds[0]);
+            GameObject lastMachinePoint = MachinesOnTiles()
+                .Find(machine => machine.GetComponent<Machine>().id == connectionSerialized.connectionIds[1]);
 
-            GameObject first_floor = first_machine_point.GetComponent<Machine>().current_floor.transform.gameObject;
-            GameObject secound_floor = secound_machine_point.GetComponent<Machine>().current_floor.transform.gameObject;
+            GameObject firstFloor = firstMachinePoint.GetComponent<Machine>().currentFloor.transform.gameObject;
+            GameObject lastFloor = lastMachinePoint.GetComponent<Machine>().currentFloor.transform.gameObject;
 
-            CreateConnectionBetweenMachinesOn(first_floor, secound_floor, ConnectionPreFabByType(con_s.wire_type), con_s.id);
+            CreateConnectionBetweenMachinesOn(firstFloor, lastFloor, ConnectionPreFabByType(connectionSerialized.wireType), connectionSerialized.id);
         }
 
-        foreach (DecorationSerialized deco_s in current_map.serialized_decorations)
+        foreach (DecorationSerialized connectionSerialized in currentMap.decorationsSerializeds)
         {
-            selected_floor = tiles[deco_s.floor_id];
-            PlaceNewDecorationOnSelectedTile(DecoractionPreFabByModel(deco_s.type));
+            selectedFloor = tiles[connectionSerialized.floorId];
+            PlaceNewDecorationOnSelectedTile(DecoractionPreFabByModel(connectionSerialized.type));
 
         }
         
-        if (current_game_mode == GameController.GameMode.PLAY_MODE)
+        if (currentGameMode == GameController.GameMode.PLAY_MODE)
         {
-            machine_controller.StartGame(MachinesOnTiles(), ConnectionsOnMachines());
+            machineController.StartGame(MachinesOnTiles(), ConnectionsOnMachines());
 
-            if (machine_controller.machines.Find(machine => machine.team == TeamHelpers.Team.HUMAN_TEAM))
-                game_controller.CreateHumanPlay();
-            if (machine_controller.machines.Find(machine => machine.team == TeamHelpers.Team.RED_TEAM))
-                game_controller.CreateIAPlayer(TeamHelpers.Team.RED_TEAM);
-            if (machine_controller.machines.Find(machine => machine.team == TeamHelpers.Team.YELLOW_TEAM))
-                game_controller.CreateIAPlayer(TeamHelpers.Team.YELLOW_TEAM);
+            if (machineController.machines.Find(machine => machine.team == TeamHelpers.Team.HUMAN_TEAM))
+                gameController.CreateHumanPlay();
+            if (machineController.machines.Find(machine => machine.team == TeamHelpers.Team.RED_TEAM))
+                gameController.CreateIAPlayer(TeamHelpers.Team.RED_TEAM);
+            if (machineController.machines.Find(machine => machine.team == TeamHelpers.Team.YELLOW_TEAM))
+                gameController.CreateIAPlayer(TeamHelpers.Team.YELLOW_TEAM);
 
-            if (current_map.tip_texts.Count > 0)
-                game_controller.Pause();
-                pop_text_controller.CreateTips(current_map.tip_texts);
-        } else if (current_game_mode == GameController.GameMode.EDIT_MODE)
+            if (currentMap.tipTexts.Count > 0)
+                gameController.Pause();
+                popTextController.CreateTips(currentMap.tipTexts);
+        } else if (currentGameMode == GameController.GameMode.EDIT_MODE)
         {
-            map_title_text.text = current_map.name;
-            map_description_text.text = current_map.description;
+            mapTitleText.text = currentMap.name;
+            mapDescriptionText.text = currentMap.description;
         }
     }
 
@@ -527,11 +532,11 @@ public class MapController : MonoBehaviour
     {
         if (activate)
         {
-            editor_mode_menus.OpenMenuByObject(floor_editor_menu);
+            editorModeMenuController.OpenMenuByObject(floorEditorMenu);
         }
         else
         {
-            editor_mode_menus.CloseMenuByObject(floor_editor_menu);
+            editorModeMenuController.CloseMenuByObject(floorEditorMenu);
         }
     }
 
@@ -539,11 +544,11 @@ public class MapController : MonoBehaviour
     {
         if (activate)
         {
-            editor_mode_menus.OpenMenuByObject(machine_editor_menu);
+            editorModeMenuController.OpenMenuByObject(machineEditorMenu);
         }
         else
         {
-            editor_mode_menus.CloseMenuByObject(machine_editor_menu);
+            editorModeMenuController.CloseMenuByObject(machineEditorMenu);
         }
     }
 
@@ -551,53 +556,53 @@ public class MapController : MonoBehaviour
     {
         if (activate)
         {
-            editor_mode_menus.OpenMenuByObject(decoration_editor_menu);
+            editorModeMenuController.OpenMenuByObject(decorationEditorMenu);
         }
         else
         {
-            editor_mode_menus.CloseMenuByObject(decoration_editor_menu);
+            editorModeMenuController.CloseMenuByObject(decorationEditorMenu);
         }
     }
 
-    private GameObject ConnectionPreFabByType(string wire_name)
+    private GameObject ConnectionPreFabByType(string wireName)
     {
-        return connection_pre_fabs.Find(connection => connection.GetComponent<Connection>().wire_type == wire_name);
+        return connectionPreFabs.Find(connection => connection.GetComponent<Connection>().wireType == wireName);
     }
 
-    private GameObject MachinePreFabByModel(string machine_model)
+    private GameObject MachinePreFabByModel(string machineModel)
     {
-        return machines_pre_fabs.Find(machine => machine.GetComponent<Machine>().model == machine_model);
+        return machinePreFabs.Find(machine => machine.GetComponent<Machine>().model == machineModel);
     }
 
     private GameObject DecoractionPreFabByModel(Decoration.TypeOfDecoration model)
     {
-        return decoractions_pre_fabs.Find(decoration => decoration.GetComponent<Decoration>().model == model);
+        return decorationPreFabs.Find(decoration => decoration.GetComponent<Decoration>().model == model);
     }
 
     private Floor CurrentSelectedFloor()
     {
-        return selected_floor.GetComponent<Floor>();
+        return selectedFloor.GetComponent<Floor>();
     }
 
-    private GameObject FloorById(int tile_id)
+    private GameObject FloorById(int tileId)
     {
-        return tiles.Find(tile => tile.GetComponent<Floor>().id == tile_id);
+        return tiles.Find(tile => tile.GetComponent<Floor>().id == tileId);
     }
 
     private List<GameObject> OnTilesByTag(string tag)
     {
-        List<GameObject> objects_on_tiles = new List<GameObject>();
+        List<GameObject> objectOnTiles = new List<GameObject>();
 
         foreach (GameObject floor in tiles)
         {
-            GameObject holded_object = floor.GetComponent<Floor>().object_holded;
-            if (holded_object != null && holded_object.tag == tag)
+            GameObject holdedObject = floor.GetComponent<Floor>().objectHolded;
+            if (holdedObject != null && holdedObject.tag == tag)
             {
-                objects_on_tiles.Add(holded_object);
+                objectOnTiles.Add(holdedObject);
             }
         }
 
-        return objects_on_tiles;
+        return objectOnTiles;
     }
 
     private List<GameObject> MachinesOnTiles()
@@ -607,21 +612,21 @@ public class MapController : MonoBehaviour
 
     private List<GameObject> ConnectionsOnMachines()
     {
-        List<GameObject> connection_gos = new List<GameObject>();
+        List<GameObject> connectionsGos = new List<GameObject>();
 
-        foreach (GameObject machine_go in MachinesOnTiles())
+        foreach (GameObject machineGo in MachinesOnTiles())
         {
-            Machine machine = machine_go.GetComponent<Machine>();
+            Machine machine = machineGo.GetComponent<Machine>();
             foreach (GameObject con in machine.connections)
             {
-                if (!connection_gos.Contains(con))
+                if (!connectionsGos.Contains(con))
                 {
-                    connection_gos.Add(con);
+                    connectionsGos.Add(con);
                 }
             }
         }
 
-        return connection_gos;
+        return connectionsGos;
     }
 
     private List<GameObject> DecorationsOnTiles()

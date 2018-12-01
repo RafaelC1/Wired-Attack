@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class TipList : MonoBehaviour {
 
-    public GameController game_controller = null;
-    public GameObject tip_pre_fab = null;
-    private GameObject current_tip_go = null;
+    public GameController gameController = null;
+    public GameObject tipPreFab = null;
+    private GameObject currentTipGo = null;
 
     public List<string> tips = new List<string>();
-    private int current_tip = -1;
+    private int currentTip = -1;
 
 	void Start ()
     {
@@ -21,31 +21,31 @@ public class TipList : MonoBehaviour {
 
     public void NextTip()
     {
-        if (MaxTips() == current_tip)
+        if (MaxTips() == currentTip)
         {
-            game_controller.Resume();
+            gameController.Resume();
             Destroy(this.gameObject);
             return;
         }
-        current_tip++;
+        currentTip++;
         CreateTip(CurrentTipText());
     }
 
     private string CurrentTipText()
     {
-        return tips[current_tip];
+        return tips[currentTip];
     }
 
-    private void CreateTip(string tip_text)
+    private void CreateTip(string tipText)
     {
-        if (current_tip_go != null) Destroy(current_tip_go);
+        if (currentTipGo != null) Destroy(currentTipGo);
 
-        current_tip_go = Instantiate(tip_pre_fab);
-        Tip tip = current_tip_go.GetComponent<Tip>();
+        currentTipGo = Instantiate(tipPreFab);
+        Tip tip = currentTipGo.GetComponent<Tip>();
 
-        current_tip_go.transform.SetParent(this.transform, false);
-        tip.full_text = tip_text;
-        tip.tip_list = this;
+        currentTipGo.transform.SetParent(this.transform, false);
+        tip.fullText = tipText;
+        tip.tipList = this;
     }
 
     private int MaxTips()

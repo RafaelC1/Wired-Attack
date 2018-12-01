@@ -8,10 +8,10 @@ public class SelectLevel : MonoBehaviour {
     public Text title = null;
     public Text description = null;
 
-    public SelectLevelController select_level_controller = null;
-    public Map map_target = null;
+    public SelectLevelController selectLevelController = null;
+    public Map mapTarget = null;
 
-    public FinalScore map_score = null;
+    public FinalScore mapScore = null;
 	
 	void Start ()
     {
@@ -21,35 +21,35 @@ public class SelectLevel : MonoBehaviour {
 
     public void DefineButtonStatus()
     {
-        DefineTitle(map_target.name);
-        DefineDescription(map_target.description);
+        DefineTitle(mapTarget.name);
+        DefineDescription(mapTarget.description);
         DefineFinalScore();
     }
 
 
-    private void DefineTitle(string new_title)
+    private void DefineTitle(string newTitle)
     {
-        if (new_title != DataController.NEW_GAME_KEY)
-            title.text = new_title;
+        if (newTitle != DataController.NEW_GAME_KEY)
+            title.text = newTitle;
     }
 
-    private void DefineDescription(string new_description)
+    private void DefineDescription(string newDescription)
     {
         if (description != null)
-            description.text = new_description;
+            description.text = newDescription;
     }
 
     private void DefineFinalScore()
     {
-        if (map_score == null)
+        if (mapScore == null)
             return;
-        map_score.DefineMapName(map_target.name);
-        map_score.LoadNestTime();
+        mapScore.DefineMapName(mapTarget.name);
+        mapScore.LoadNestTime();
     }
     
     public void SelectThisLevel()
     {
-        select_level_controller.SelectLevel(map_target);
+        selectLevelController.SelectLevel(mapTarget);
     }
     
 }

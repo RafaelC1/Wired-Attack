@@ -7,13 +7,13 @@ public class Floor : MonoBehaviour
 {
     public int id = 0;
     public GameObject controller = null;
-    public GameObject floor_holder = null;
-    public GameObject object_holded = null;
+    public GameObject floorHolder = null;
+    public GameObject objectHolded = null;
 
     public GameObject background = null;
 
-    public MapController.TypeOfFloor type = MapController.TypeOfFloor.grass;
-    public MapController.SideOfFloor side = MapController.SideOfFloor.top_left;
+    public MapController.TypeOfFloor type = MapController.TypeOfFloor.GRASS;
+    public MapController.SideOfFloor side = MapController.SideOfFloor.TOP_LEFT;
 
     void Start()
     {
@@ -26,30 +26,30 @@ public class Floor : MonoBehaviour
 
     }
     
-    public void ReceiveObjectToHold(GameObject object_to_hold)
+    public void ReceiveObjectToHold(GameObject objectToHold)
     {
-        object_holded = object_to_hold;
-        object_holded.GetComponent<Holdable>().current_floor = this;
+        objectHolded = objectToHold;
+        objectHolded.GetComponent<Holdable>().currentFloor = this;
         PositionateObjectOnCenter();
     }
 
     public void RemoveHoldedObject()
     {
-        Destroy(object_holded);
-        object_holded = null;
+        Destroy(objectHolded);
+        objectHolded = null;
     }
 
     public void PositionateObjectOnCenter()
     {
         if(IsHoldingSomething())
         {
-            object_holded.transform.position = this.floor_holder.transform.position;
+            objectHolded.transform.position = this.floorHolder.transform.position;
         }        
     }
 
     public bool IsHoldingSomething()
     {
-        return object_holded != null;
+        return objectHolded != null;
     }
 
     public void ActiveBackGround(bool activate)
@@ -64,6 +64,6 @@ public class Floor : MonoBehaviour
 
     public void OnDestroy()
     {
-        Destroy(object_holded);
+        Destroy(objectHolded);
     }
 }

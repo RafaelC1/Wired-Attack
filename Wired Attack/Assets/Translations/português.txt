@@ -14,3 +14,7 @@ mission_end:Missao
 mission_end_success:cumprida
 mission_end_fail:falha
 best_time:melhor tempo
+edit_machine_options:Trocar time
+edit_wire_options:Adicionar cabo
+human:humano
+ia:IA

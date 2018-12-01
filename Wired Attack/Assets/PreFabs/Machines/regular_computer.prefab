@@ -159,23 +159,23 @@ MonoBehaviour:
   id: 0
   title: "maquina padr\xE3o"
   description: Computador normal
-  current_floor: {fileID: 0}
+  currentFloor: {fileID: 0}
   team: 0
-  model: regular
-  controller: {fileID: 0}
-  game_controller: {fileID: 0}
+  model: regular_machine
+  machineController: {fileID: 0}
+  gameController: {fileID: 0}
   connections: []
-  text_parent: {fileID: 0}
+  textParent: {fileID: 0}
   background: {fileID: 1485186818851262}
   text_holder: {fileID: 1570226115076032}
   bits_label: {fileID: 114752707185643428}
-  max_connections: 2
-  max_bit_storage: 10
-  current_stored_bits: 0
-  process_time: 0.8
-  current_process_time: 0
-  bit_defense: 1
-  produce_bit: 1
+  maxConnections: 3
+  maxBitStorage: 10
+  currentStoredBits: 0
+  processTime: 1
+  currentProcessTime: 0
+  bitDefense: 1
+  produceBit: 1
   actived: 0
 --- !u!114 &114670092456558600
 MonoBehaviour:

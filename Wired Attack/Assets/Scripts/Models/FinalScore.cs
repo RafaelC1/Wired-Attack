@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class FinalScore : MonoBehaviour {
 
-    public int total_time = 0;
-    public Text total_time_text = null;
-    private string current_map_name = null;
+    public int totalTime = 0;
+    public Text totalTimeText = null;
+    private string currentMapName = null;
     private string TIME_KEY = "_time";
 
 	void Start ()
@@ -19,20 +19,20 @@ public class FinalScore : MonoBehaviour {
 
     public void DefineTime(int time)
     {
-        total_time = time;
+        totalTime = time;
         UpdateTotalTimeText();
         SaveLevelScore();
     }
 
     public void DefineMapName(string map_name)
     {
-        current_map_name = map_name;
+        currentMapName = map_name;
     }
 
     private string TimeFormatted()
     {
-        int minutes = total_time / 60;
-        int secounds = total_time % 60;
+        int minutes = totalTime / 60;
+        int secounds = totalTime % 60;
 
         if (minutes > 0)
             return string.Format("{0}min {1}s", minutes, secounds);
@@ -42,26 +42,26 @@ public class FinalScore : MonoBehaviour {
 
     public void UpdateTotalTimeText()
     {
-        total_time_text.text = TimeFormatted();
+        totalTimeText.text = TimeFormatted();
     }
 
     public void SaveLevelScore()
     {
-        if (current_map_name != null &&
-            (total_time < PlayerPrefs.GetInt(TimeKey()) || !PlayerPrefs.HasKey(TimeKey())))
-            PlayerPrefs.SetInt(TimeKey(), total_time);
+        if (currentMapName != null &&
+            (totalTime < PlayerPrefs.GetInt(TimeKey()) || !PlayerPrefs.HasKey(TimeKey())))
+            PlayerPrefs.SetInt(TimeKey(), totalTime);
     }
 
     private string TimeKey()
     {
-        return current_map_name + TIME_KEY;
+        return currentMapName + TIME_KEY;
     }
 
     public void LoadNestTime()
     {
-        total_time = 0;
+        totalTime = 0;
         if (PlayerPrefs.HasKey(TimeKey()))
-            total_time = PlayerPrefs.GetInt(TimeKey(), total_time);
+            totalTime = PlayerPrefs.GetInt(TimeKey(), totalTime);
 
         UpdateTotalTimeText();
     }

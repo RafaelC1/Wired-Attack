@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-    public MachineController machine_controller = null;
-    public GameController game_controller = null;
+    public MachineController machineController = null;
+    public GameController gameController = null;
 
-    protected string player_name = "Rafael";
+    protected string playerName = "Rafael";
     public TeamHelpers.Team team = TeamHelpers.Team.HUMAN_TEAM;
 
-    public Machine selected_machine = null;
-    public Machine target_machine = null;
+    public Machine selectedMachine = null;
+    public Machine targetMachine = null;
 
     void Start ()
     {
@@ -20,7 +20,7 @@ public class Player : MonoBehaviour {
 	
 	void Update ()
     {
-        if (game_controller.isPaused()) return;
+        if (gameController.IsPaused()) return;
         DetectClickOnMachines();
     }
 
@@ -34,15 +34,15 @@ public class Player : MonoBehaviour {
             if (hit && hit.transform.tag == "machine")
             {
                 Machine machine_hit = hit.transform.GetComponent<Machine>(); ;
-                if (machine_hit.controller.IsThereMoreThanOneTeamAlive())
-                    if (selected_machine == null)
+                if (machine_hit.machineController.IsThereMoreThanOneTeamAlive())
+                    if (selectedMachine == null)
                     {
                         if (machine_hit.team == TeamHelpers.Team.HUMAN_TEAM)
                         {
                             SelectMachine(machine_hit);
                         }
                     } else {
-                        if (selected_machine == machine_hit)
+                        if (selectedMachine == machine_hit)
                         {
                             DeselectAllMachines();
                         } else {
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour {
                     }
             }
 
-            if (selected_machine != null && target_machine != null)
+            if (selectedMachine != null && targetMachine != null)
             {
                 AttackMachine();
             }
@@ -60,34 +60,34 @@ public class Player : MonoBehaviour {
 
     protected void AttackMachine()
     {
-        machine_controller.TryTransferBitsBetweenMachines(target_machine, selected_machine);
+        machineController.TryTransferBitsBetweenMachines(targetMachine, selectedMachine);
         DeselectAllMachines();
     }
 
     protected void SelectMachine(Machine machine)
     {
-        if (selected_machine == null)
+        if (selectedMachine == null)
         {
-            selected_machine = machine;
-            selected_machine.ActiveBackGround(true);
+            selectedMachine = machine;
+            selectedMachine.ActiveBackGround(true);
         } else {
-            target_machine = machine;
-            target_machine.ActiveBackGround(true);
+            targetMachine = machine;
+            targetMachine.ActiveBackGround(true);
         }
     }
 
     protected void DeselectAllMachines()
     {
-        if (selected_machine != null)
+        if (selectedMachine != null)
         {
-            selected_machine.ActiveBackGround(false);
-            selected_machine = null;
+            selectedMachine.ActiveBackGround(false);
+            selectedMachine = null;
         }
 
-        if (target_machine != null)
+        if (targetMachine != null)
         {
-            target_machine.ActiveBackGround(false);
-            target_machine = null;
+            targetMachine.ActiveBackGround(false);
+            targetMachine = null;
         }
     }
 }

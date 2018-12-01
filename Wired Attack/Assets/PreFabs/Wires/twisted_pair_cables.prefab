@@ -55,15 +55,15 @@ MonoBehaviour:
   id: 0
   title: "par tran\xE7ado"
   description: cabo de rede azul
-  current_floor: {fileID: 0}
-  connection_points:
+  currentFloor: {fileID: 0}
+  connectionsPoints:
   - {fileID: 0}
   - {fileID: 0}
   messages: []
-  game_controller: {fileID: 0}
-  wire_type: twisted
-  travel_time: 5
-  wire_color: {r: 0.31764707, g: 0.59607846, b: 1, a: 1}
+  gameController: {fileID: 0}
+  wireType: twisted
+  travelTime: 5
+  wireColor: {r: 0.116666794, g: 0, b: 1, a: 1}
 --- !u!120 &120906221082433574
 LineRenderer:
   m_ObjectHideFlags: 1

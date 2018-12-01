@@ -82,9 +82,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d677bd12ae5374c4083c8df8ede275cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  game_controller: {fileID: 0}
-  tip_pre_fab: {fileID: 1333436269830858, guid: e54aaf12ad185f443bafcbb588e7c95b,
-    type: 2}
+  gameController: {fileID: 0}
+  tipPreFab: {fileID: 1333436269830858, guid: e54aaf12ad185f443bafcbb588e7c95b, type: 2}
   tips: []
 --- !u!222 &222566429715091138
 CanvasRenderer:

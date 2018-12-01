@@ -13,7 +13,7 @@ public class IADifficult : MonoBehaviour {
     }
     
     public Difficult difficult = Difficult.EASY;
-    public float thought_time = 1f;
-    public int number_of_actions_per_thought = 1;
+    public float thoughtTime = 1f;
+    public int numberOfActionsPerThought = 1;
 
 }

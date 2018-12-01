@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class MachineSerialized : Serializable
 {
-    public int team_id;
-    public string machine_model = "";
+    public int teamId;
+    public string machineModel = "";
 
-	public MachineSerialized(Machine machine_to_serialize)
+	public MachineSerialized(Machine machineToSerialize)
     {
-        id = machine_to_serialize.id;
-        team_id = machine_to_serialize.team.GetHashCode();
-        floor_id = machine_to_serialize.current_floor.GetComponent<Floor>().id;
-        machine_model = machine_to_serialize.model;
+        id = machineToSerialize.id;
+        teamId = machineToSerialize.team.GetHashCode();
+        floorId = machineToSerialize.currentFloor.GetComponent<Floor>().id;
+        machineModel = machineToSerialize.model;
     }
 }

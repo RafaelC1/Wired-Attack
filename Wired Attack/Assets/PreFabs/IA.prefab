@@ -171,12 +171,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bebf8d9a0f7039741b4d8c07c5ff139a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  machine_controller: {fileID: 0}
+  machineController: {fileID: 0}
+  gameController: {fileID: 0}
   team: 2
-  selected_machine: {fileID: 0}
-  target_machine: {fileID: 0}
+  selectedMachine: {fileID: 0}
+  targetMachine: {fileID: 0}
   level: 2
-  difficult_settings:
+  difficultSettings:
   - {fileID: 1923056569880180}
   - {fileID: 1973799679612774}
   - {fileID: 1774056234154708}
@@ -192,10 +193,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663f57b7eb8d84e4297cfb4cf9e361b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: HAL 9000
   difficult: 2
-  thought_time: 1
-  number_of_actions_per_thought: 5
+  thoughtTime: 1
+  numberOfActionsPerThought: 1
 --- !u!114 &114443699833640708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -207,10 +207,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663f57b7eb8d84e4297cfb4cf9e361b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: C-3PO
   difficult: 0
-  thought_time: 3
-  number_of_actions_per_thought: 1
+  thoughtTime: 1
+  numberOfActionsPerThought: 1
 --- !u!114 &114625726729521346
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -222,10 +221,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663f57b7eb8d84e4297cfb4cf9e361b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Marvin
   difficult: 1
-  thought_time: 2
-  number_of_actions_per_thought: 2
+  thoughtTime: 1
+  numberOfActionsPerThought: 1
 --- !u!114 &114831920085422074
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -237,7 +235,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 663f57b7eb8d84e4297cfb4cf9e361b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: SKYNET
   difficult: 3
-  thought_time: 0.5
-  number_of_actions_per_thought: 10
+  thoughtTime: 1
+  numberOfActionsPerThought: 1

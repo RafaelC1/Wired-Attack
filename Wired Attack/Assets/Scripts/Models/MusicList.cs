@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MusicList : MonoBehaviour {
 
-    public AudioClip[] musics;
-    private int current_music_id = 0;
+    public Music[] musics;
+    private int currentMusicId = 0;
 
     void Start ()
     {
@@ -19,7 +19,13 @@ public class MusicList : MonoBehaviour {
 
     public void NextMusic()
     {
-        current_music_id++;
+        if (CurrentMusic().introPlayed)
+        {
+            CurrentMusic().Reset();
+            currentMusicId++;
+        } else {
+            CurrentMusic().NextPart();
+        }
         if (!CurrentMusicExist())
         {
             GoEndOfTheList();
@@ -28,7 +34,7 @@ public class MusicList : MonoBehaviour {
 
     public void BackMusic()
     {
-        current_music_id--;
+        currentMusicId--;
         if (!CurrentMusicExist())
         {
             GoStartOfTheList();
@@ -47,19 +53,19 @@ public class MusicList : MonoBehaviour {
 
     public void GoStartOfTheList()
     {
-        current_music_id = 0;
+        currentMusicId = 0;
     }
 
     public void GoEndOfTheList()
     {
-        current_music_id = MusicCount();
+        currentMusicId = MusicCount();
     }
 
-    public AudioClip CurrentMusic()
+    public Music CurrentMusic()
     {
-        if (musics.Length > 0 && musics.Length > current_music_id)
+        if (musics.Length > 0 && musics.Length > currentMusicId)
         {
-            return musics[current_music_id];
+            return musics[currentMusicId];
         } else {
             return null;
         }

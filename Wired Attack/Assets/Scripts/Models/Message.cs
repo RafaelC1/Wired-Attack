@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Message : MonoBehaviour {
 
-    public GameController game_controller = null;
-    private float transfer_time = 0f;
-    private float current_transfer_time = 0f;
+    public GameController gameController = null;
+    private float transferTime = 0f;
+    private float currentTransferTime = 0f;
 
-    private int bit_amount = 0;
+    private int bitAmount = 0;
 
-    private Connection connection_in = null;
+    private Connection connectionIn = null;
     public GameObject from = null;
-    public TeamHelpers.Team from_team = TeamHelpers.Team.NEUTRAL_TEAM;
+    public TeamHelpers.Team fromTeam = TeamHelpers.Team.NEUTRAL_TEAM;
     public GameObject to = null;
 
     void Start()
@@ -22,29 +22,29 @@ public class Message : MonoBehaviour {
 
     void Update()
     {
-        if (game_controller.isPaused()) return;
+        if (gameController.IsPaused()) return;
         MoveToDestine();
 
         if(ArrivedToDestine())
         {
             DelivereBits();
-            connection_in.RemoveMessage(this);
+            connectionIn.RemoveMessage(this);
         }
     }
 
-    public void DefineTransferSettings(int bits_to_transfer,
-                               float time_to_transfer,
+    public void DefineTransferSettings(int bitsToTransfer,
+                               float timeToTransfer,
                                GameObject from,
                                GameObject to,
                                Connection connection)
     {
-        bit_amount = bits_to_transfer;
-        transfer_time = time_to_transfer;
+        bitAmount = bitsToTransfer;
+        transferTime = timeToTransfer;
 
         this.from = from;
-        this.from_team = from.GetComponent<Machine>().team;
+        this.fromTeam = from.GetComponent<Machine>().team;
         this.to = to;
-        connection_in = connection;
+        connectionIn = connection;
 
         transform.position = from.transform.position;
 
@@ -53,32 +53,32 @@ public class Message : MonoBehaviour {
 
     private void DefineColor()
     {
-        Color new_color = TeamHelpers.TeamColorOf(from_team);
+        Color new_color = TeamHelpers.TeamColorOf(fromTeam);
         this.GetComponent<SpriteRenderer>().color = new_color;
     }
 
     public bool ArrivedToDestine()
     {
-        return current_transfer_time >= 1;
+        return currentTransferTime >= 1;
     }
 
     private void MoveToDestine()
     {
-        current_transfer_time += Time.deltaTime / transfer_time;
+        currentTransferTime += Time.deltaTime / transferTime;
         transform.position = Vector3.Lerp(from.transform.position,
                                           to.transform.position,
-                                          current_transfer_time);
+                                          currentTransferTime);
     }
 
     public void DelivereBits()
     {
-        to.GetComponent<Machine>().ReceiveBits(bit_amount, from_team);
+        to.GetComponent<Machine>().ReceiveBits(bitAmount, fromTeam);
     }
 
     private void OnDestroy()
     {
         if (from != null)
-            from.GetComponent<Machine>().controller.DetermineTeamVictory();
+            from.GetComponent<Machine>().machineController.DetermineTeamVictory();
     }
 
 }

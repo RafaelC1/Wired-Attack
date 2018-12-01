@@ -164,8 +164,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: {fileID: 114609400353950410}
   description: {fileID: 114891917707946366}
-  select_level_controller: {fileID: 0}
-  map_score: {fileID: 114934058105650982}
+  selectLevelController: {fileID: 0}
+  mapScore: {fileID: 114934058105650982}
 --- !u!114 &114546612349666274
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -243,8 +243,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 096d49f3dfd0763409c1cc6b219eb6db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  translation_controller: {fileID: 0}
-  text_key: best_time
+  translationController: {fileID: 0}
+  textKey: best_time
 --- !u!114 &114757248111704312
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -335,8 +335,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85d54433522ceb64893c36bf0f7eb79d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  total_time: 0
-  total_time_text: {fileID: 114074969990374194}
+  totalTime: 0
+  totalTimeText: {fileID: 114074969990374194}
 --- !u!114 &114943033309612790
 MonoBehaviour:
   m_ObjectHideFlags: 1

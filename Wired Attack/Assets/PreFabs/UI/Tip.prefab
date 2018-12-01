@@ -121,11 +121,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e56d8711997ed74b939986902947fb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tip_text: {fileID: 114773409482752704}
-  tip_list: {fileID: 0}
-  full_text: teste teste teste teste
-  spelling_time: 0.02
-  blink_time: 0.5
+  tipText: {fileID: 114773409482752704}
+  tipList: {fileID: 0}
+  fullText: 
+  spellingTime: 0.05
+  blinkTime: 0.8
 --- !u!114 &114555418700867638
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -325,7 +325,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1616764109
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: bfb751d717e478e4689c484bbab6f29f, type: 3}
   m_Color: {r: 0, g: 1, b: 0.07073355, a: 1}

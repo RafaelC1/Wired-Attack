@@ -1,11 +1,61 @@
-title
-01
+﻿title
+Encurralado
 description
-
+conhecendo novas tecnologias...
 tips
+O inimigo agora te encurralou mas a tecnologia esta ao seu lado
+você começara controlando um servidor, uma maquina mais potente
+Se você controlar o servidor é bom
+mas se a maquina o fizer... talvez você se dê mal
 machines
-{"id":1,"floor_id":6,"team_id":1,"machine_model":"regular"}
-{"id":2,"floor_id":8,"team_id":0,"machine_model":"regular"}
+{"id":7,"floorId":0,"teamId":0,"machineModel":"regular_machine"}
+{"id":8,"floorId":4,"teamId":0,"machineModel":"regular_machine"}
+{"id":1,"floorId":7,"teamId":1,"machineModel":"regular_server"}
+{"id":6,"floorId":12,"teamId":0,"machineModel":"regular_server"}
+{"id":3,"floorId":21,"teamId":0,"machineModel":"router"}
+{"id":4,"floorId":23,"teamId":0,"machineModel":"router"}
+{"id":5,"floorId":30,"teamId":2,"machineModel":"regular_machine"}
+{"id":2,"floorId":34,"teamId":2,"machineModel":"regular_machine"}
 connections
-{"id":0,"floor_id":0,"wire_type":"optical","connection_ids":[1,2]}
+{"id":2,"floorId":0,"wireType":"twisted","connectionIds":[3,7]}
+{"id":5,"floorId":0,"wireType":"twisted","connectionIds":[6,7]}
+{"id":7,"floorId":0,"wireType":"twisted","connectionIds":[1,7]}
+{"id":3,"floorId":0,"wireType":"twisted","connectionIds":[4,8]}
+{"id":6,"floorId":0,"wireType":"twisted","connectionIds":[6,8]}
+{"id":8,"floorId":0,"wireType":"twisted","connectionIds":[1,8]}
+{"id":4,"floorId":0,"wireType":"coax","connectionIds":[5,3]}
+{"id":6,"floorId":0,"wireType":"coax","connectionIds":[3,4]}
+{"id":5,"floorId":0,"wireType":"coax","connectionIds":[2,4]}
 decorations
+{"id":0,"floorId":1,"type":1}
+{"id":0,"floorId":2,"type":1}
+{"id":0,"floorId":3,"type":1}
+{"id":0,"floorId":5,"type":1}
+{"id":0,"floorId":6,"type":1}
+{"id":0,"floorId":8,"type":1}
+{"id":0,"floorId":9,"type":1}
+{"id":0,"floorId":10,"type":1}
+{"id":0,"floorId":11,"type":1}
+{"id":0,"floorId":13,"type":1}
+{"id":0,"floorId":14,"type":1}
+{"id":0,"floorId":15,"type":1}
+{"id":0,"floorId":16,"type":1}
+{"id":0,"floorId":17,"type":1}
+{"id":0,"floorId":18,"type":1}
+{"id":0,"floorId":19,"type":1}
+{"id":0,"floorId":20,"type":0}
+{"id":0,"floorId":22,"type":0}
+{"id":0,"floorId":24,"type":0}
+{"id":0,"floorId":25,"type":1}
+{"id":0,"floorId":26,"type":1}
+{"id":0,"floorId":27,"type":1}
+{"id":0,"floorId":28,"type":1}
+{"id":0,"floorId":29,"type":1}
+{"id":0,"floorId":31,"type":1}
+{"id":0,"floorId":32,"type":1}
+{"id":0,"floorId":33,"type":1}
+{"id":0,"floorId":35,"type":1}
+{"id":0,"floorId":36,"type":1}
+{"id":0,"floorId":37,"type":1}
+{"id":0,"floorId":38,"type":1}
+{"id":0,"floorId":39,"type":1}

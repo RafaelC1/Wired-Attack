@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class PopUpTextController : MonoBehaviour
 {
-    public GameController game_controller = null;
-    public GameObject tip_list_pre_fab = null;
-    public PopUpText pop_up_text_pre_fab = null;
+    public GameController gameController = null;
+    public GameObject tipListPreFab = null;
+    public PopUpText popUpTextPreFab = null;
     public GameObject canvas = null;
 
     void Start()
@@ -19,16 +19,16 @@ public class PopUpTextController : MonoBehaviour
 
     public void CreateTips(List<string> tips)
     {
-        GameObject tip_go = Instantiate(tip_list_pre_fab);
-        tip_go.transform.SetParent(canvas.transform, false);
-        TipList tip_list = tip_go.GetComponent<TipList>();
-        tip_list.tips = tips;
-        tip_list.game_controller = game_controller;
+        GameObject tipGo = Instantiate(tipListPreFab);
+        tipGo.transform.SetParent(canvas.transform, false);
+        TipList tipList = tipGo.GetComponent<TipList>();
+        tipList.tips = tips;
+        tipList.gameController = gameController;
     }
 
     public void CreatePopText(string text, Transform location)
     {
-        PopUpText instance = Instantiate(pop_up_text_pre_fab);
+        PopUpText instance = Instantiate(popUpTextPreFab);
 
         //Vector2 screen_position = Camera.main.WorldToScreenPoint(location.position);
         Vector2 screen_position = new Vector2(location.position.x, location.position.y);

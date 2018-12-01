@@ -192,23 +192,23 @@ MonoBehaviour:
   id: 0
   title: roteador
   description: "roteador com mais conex\xF5es"
-  current_floor: {fileID: 0}
+  currentFloor: {fileID: 0}
   team: 0
   model: router
-  controller: {fileID: 0}
-  game_controller: {fileID: 0}
+  machineController: {fileID: 0}
+  gameController: {fileID: 0}
   connections: []
-  text_parent: {fileID: 0}
+  textParent: {fileID: 0}
   background: {fileID: 1093594198607488}
   text_holder: {fileID: 1613389296605716}
   bits_label: {fileID: 114173960247484366}
-  max_connections: 8
-  max_bit_storage: 10
-  current_stored_bits: 0
-  process_time: 1
-  current_process_time: 0
-  bit_defense: 1
-  produce_bit: 0
+  maxConnections: 6
+  maxBitStorage: 25
+  currentStoredBits: 0
+  processTime: 1
+  currentProcessTime: 0
+  bitDefense: 1
+  produceBit: 0
   actived: 0
 --- !u!114 &114483065123715342
 MonoBehaviour:

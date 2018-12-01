@@ -5,18 +5,18 @@ using UnityEngine.UI;
 
 public class HoldableDescription : MonoBehaviour {
 
-    public GameObject holdable_pre_fab = null;
+    public GameObject holdablePreFab = null;
 
-    public Text object_name_text = null;
-    public Text object_description_text = null;
-    public Image object_image = null;
+    public Text objectNameText = null;
+    public Text objectDescriptionText = null;
+    public Image objectImage = null;
 
     void Start ()
     {
         DefineNameText();
         DefineDescriptionText();
 
-        if (object_image != null)
+        if (objectImage != null)
             DefineImage();
     }
 
@@ -27,50 +27,50 @@ public class HoldableDescription : MonoBehaviour {
 
     private Holdable Holdable()
     {
-        return holdable_pre_fab.GetComponent<Holdable>();
+        return holdablePreFab.GetComponent<Holdable>();
     }
 
     private Machine Machine()
     {
-        return holdable_pre_fab.GetComponent<Machine>();
+        return holdablePreFab.GetComponent<Machine>();
     }
 
     private Decoration Decoration()
     {
-        return holdable_pre_fab.GetComponent<Decoration>();
+        return holdablePreFab.GetComponent<Decoration>();
     }
 
     private Connection Connection()
     {
-        return holdable_pre_fab.GetComponent<Connection>();
+        return holdablePreFab.GetComponent<Connection>();
     }
 
     private void DefineNameText()
     {
-        object_name_text.text = Holdable().title;
+        objectNameText.text = Holdable().title;
     }
 
     private void DefineDescriptionText()
     {
-        string new_description = Holdable().description;
+        string newDescription = Holdable().description;
 
         if (Machine() != null)
-            new_description += string.Format("| connection: {0}, storage: {1}, production: {2}",
-                Machine().max_connections,
-                Machine().max_bit_storage,
-                Machine().process_time);
+            newDescription += string.Format("| connection: {0}, storage: {1}, production: {2}",
+                Machine().maxConnections,
+                Machine().maxBitStorage,
+                Machine().processTime);
 
         if (Connection() != null)
-            new_description += string.Format("| delay: {0}", Connection().travel_time);
+            newDescription += string.Format("| delay: {0}", Connection().travelTime);
 
         if (Decoration() != null)
-            new_description += "(No use for.)";
+            newDescription += "(No use for.)";
 
-        object_description_text.text = new_description;
+        objectDescriptionText.text = newDescription;
     }
 
     private void DefineImage()
     {
-        object_image.sprite = holdable_pre_fab.GetComponent<SpriteRenderer>().sprite;
+        objectImage.sprite = holdablePreFab.GetComponent<SpriteRenderer>().sprite;
     }
 }

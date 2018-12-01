@@ -7,7 +7,7 @@ public class Holdable : MonoBehaviour {
     public int id = 0;
     public string title = "regular_machine";
     public string description = "machine";
-    public Floor current_floor;
+    public Floor currentFloor;
 
     void Start () { }
 

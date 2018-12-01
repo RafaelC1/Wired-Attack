@@ -5,71 +5,71 @@ using UnityEngine.UI;
 
 public class Tip : MonoBehaviour {
 
-    public Text tip_text;
-    public TipList tip_list = null;
+    public Text tipText;
+    public TipList tipList = null;
 
-    public string full_text = "";
-    private string current_text = "";
-    public float spelling_time = 0;
-    public float blink_time = 0;
-    private float current_time = 0;
-    private bool end_of_text = false;
+    public string fullText = "";
+    private string currentText = "";
+    public float spellingTime = 0;
+    public float blinkTime = 0;
+    private float currentTime = 0;
+    private bool endOfText = false;
 
 	void Start () { }
 	
 	void Update ()
     {
         if (Tick())
-            if (end_of_text || full_text.Length == 0)
+            if (endOfText || fullText.Length == 0)
             {
                 UpdateLastCharacter();
             } else {
                 UpdateText();
-                if (current_text.Length >= full_text.Length)
-                    end_of_text = true;
+                if (currentText.Length >= fullText.Length)
+                    endOfText = true;
             }
     }
 
     private bool Tick()
     {
-        current_time += Time.deltaTime;
-        if (current_time < CurrentDelayTime())
+        currentTime += Time.deltaTime;
+        if (currentTime < CurrentDelayTime())
             return false;
-        current_time = 0;
+        currentTime = 0;
         return true;
     }
 
     private float CurrentDelayTime()
     {
-        if (end_of_text)
-            return blink_time;
-        return spelling_time;
+        if (endOfText)
+            return blinkTime;
+        return spellingTime;
     }
 
     private void UpdateText()
     {
-        current_text += full_text[current_text.Length];
+        currentText += fullText[currentText.Length];
         UpdateTipText();
     }
 
     private void UpdateLastCharacter()
     {
-        if (current_text[current_text.Length - 1].Equals('|')) {
-            current_text = current_text.Remove(current_text.Length -1);
+        if (currentText[currentText.Length - 1].Equals('|')) {
+            currentText = currentText.Remove(currentText.Length -1);
         } else
         {
-            current_text += "|";
+            currentText += "|";
         }
         UpdateTipText();
     }
 
     private void UpdateTipText()
     {
-        tip_text.text = current_text;
+        tipText.text = currentText;
     }
 
     public void NextTipOnList()
     {
-        tip_list.NextTip();
+        tipList.NextTip();
     }
 }

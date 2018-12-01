@@ -5,7 +5,7 @@ using UnityEngine;
 public class Serializable {
 
     public int id = 0;
-    public int floor_id = 0;
+    public int floorId = 0;
 
     public string ToJson()
     {

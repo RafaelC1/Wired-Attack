@@ -192,23 +192,23 @@ MonoBehaviour:
   id: 0
   title: data center
   description: servidor para armazenar dados
-  current_floor: {fileID: 0}
+  currentFloor: {fileID: 0}
   team: 0
-  model: storage
-  controller: {fileID: 0}
-  game_controller: {fileID: 0}
+  model: storage_server
+  machineController: {fileID: 0}
+  gameController: {fileID: 0}
   connections: []
-  text_parent: {fileID: 0}
+  textParent: {fileID: 0}
   background: {fileID: 1385896270125950}
   text_holder: {fileID: 1891302357820100}
   bits_label: {fileID: 114080848811451844}
-  max_connections: 3
-  max_bit_storage: 100
-  current_stored_bits: 0
-  process_time: 1
-  current_process_time: 0
-  bit_defense: 1
-  produce_bit: 0
+  maxConnections: 3
+  maxBitStorage: 100
+  currentStoredBits: 0
+  processTime: 1
+  currentProcessTime: 0
+  bitDefense: 1
+  produceBit: 0
   actived: 0
 --- !u!114 &114295571798841388
 MonoBehaviour:

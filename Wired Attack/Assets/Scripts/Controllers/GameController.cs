@@ -3,26 +3,26 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
-    public MachineController machine_controller = null;
-    public MapController map_controller = null;
-    public MusicController music_controller = null;
+    public MachineController machineController = null;
+    public MapController mapController = null;
+    public MusicController musicController = null;
 
     public List<Player> players = new List<Player>();
 
-    public GameObject player_pre_fab = null;
-    public GameObject enemy_pre_fab = null;
+    public GameObject playerPreFab = null;
+    public GameObject enemyPreFab = null;
 
-    public GameObject players_holder = null;
+    public GameObject playersHolder = null;
 
-    public GameObject victory_end_menu = null;
-    public GameObject defeat_end_menu = null;
+    public GameObject victoryEndMenu = null;
+    public GameObject defeatEndMenu = null;
 
-    public MusicList victory_end_menu_music_list = null;
-    public MusicList defeat_end_menu_music_list = null;
+    public MusicList victoryEndMenuMusicList = null;
+    public MusicList defeatEndMenuMusicList = null;
 
-    public MenuController menu_controller = null;
+    public MenuController menuController = null;
 
-    public FinalScore end_score = null;
+    public FinalScore endScore = null;
 
     public bool pause = false;
 
@@ -39,7 +39,7 @@ public class GameController : MonoBehaviour {
 
 	void Update ()
     {
-        if (map_controller.current_game_mode == GameMode.PLAY_MODE && !isPaused())
+        if (mapController.currentGameMode == GameMode.PLAY_MODE && !IsPaused())
             UpdateTimer();
 
     }
@@ -69,35 +69,35 @@ public class GameController : MonoBehaviour {
         pause = false;
     }
 
-    public bool isPaused()
+    public bool IsPaused()
     {
         return pause;
     }
 
     public void CreateHumanPlay()
     {
-        GameObject temp = Instantiate(player_pre_fab);
+        GameObject temp = Instantiate(playerPreFab);
         Player player = temp.GetComponent<Player>();
 
-        player.machine_controller = machine_controller;
-        player.game_controller = this;
+        player.machineController = machineController;
+        player.gameController = this;
 
-        temp.transform.SetParent(players_holder.transform);
+        temp.transform.SetParent(playersHolder.transform);
 
         players.Add(player);
     }
 
     public void CreateIAPlayer(TeamHelpers.Team ia_team)
     {
-        GameObject temp = Instantiate(enemy_pre_fab);
+        GameObject temp = Instantiate(enemyPreFab);
         IA ia = temp.GetComponent<IA>();
 
-        temp.transform.SetParent(players_holder.transform);
+        temp.transform.SetParent(playersHolder.transform);
         temp.name = ia_team.ToString();
 
-        ia.machine_controller = machine_controller;
+        ia.machineController = machineController;
         ia.team = ia_team;
-        ia.game_controller = GetComponent<GameController>();
+        ia.gameController = GetComponent<GameController>();
 
         players.Add(ia);
     }
@@ -122,14 +122,14 @@ public class GameController : MonoBehaviour {
 
         if (winner.team == TeamHelpers.Team.HUMAN_TEAM)
         {
-            menu_controller.OpenMenuByObjectCloseAll(victory_end_menu);
-            music_controller.ChangeTo(victory_end_menu_music_list);
+            menuController.OpenMenuByObjectCloseAll(victoryEndMenu);
+            musicController.ChangeTo(victoryEndMenuMusicList);
         } else {
-            menu_controller.OpenMenuByObjectCloseAll(defeat_end_menu);
-            music_controller.ChangeTo(defeat_end_menu_music_list);
+            menuController.OpenMenuByObjectCloseAll(defeatEndMenu);
+            musicController.ChangeTo(defeatEndMenuMusicList);
         }
 
-        end_score.DefineMapName(map_controller.current_map.name);
-        end_score.DefineTime((int)timer);
+        endScore.DefineMapName(mapController.currentMap.name);
+        endScore.DefineTime((int)timer);
     }
 }

@@ -14,31 +14,31 @@ public static class TeamHelpers  {
 
     public static Color TeamColorOf(Team team)
     {
-        Color team_color = Color.white;
+        Color teamColor = Color.white;
         switch(team)
         {
             case Team.HUMAN_TEAM:
             {
-                team_color = Color.green;
+                teamColor = Color.green;
                 break;
             }
             case Team.RED_TEAM:
             {
-                team_color = Color.red;
+                teamColor = Color.red;
                 break;
             }
             case Team.YELLOW_TEAM:
             {
-                team_color = Color.yellow;
+                teamColor = Color.yellow;
                 break;
             }
             case Team.NEUTRAL_TEAM:
             {
-                team_color = Color.gray;
+                teamColor = Color.gray;
                 break;
             }
         }
-        return team_color; 
+        return teamColor; 
     }
     
 }

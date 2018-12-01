@@ -6,21 +6,21 @@ public class IA : Player {
 
     public IADifficult.Difficult level = IADifficult.Difficult.MEDIUM;
 
-    public List<GameObject> difficult_settings = new List<GameObject>();
+    public List<GameObject> difficultSettings = new List<GameObject>();
     
-    private float current_thought_time = 0;
+    private float currentThoughtTime = 0;
     
 	void Start () { }
 
 	void Update ()
     {
-        if (game_controller.isPaused()) return;
-        if (current_thought_time > CurrentDifficult().thought_time)
+        if (gameController.IsPaused()) return;
+        if (currentThoughtTime > CurrentDifficult().thoughtTime)
         {
             Think();
-            current_thought_time = 0;
+            currentThoughtTime = 0;
         } else {
-            current_thought_time += Time.deltaTime;
+            currentThoughtTime += Time.deltaTime;
         }
 	}
 
@@ -30,12 +30,12 @@ public class IA : Player {
 
         if (list_of_targets.BestTargets().Count > 0)
         {
-            for(int i=0; i < CurrentDifficult().number_of_actions_per_thought; i++)
+            for(int i=0; i < CurrentDifficult().numberOfActionsPerThought; i++)
             {
                 if (i >= list_of_targets.BestTargets().Count)
                     break;
-                selected_machine = list_of_targets.BestTargets()[i].StrongestAllyConnected();
-                target_machine = list_of_targets.BestTargets()[i].Machine();
+                selectedMachine = list_of_targets.BestTargets()[i].StrongestAllyConnected();
+                targetMachine = list_of_targets.BestTargets()[i].Machine();
                 TryAttackMachine();
             }
         }
@@ -43,9 +43,9 @@ public class IA : Player {
 
     private void TryAttackMachine()
     {
-        if(selected_machine != null &&
-           target_machine != null &&
-           !selected_machine.IsStorageEmpty())
+        if(selectedMachine != null &&
+           targetMachine != null &&
+           !selectedMachine.IsStorageEmpty())
         {
             AttackMachine();
         } else {
@@ -55,7 +55,7 @@ public class IA : Player {
 
     private List<Machine> AllMachines()
     {
-        return machine_controller.machines;
+        return machineController.machines;
     }
 
     private List<Machine> IAMachines()
@@ -75,7 +75,7 @@ public class IA : Player {
     
     private IADifficult CurrentDifficult()
     {
-        return difficult_settings.Find(difficult => difficult.GetComponent<IADifficult>().difficult == level)
-                                 .GetComponent<IADifficult>();
+        return difficultSettings.Find(difficult => difficult.GetComponent<IADifficult>().difficult == level)
+                                .GetComponent<IADifficult>();
     }
 }

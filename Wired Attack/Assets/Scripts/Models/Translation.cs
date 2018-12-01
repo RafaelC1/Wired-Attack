@@ -5,17 +5,17 @@ using UnityEngine.UI;
 
 public class Translation : MonoBehaviour {
 
-    public TranslationController translation_controller = null;
-    public string text_key = null;
-    private Text text_field = null;
+    public TranslationController translationController = null;
+    public string textKey = null;
+    private Text textField = null;
 
 	void Start ()
     {
-        if (translation_controller == null)
-            translation_controller = GameObject.Find("TranslationController")
-                                               .GetComponent<TranslationController>(); // soo wrong but for now its ok
-        translation_controller.AddTranslationManager(this);
-        text_field = GetComponent<Text>();
+        if (translationController == null)
+            translationController = GameObject.Find("TranslationController")
+                                              .GetComponent<TranslationController>(); // soo wrong but whatever
+        translationController.AddTranslationManager(this);
+        textField = GetComponent<Text>();
         UpdateMyText();
     }
 	
@@ -23,11 +23,11 @@ public class Translation : MonoBehaviour {
 
     public void UpdateMyText()
     {
-        text_field.text = translation_controller.TranslationByKey(text_key);
+        textField.text = translationController.TranslationByKey(textKey);
     }
 
     public void ChangeText(string new_text)
     {
-        text_field.text = new_text;
+        textField.text = new_text;
     }
 }

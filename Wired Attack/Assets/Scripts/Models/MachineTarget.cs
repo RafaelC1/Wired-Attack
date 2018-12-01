@@ -6,23 +6,23 @@ using UnityEngine;
 public class MachineTarget {
 
     private Machine machine = null;
-    public TeamHelpers.Team searcher_team = TeamHelpers.Team.NEUTRAL_TEAM;
+    public TeamHelpers.Team searcherTeam = TeamHelpers.Team.NEUTRAL_TEAM;
     private int score = 0;
     
-    public MachineTarget(Machine machine_target, TeamHelpers.Team searcher_team)
+    public MachineTarget(Machine machineTarget, TeamHelpers.Team searcherTeam)
     {
-        machine = machine_target;
-        this.searcher_team = searcher_team;
+        machine = machineTarget;
+        this.searcherTeam = searcherTeam;
     }
 
     public bool AnyEnemyMessageOnWay()
     {
-        return Machine().AllMyMessagesOnMyWay().Find(msg => msg.from_team != searcher_team);
+        return Machine().AllMyMessagesOnMyWay().Find(msg => msg.fromTeam != searcherTeam);
     }
 
     public bool AnyAlliedMessageOnWay()
     {
-        return Machine().AllMyMessagesOnMyWay().Find(msg => msg.from_team == searcher_team);
+        return Machine().AllMyMessagesOnMyWay().Find(msg => msg.fromTeam == searcherTeam);
     }
 
     public List<Machine> AllMachinesConnected()
@@ -32,12 +32,12 @@ public class MachineTarget {
 
     public bool AnyAllyWithDoubleBitsConnected()
     {
-        return StrongestAllyConnected().current_stored_bits > 2*Machine().current_stored_bits;
+        return StrongestAllyConnected().currentStoredBits > 2 * Machine().currentStoredBits;
     }
 
     public bool AnyAllyWithMoreBitsConnected()
     {
-        return StrongestAllyConnected().current_stored_bits > Machine().current_stored_bits;
+        return StrongestAllyConnected().currentStoredBits > Machine().currentStoredBits;
     }
 
     public bool AnyAllyConnected()
@@ -47,8 +47,8 @@ public class MachineTarget {
 
     public Machine StrongestAllyConnected()
     {
-        int max = AllAlliesConnected().Max(machine => machine.current_stored_bits);
-        return AllAlliesConnected().Find(machine => machine.current_stored_bits == max);
+        int max = AllAlliesConnected().Max(machine => machine.currentStoredBits);
+        return AllAlliesConnected().Find(machine => machine.currentStoredBits == max);
     }
 
     public bool AnyAllyConnectedWithBits()
@@ -58,7 +58,7 @@ public class MachineTarget {
 
     public List<Machine> AllAlliesConnected()
     {
-        return AllMachinesConnected().FindAll(machine => machine.team == searcher_team);
+        return AllMachinesConnected().FindAll(machine => machine.team == searcherTeam);
     }
 
     public bool AnyEnemyConnected()
@@ -68,8 +68,8 @@ public class MachineTarget {
 
     public List<Machine> AllEnemiesConnected()
     {
-        return AllMachinesConnected().FindAll(connected_machine => connected_machine.team != searcher_team &&
-                                                                 connected_machine.team != TeamHelpers.Team.NEUTRAL_TEAM);
+        return AllMachinesConnected().FindAll(connected_machine => connected_machine.team != searcherTeam &&
+                                                                   connected_machine.team != TeamHelpers.Team.NEUTRAL_TEAM);
     }
 
     public bool AnyNeutralConnected()
@@ -80,13 +80,13 @@ public class MachineTarget {
     public List<Machine> AllNeutralsConnected()
     {
         return machine.ConnectedMachines()
-                      .FindAll(connected_machine => connected_machine.IsNeutral() &&
-                                                    connected_machine != machine);
+                      .FindAll(connectedMachine => connectedMachine.IsNeutral() &&
+                                                   connectedMachine != machine);
     }
 
     public bool MachineIsEnemy()
     {
-        return !MachineIsNeutral() && machine.team != searcher_team;
+        return !MachineIsNeutral() && machine.team != searcherTeam;
     }
 
     public bool MachineIsNeutral()
@@ -96,7 +96,7 @@ public class MachineTarget {
 
     public bool MachineIsAllied()
     {
-        return machine.team == searcher_team;
+        return machine.team == searcherTeam;
     }
 
     public bool IsMachineStorageFull()
@@ -116,7 +116,7 @@ public class MachineTarget {
 
     public bool MachineCanProduceBits()
     {
-        return Machine().produce_bit;
+        return Machine().produceBit;
     }
 
     public Machine Machine()
@@ -129,8 +129,8 @@ public class MachineTarget {
         return score;
     }
 
-    public void AddScore(int score_to_add)
+    public void AddScore(int scoreToAdd)
     {
-        score += score_to_add;
+        score += scoreToAdd;
     }
 }

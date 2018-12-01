@@ -139,8 +139,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   controller: {fileID: 0}
-  floor_holder: {fileID: 1684387291929534}
-  object_holded: {fileID: 0}
+  floorHolder: {fileID: 1684387291929534}
+  objectHolded: {fileID: 0}
   background: {fileID: 1815633514422870}
   type: 1
   side: 5
@@ -177,7 +177,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 972073117
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 018587b52ee6a7642aa96abe634da0c8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.32941177}
@@ -223,7 +223,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1999234511
-  m_SortingLayer: 1
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300010, guid: e435926d7c3f6ef4f85749387f7c02c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

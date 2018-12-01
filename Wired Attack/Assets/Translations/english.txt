@@ -14,3 +14,7 @@ mission_end:Mission
 mission_end_success:Mission Success
 mission_end_fail:Failed
 best_time:Best Time
+edit_machine_options:Change team
+edit_wire_options:Place wire
+human:human
+ia:AI

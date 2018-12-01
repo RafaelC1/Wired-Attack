@@ -11,31 +11,31 @@ public class Machine : Holdable {
     public TeamHelpers.Team team = TeamHelpers.Team.NEUTRAL_TEAM;
     public string model = "";
 
-    public MachineController controller;
-    public GameController game_controller = null;
+    public MachineController machineController;
+    public GameController gameController = null;
     public List<GameObject> connections = new List<GameObject>();
 
-    public GameObject text_parent = null;
+    public GameObject textParent = null;
 
     public GameObject background = null;
 
     public GameObject text_holder;
     public Text bits_label;
 
-    public int max_connections = 1;
+    public int maxConnections = 1;
 
-    public int max_bit_storage = 10;
-    public int current_stored_bits = 0;
+    public int maxBitStorage = 10;
+    public int currentStoredBits = 0;
 
-    private int bit_per_process = 1;
+    private int bitPerProcess = 1;
 
-    public float process_time = 1;
-    public float current_process_time = 0;
+    public float processTime = 1;
+    public float currentProcessTime = 0;
 
-    public int bit_defense = 1;
+    public int bitDefense = 1;
     //public int bit_attack = 1;
 
-    public bool produce_bit = true;
+    public bool produceBit = true;
 
     public bool actived;
 
@@ -51,14 +51,14 @@ public class Machine : Holdable {
     public void SetTextParentAndPosition()
     {
         bits_label.gameObject.SetActive(true);
-        bits_label.transform.SetParent(text_parent.transform);
+        bits_label.transform.SetParent(textParent.transform);
         bits_label.transform.position = text_holder.transform.position;
         bits_label.transform.localScale = new Vector3(1, 1, 1);
     }
 
     void Update()
     {
-        if (game_controller.isPaused()) return;
+        if (gameController.IsPaused()) return;
         if (actived && !IsNeutral())
         {
             Process();
@@ -67,14 +67,14 @@ public class Machine : Holdable {
 
     private void Process()
     {
-        if (!IsStorageFull() && produce_bit)
+        if (!IsStorageFull() && produceBit)
         {
-            current_process_time += Time.deltaTime;
+            currentProcessTime += Time.deltaTime;
 
-            if (current_process_time >= process_time)
+            if (currentProcessTime >= processTime)
             {
-                StoreBits(bit_per_process);
-                current_process_time = 0;
+                StoreBits(bitPerProcess);
+                currentProcessTime = 0;
             }
         }
     }
@@ -84,20 +84,13 @@ public class Machine : Holdable {
         connections.Add(connection);
     }
 
-    public bool IsConnectedTo(Machine machine_to_check)
-    {
-        bool is_connected_to = false;
-
-        return is_connected_to;
-    }
-
     public List<Machine> ConnectedMachines()
     {
         List<Machine> points = new List<Machine>();
-        foreach (GameObject con_go in connections)
-            foreach (GameObject machine_go in con_go.GetComponent<Connection>().connection_points)
+        foreach (GameObject connectionGo in connections)
+            foreach (GameObject machineGo in connectionGo.GetComponent<Connection>().connectionsPoints)
             {
-                Machine machine = machine_go.GetComponent<Machine>();
+                Machine machine = machineGo.GetComponent<Machine>();
                 if (machine != this)
                     points.Add(machine);
             }
@@ -107,12 +100,12 @@ public class Machine : Holdable {
 
     public bool CanHaveMoreConnections()
     {
-        return connections.Count <= max_connections;
+        return connections.Count <= maxConnections;
     }
 
     public bool CanSendBits()
     {
-        return current_stored_bits > 0;
+        return currentStoredBits > 0;
     }
 
     public bool CanReceiveAliedBits()
@@ -130,10 +123,10 @@ public class Machine : Holdable {
     {
         team = new_team;
         ChangeColor();
-        if (controller != null)
+        if (machineController != null)
         {
-            controller.DetermineTeamVictory();
-            controller.ChangeMachineOwner();
+            machineController.DetermineTeamVictory();
+            machineController.ChangeMachineOwner();
         }
     }
 
@@ -148,77 +141,77 @@ public class Machine : Holdable {
         this.GetComponent<SpriteRenderer>().color = new_color;
     }
 
-    private void StoreBits(int amount_to_store)
+    private void StoreBits(int amountToStorage)
     {
-        current_stored_bits += amount_to_store;
+        currentStoredBits += amountToStorage;
 
-        if (current_stored_bits > max_bit_storage)
+        if (currentStoredBits > maxBitStorage)
         {
-            current_stored_bits = max_bit_storage;
+            currentStoredBits = maxBitStorage;
         }
 
         UpdateExternalInformations();
     }
 
-    public void ReceiveBits(int received_bit, TeamHelpers.Team sender_team)
+    public void ReceiveBits(int receivedBits, TeamHelpers.Team senderTeam)
     {
-        if (sender_team == team)
+        if (senderTeam == team)
         {
-            StoreBits(received_bit);
+            StoreBits(receivedBits);
         }
         else
         {
-            received_bit /= bit_defense;
+            receivedBits /= bitDefense;
 
-            StoreBits(-received_bit);
+            StoreBits(-receivedBits);
 
-            if (current_stored_bits < 0)
+            if (currentStoredBits < 0)
             {
-                int leftover_bits = -current_stored_bits;
-                current_stored_bits = 0;
+                int leftover_bits = -currentStoredBits;
+                currentStoredBits = 0;
                 StoreBits(leftover_bits);
-                ChangeOwner(sender_team);
+                ChangeOwner(senderTeam);
             }
         }
     }
 
     public List<Message> AllMyMessagesOnMyWay()
     {
-        List<Message> messages_on_way = new List<Message>();
-        foreach(GameObject con_go in connections)
+        List<Message> messageOnWay = new List<Message>();
+        foreach(GameObject connectionGo in connections)
         {
-            messages_on_way.AddRange(con_go.GetComponent<Connection>().AllMessagesOnWayTo(this));
+            messageOnWay.AddRange(connectionGo.GetComponent<Connection>().AllMessagesOnWayTo(this));
         }
  
-        return messages_on_way;
+        return messageOnWay;
     }
 
     public int SendBits()
     {
-        int bits_to_send = 0;
+        int bitsToSend = 0;
 
-        if (current_stored_bits % 2 > 0)
+        if (currentStoredBits % 2 > 0)
         {
-            if (current_stored_bits > 1)
+            if (currentStoredBits > 1)
             {
-                bits_to_send = (current_stored_bits - 1) / 2;
+                bitsToSend = (currentStoredBits - 1) / 2;
             } else {
-                bits_to_send = current_stored_bits;
+                bitsToSend = currentStoredBits;
             }
         } else {
-            bits_to_send = current_stored_bits / 2;
+            bitsToSend = currentStoredBits / 2;
         }
 
-        current_stored_bits -= bits_to_send;
+        currentStoredBits -= bitsToSend;
 
         UpdateExternalInformations();
 
-        return bits_to_send;
+        return bitsToSend;
     }
 
     public string AmountOfBitsFormatted()
     {
-        return string.Format("{0}/{1}", current_stored_bits, max_bit_storage);
+        return string.Format("{0}/{1}", currentStoredBits, maxBitStorage);
     }
     
     public void ActiveBackGround(bool activate)
@@ -228,12 +221,12 @@ public class Machine : Holdable {
 
     public bool IsStorageFull()
     {
-        return current_stored_bits >= max_bit_storage;
+        return currentStoredBits >= maxBitStorage;
     }
 
     public bool IsStorageEmpty()
     {
-        return current_stored_bits <= 0;
+        return currentStoredBits <= 0;
     }
 
     public void TurnMachineOn()
@@ -254,7 +247,7 @@ public class Machine : Holdable {
 
         foreach (GameObject con in connections)
         {
-            con.GetComponent<Connection>().connection_points.Remove(this.gameObject);
+            con.GetComponent<Connection>().connectionsPoints.Remove(this.gameObject);
             Destroy(con);
         }
         if (bits_label != null)

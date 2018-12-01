@@ -4,36 +4,36 @@ using UnityEngine;
 
 public class SoundEffectController : MonoBehaviour {
 
-    public List<AudioClip> sfx_list = new List<AudioClip>();
-    private IDictionary<string, AudioClip> sfx_dictionary = new Dictionary<string, AudioClip>();
+    public List<AudioClip> sfxList = new List<AudioClip>();
+    private IDictionary<string, AudioClip> sfxDictionary = new Dictionary<string, AudioClip>();
 
-    private AudioSource sound_source;
+    private AudioSource soundSource;
 
-    private float current_sound_volumn = 1f;
+    private float currentSoundVolumn = 1f;
 
     void Start ()
     {
         OrganizeSfxDictionary();
-        sound_source = GetComponent<AudioSource>();
+        soundSource = GetComponent<AudioSource>();
     }	
 	
 	void Update () { }
 
     private void OrganizeSfxDictionary()
     {
-        foreach(AudioClip sfx in sfx_list)
+        foreach(AudioClip sfx in sfxList)
         {
-            sfx_dictionary.Add(sfx.name, sfx);
+            sfxDictionary.Add(sfx.name, sfx);
         }
     }
 
-    public void PlaySfx(string sfx_name)
+    public void PlaySfx(string sfxName)
     {
-        sound_source.PlayOneShot(sfx_dictionary[sfx_name], current_sound_volumn);
+        soundSource.PlayOneShot(sfxDictionary[sfxName], currentSoundVolumn);
     }
 
-    public void ChangeSoundSourceVolume(float new_volume)
+    public void ChangeSoundSourceVolume(float newVolumn)
     {
-        sound_source.volume = new_volume;
+        soundSource.volume = newVolumn;
     }
 }

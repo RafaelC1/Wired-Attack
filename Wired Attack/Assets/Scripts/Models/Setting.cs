@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class Setting : MonoBehaviour {
 
-    public TranslationController translation_controller = null;
-    public SoundEffectController sound_controller = null;
-    public MusicController music_controller = null;
+    public TranslationController translationController = null;
+    public SoundEffectController soundController = null;
+    public MusicController musicController = null;
 
-    public Slider music_slider;
-    public Slider sound_slider;
+    public Slider musicSlider;
+    public Slider soundSlider;
 
-    public Text language_text_field;
+    public Text languageTextField;
 
     private string MUSIC_VOLUME_KEY = "music_volume";
     private string SOUND_VOLUME_KEY = "sound_volume";
@@ -20,8 +20,8 @@ public class Setting : MonoBehaviour {
 
     void Start()
     {
-        music_slider.onValueChanged.AddListener(delegate { VolumeChanged(); });
-        sound_slider.onValueChanged.AddListener(delegate { VolumeChanged(); });
+        musicSlider.onValueChanged.AddListener(delegate { VolumeChanged(); });
+        soundSlider.onValueChanged.AddListener(delegate { VolumeChanged(); });
 
         DefineFirstGameSettings();
 
@@ -33,31 +33,31 @@ public class Setting : MonoBehaviour {
 
     public void NextLanguage()
     {
-        translation_controller.NextLanguage();
+        translationController.NextLanguage();
 
-        if (!translation_controller.CurrentLanguageExist())
+        if (!translationController.CurrentLanguageExist())
         {
-            translation_controller.SelectFirstLanguage();
+            translationController.SelectFirstLanguage();
         }
-        translation_controller.UpdateAllTextFields();
+        translationController.UpdateAllTextFields();
         LanguageChanged();
     }
 
     public void BackLanguage()
     {
-        translation_controller.BackLanguage();
+        translationController.BackLanguage();
 
-        if (!translation_controller.CurrentLanguageExist())
+        if (!translationController.CurrentLanguageExist())
         {
-            translation_controller.SelectLastLanguage();
+            translationController.SelectLastLanguage();
         }
-        translation_controller.UpdateAllTextFields();
+        translationController.UpdateAllTextFields();
         LanguageChanged();
     }
 
     private void LanguageChanged()
     {
-        language_text_field.text = translation_controller.CurrentLanguage();
+        languageTextField.text = translationController.CurrentLanguage();
     }
 
     private void VolumeChanged()
@@ -67,9 +67,9 @@ public class Setting : MonoBehaviour {
 
     public void SaveCurrentSettings()
     {
-        PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, music_slider.value);
-        PlayerPrefs.SetFloat(SOUND_VOLUME_KEY, sound_slider.value);
-        PlayerPrefs.SetInt(LANGUAGE_KEY, translation_controller.current_language_id);
+        PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, musicSlider.value);
+        PlayerPrefs.SetFloat(SOUND_VOLUME_KEY, soundSlider.value);
+        PlayerPrefs.SetInt(LANGUAGE_KEY, translationController.currentLanguageId);
         PlayerPrefs.Save();
     }
 
@@ -82,20 +82,20 @@ public class Setting : MonoBehaviour {
 
     private void LoadVolumeSettings()
     {
-        music_slider.value = PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY);
-        sound_slider.value = PlayerPrefs.GetFloat(SOUND_VOLUME_KEY);
+        musicSlider.value = PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY);
+        soundSlider.value = PlayerPrefs.GetFloat(SOUND_VOLUME_KEY);
     }
 
     private void LoadLanguageeSettings()
     {
-        translation_controller.current_language_id = PlayerPrefs.GetInt(LANGUAGE_KEY);
-        translation_controller.UpdateAllTextFields();
+        translationController.currentLanguageId = PlayerPrefs.GetInt(LANGUAGE_KEY);
+        translationController.UpdateAllTextFields();
     }
 
     private void UpdateSoundSourcesVolume()
     {
-        music_controller.ChangeSoundSourceVolume(music_slider.value);
-        sound_controller.ChangeSoundSourceVolume(sound_slider.value);
+        musicController.ChangeSoundSourceVolume(musicSlider.value);
+        soundController.ChangeSoundSourceVolume(soundSlider.value);
     }
 
     private void DefineFirstGameSettings()

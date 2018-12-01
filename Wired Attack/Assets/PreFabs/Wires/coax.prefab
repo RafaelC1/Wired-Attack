@@ -55,15 +55,15 @@ MonoBehaviour:
   id: 0
   title: cabo coaxial
   description: cabo de telefone
-  current_floor: {fileID: 0}
-  connection_points:
+  currentFloor: {fileID: 0}
+  connectionsPoints:
   - {fileID: 0}
   - {fileID: 0}
   messages: []
-  game_controller: {fileID: 0}
-  wire_type: coax
-  travel_time: 10
-  wire_color: {r: 0.8352942, g: 0.85098046, b: 0, a: 1}
+  gameController: {fileID: 0}
+  wireType: coax
+  travelTime: 10
+  wireColor: {r: 1, g: 0.99437773, b: 0, a: 1}
 --- !u!120 &120074614475435756
 LineRenderer:
   m_ObjectHideFlags: 1

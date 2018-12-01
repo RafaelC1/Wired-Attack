@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class MenuController : MonoBehaviour {
 
-    public GameObject first_menu = null;
+    public GameObject menuToFirstOpen = null;
 
     public List<GameObject> menus = new List<GameObject>();
-    private IDictionary<string, GameObject> menus_dictionary = new Dictionary<string, GameObject>();
+    private IDictionary<string, GameObject> menusDictionary = new Dictionary<string, GameObject>();
 
     void Start ()
     {
         AddAllMenusToDictionary();
-        OpenMenuByObjectCloseAll(first_menu);
+        OpenMenuByObjectCloseAll(menuToFirstOpen);
     }
 	
 	void Update () { }
@@ -31,7 +31,7 @@ public class MenuController : MonoBehaviour {
 
     public void OpenMenuByObject(GameObject menu)
     {
-        if (menus_dictionary.Values.Contains(menu))
+        if (menusDictionary.Values.Contains(menu))
         {
             menu.SetActive(true);
         }
@@ -39,25 +39,25 @@ public class MenuController : MonoBehaviour {
 
     public void CloseMenuByObject(GameObject menu)
     {
-        if (menus_dictionary.Values.Contains(menu))
+        if (menusDictionary.Values.Contains(menu))
         {
             menu.SetActive(false);
         }
     }
 
-    public void OpenMenuByName(string menu_name)
+    public void OpenMenuByName(string menuName)
     {
-        menus_dictionary[menu_name].SetActive(true);
+        menusDictionary[menuName].SetActive(true);
     }
 
-    public void CloseMenuByName(string menu_name)
+    public void CloseMenuByName(string menuName)
     {
-        menus_dictionary[menu_name].SetActive(false);
+        menusDictionary[menuName].SetActive(false);
     }
 
     public void CloseAllMenus()
     {
-        foreach (KeyValuePair<string, GameObject> menu in menus_dictionary)
+        foreach (KeyValuePair<string, GameObject> menu in menusDictionary)
         {
             menu.Value.SetActive(false);
         }
@@ -66,7 +66,7 @@ public class MenuController : MonoBehaviour {
     private void OnEnable()
     {
         CloseAllMenus();
-        OpenMenuByObject(first_menu);
+        OpenMenuByObject(menuToFirstOpen);
     }
 
     public void QuitGame()
@@ -78,7 +78,7 @@ public class MenuController : MonoBehaviour {
     {
         foreach (GameObject menu in menus)
         {
-            menus_dictionary.Add(menu.transform.name, menu);
+            menusDictionary.Add(menu.transform.name, menu);
         }
     }
 

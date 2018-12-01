@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class MachineTargetList {
 
-    private List<MachineTarget> machine_targets = new List<MachineTarget>();
-    private TeamHelpers.Team search_team = TeamHelpers.Team.NEUTRAL_TEAM;
+    private List<MachineTarget> machineTargets = new List<MachineTarget>();
+    private TeamHelpers.Team searchTeam = TeamHelpers.Team.NEUTRAL_TEAM;
 	
     public MachineTargetList(List<Machine> machines, TeamHelpers.Team team)
     {
-        search_team = team;
+        searchTeam = team;
         foreach(Machine machine in machines)
         {
-            machine_targets.Add(new MachineTarget(machine, team));
+            machineTargets.Add(new MachineTarget(machine, team));
         }
 
         DefineScore();
@@ -21,7 +21,7 @@ public class MachineTargetList {
 
     private void DefineScore()
     {
-        foreach (MachineTarget target in machine_targets)
+        foreach (MachineTarget target in machineTargets)
         {
             if (target.AnyAllyConnected())
             {
@@ -55,9 +55,9 @@ public class MachineTargetList {
                     if (target.IsMachineStorageEmpty())
                         if (target.AnyEnemyConnected())
                         {
-                            target.AddScore(3);
+                            target.AddScore(2);
                         } else {
-                            target.AddScore(1);
+                            target.AddScore(0);
                         }
                     else if (target.IsMachineStorageHalfFull())
                     {
@@ -66,7 +66,7 @@ public class MachineTargetList {
                             target.AddScore(3);
                         } else if (target.AnyNeutralConnected())
                         {
-                            target.AddScore(2);
+                            target.AddScore(1);
                         } else if (!target.MachineCanProduceBits())
                         {
                             target.AddScore(1);
@@ -79,12 +79,12 @@ public class MachineTargetList {
 
     public List<MachineTarget> BestTargets()
     {
-        int max_score = machine_targets.Max(target => target.Score());
-        return machine_targets.Where(target => target.AnyAllyConnected())
-                              .Where(target => target.Score() > 0)
-                              .Where(target => target.AnyAllyConnectedWithBits())
-                              .OrderByDescending(target => target.Score())
-                              .ToList();
+        int max_score = machineTargets.Max(target => target.Score());
+        return machineTargets.Where(target => target.AnyAllyConnected())
+                             .Where(target => target.Score() > 0)
+                             .Where(target => target.AnyAllyConnectedWithBits())
+                             .OrderByDescending(target => target.Score())
+                             .ToList();
                               
     }
 }
